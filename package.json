@@ -15,10 +15,13 @@
   "bugs": {
     "url": "https://github.com/webforms/validator/issues"
   },
-  "licenses": "MIT",
+  "dependencies": {
+    "moment": "2.6.0"
+  },
   "spm": {
     "main": "index.js",
     "dependencies": {
+      "moment": "2.6.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
@@ -27,5 +30,6 @@
       "seajs": "2.2.1"
     },
     "tests": "tests/*.js"
-  }
+  },
+  "licenses": "MIT"
 }

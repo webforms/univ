@@ -27,10 +27,25 @@ $ npm install uv
 ```js
 var Validator = require('uv');
 
-var ruler = {
+var rules = {
   "username": {
     type: "email",
-    required: true
+    required: true,
+    // @param {Function} certified.
+    // @param {String} value.
+    script: function(certifiedCallback, value){
+      $.ajax({
+        url: "/checkUserNameAvailable",
+        data: "username="+value,
+        success: function(data){
+          if(data.state === "ok" && data.available = "yes"){
+            callback(true);
+          }else{
+            certifiedCallback(false);
+          }
+        }
+      });
+    }
   },
   "password": {
     type: "password",
@@ -40,7 +55,7 @@ var ruler = {
   }
 };
 
-var validator = new Validator(ruler);
+var validator = new Validator(rules);
 validator.validate(request.body);
 ```
 
