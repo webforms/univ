@@ -1,0 +1,31 @@
+{
+  "name": "uv",
+  "version": "1.0.0",
+  "description": "Universal Validator.",
+  "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
+  "homepage": "https://github.com/webforms/validator",
+  "author": "闲耘<hotoo.cn@gmail.com>",
+  "maintainers": [
+    "闲耘<hotoo.cn@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:webforms/validator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webforms/validator/issues"
+  },
+  "licenses": "MIT",
+  "spm": {
+    "main": "index.js",
+    "dependencies": {
+    },
+    "devDependencies": {
+      "expect.js": "0.3.1"
+    },
+    "engines": {
+      "seajs": "2.2.1"
+    },
+    "tests": "tests/*.js"
+  }
+}
