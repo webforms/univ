@@ -31,9 +31,10 @@ var rules = {
   "username": {
     type: "email",
     required: true,
-    // @param {Function} certified.
+
     // @param {String} value.
-    script: function(certifiedCallback, value){
+    // @param {Function} certifiedCallback, optional.
+    script: function(value, certifiedCallback){
       $.ajax({
         url: "/checkUserNameAvailable",
         data: "username="+value,
@@ -43,6 +44,9 @@ var rules = {
           }else{
             certifiedCallback(false);
           }
+        },
+        error: function(){
+          certifiedCallback(false);
         }
       });
     }
@@ -66,6 +70,33 @@ validator.validate(request.body);
 constructor, new a validator by rulers.
 
 
-### &lt;Boolean&gt; validate(&lt;Object&gt; data)
+### &lt;Validator&gt; validate(&lt;Object&gt; data)
+
+
+## Events
+
+### valid
+
+单个数据项通过校验，数据合法有效。
+
+```js
+validator.on("valid", function(certified, name, rule, value){
+  console.log("Field [name=" + name + "] ", certified ? "Passed" : "Failed");
+});
+```
+
+### invalid
+
+单个数据项未通过校验，数据无效、不合法。
+
+### complete
+
+所有数据校验完成。数据是否全部通过校验，则视事件处理函数的对应参数。
+
+```js
+validator.on("complete", function(certified){
+  console.log(certified ? "Passed" : "Failed");
+});
+```
 
 validate data by rule.
