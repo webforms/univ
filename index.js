@@ -1,5 +1,6 @@
 
 var moment = require("moment");
+var events = require("events").EventEmitter;
 
 // @param {Object} rules
 // @param {Function} handler
@@ -15,6 +16,10 @@ function eachRules(rules, handler){
 // @param {String} type, like `Array`, `RegExp`, etc.
 function typeOf(object, type){
   return Object.prototype.toString.call(object) === "[object " + type + "]";
+}
+
+function isString(object){
+  return typeOf(object, "String");
 }
 
 function isArray(object){
@@ -68,7 +73,7 @@ var DEFAULT_RULES = {
   maxlength: NaN,
   minlength: NaN,
   patterm: /.*/,
-  custom: function(){}
+  custom: function(){return true;}
 };
 
 
@@ -76,12 +81,12 @@ var RE_BLANK = /^\s*$/; // 空白字符。
 
 // 通常情况下的 required 校验。
 function verifyRequired(rule, value){
-  return !RE_BLANK.test(value);
+  return isString(value) && !RE_BLANK.test(value);
 }
 
 // 特殊的密码非空校验。
 function verifyRequiredPassword(value){
-  return value === "";
+  return isString(value) && value === "";
 }
 
 // 列表项非空校验
@@ -96,7 +101,7 @@ function verifyRequiredList(values){
 }
 
 function verifyIsNumber(value){
-  return /^[+-]?\d+$/.test(num) || /^[+-]?(?:\d+)?\.\d+$/.test(num);
+  return /^[+-]?\d+$/.test(value) || /^[+-]?(?:\d+)?\.\d+$/.test(value);
 }
 
 function verifyMin(min, value){
@@ -258,17 +263,29 @@ function verifyPattern(patterm, value){
 }
 
 // TODO:
-function verifyFunction(ruleFunction, value){
+function verifyFunction(ruleFunction, value, certifiedCallback){
   if(!isFunction(ruleFunction)){return true;}
-  var result = ruleFunction.call(null, value);
+  var result = ruleFunction.call(null, value, certifiedCallback);
   if("undefined" !== typeof result){
     return result;
   }
 }
 
-function verify(rule, values){
+function verify(ruleName, rule, values, instance_context){
 
   var certified = true;
+  var validity = {
+    customError: false,
+    patternMismatch: false,
+    rangeOverflow: false,
+    rangeUnderflow: false,
+    stepMismatch: false,
+    tooLong: false,
+    typeMismatch: false,
+    valueMissing: false,
+    badInput: false,
+    valid: true
+  };
 
   switch(rule.type){
   case RULE_TYPES.submit:
@@ -391,26 +408,61 @@ function verify(rule, values){
   }
 
   certified = certified && verifyPattern(rule.patterm, value);
-  certified = certified && verifyFunction(rule.script, value);
+
+  var result = verifyFunction(rule.custom, value, function(certified){
+
+    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, validity, values);
+
+    if(--instance_context._pending === 0){
+      instance_context._evt.emit("complete", certified);
+    }
+  });
+
+  if(typeof result !== "undefined"){
+    certified = certified && result;
+    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, validity, values);
+    return certified;
+  }else{
+    instance_context._pending++;
+  }
 
 }
 
 
 var Validator = function(rules){
   this._rules = rules;
+  this._evt = new events();
+  this._pending = 0;
 };
 
 Validator.prototype.validate = function(data){
 
   var certified = true;
+  var ME = this;
 
   eachRules(this._rules, function(ruleName, rule){
 
     var values = data[ruleName];
-    certified = certified && verify(rule, values);
+    var result = verify(ruleName, rule, values, ME);
+    certified = certified && result;
 
   });
 
+  if(this._pending === 0){
+    this._evt.emit("complete", certified);
+  }
+
+  return this;
+};
+
+Validator.prototype.on = function(eventName, handler){
+  this._evt.on(eventName, handler);
+  return this;
+};
+
+Validator.prototype.off = function(eventName, handler){
+  this._evt.off(eventName, handler);
+  return this;
 };
 
 module.exports = Validator;

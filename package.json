@@ -21,7 +21,8 @@
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "moment": "2.6.0"
+      "moment": "2.6.0",
+      "events": "1.0.1"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
