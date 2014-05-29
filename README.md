@@ -80,8 +80,8 @@ constructor, new a validator by rulers.
 单个数据项通过校验，数据合法有效。
 
 ```js
-validator.on("valid", function(certified, name, rule, value){
-  console.log("Field [name=" + name + "] ", certified ? "Passed" : "Failed");
+validator.on("valid", function(name, value, validity){
+  console.log("Field [name=" + name + "] Passed.");
 });
 ```
 
@@ -89,13 +89,19 @@ validator.on("valid", function(certified, name, rule, value){
 
 单个数据项未通过校验，数据无效、不合法。
 
+```js
+validator.on("valid", function(name, value, validity){
+  console.log("Field [name=" + name + "] Failed.");
+});
+```
+
 ### complete
 
 所有数据校验完成。数据是否全部通过校验，则视事件处理函数的对应参数。
 
 ```js
 validator.on("complete", function(certified){
-  console.log(certified ? "Passed" : "Failed");
+  console.log("Form validation", certified ? "Passed" : "Failed");
 });
 ```
 
