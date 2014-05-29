@@ -7,108 +7,96 @@ var rule_required = {
   search: { type:"search", required: true }
 };
 
-function required_invalid(rule, data){
-describe("each items required, data is empty.", function(){
-  var validator = new Validator(rule);
 
-  validator.on("valid", function(name, validity, values){
-
-    it('[required][name=' + name + '][value=' + values + ']:valid', function(done) {
-      expect(true).to.equal(false);
-      done();
-    });
-
-  }).on("invalid", function(name, validity, values){
-
-    it('[required][name=' + name + '][value=' + values + ']:invalid', function(done) {
-      expect(true).to.equal(true);
-      done();
-    });
-
+function testRequiredInvalid(validator, data, done){
+  validator.on("invalid", function(name, value, validity){
+    expect("invalid").to.equal("invalid");
+  }).on("valid", function(name, value, validity){
+    expect("valid").to.equal("invalid");
   }).on("complete", function(certified){
-
-    it('[required]:complete:invalid', function(done) {
-      expect(certified).to.equal(false);
-      done();
-    });
-
+    expect(certified).to.equal(false);
+    validator.off();
+    done();
   });
-
-  validator.validate(data);
-});
-
 }
 
-required_invalid(rule_required, {});
-required_invalid(rule_required, {
-  text: "",
-  password: "",
-  search: ""
-});
-required_invalid(rule_required, {
-  text: " ",
-  password: " ",
-  search: " "
-});
-
-describe("each items required, data is undefined.", function(){
-  var validator = new Validator(rule_required);
-
-  validator.on("valid", function(name, validity, values){
-
-    it('[required][name=' + name + '][value=' + values + ']:valid', function(done) {
-      expect(true).to.equal(false);
-      done();
-    });
-
-  }).on("invalid", function(name, validity, values){
-
-    it('[required][name=' + name + '][value=' + values + ']:invalid', function(done) {
-      expect(true).to.equal(true);
-      done();
-    });
-
+function testRequiredValid(validator, data, done){
+  validator.on("invalid", function(name, values, validity){
+    expect("invalid").to.equal("valid");
+  }).on("valid", function(name, values, validity){
+    expect("valid").to.equal("valid");
   }).on("complete", function(certified){
-
-    it('[required]:complete:invalid', function(done) {
-      expect(certified).to.equal(false);
-      done();
-    });
-
+    expect(certified).to.equal(true);
+    done();
   });
+}
 
-  validator.validate({
-  });
-});
+var testCases = [
+  // non-rule
+  // --------------------------------------------------------------------
+  {
+    "rule": {},
+    "data": {},
+    "test": testRequiredValid
+  },
+  {
+    "rule": {},
+    "data": {a:1},
+    "test": testRequiredValid
+  },
+  {
+    "rule": {},
+    "data": {a:1, b:2},
+    "test": testRequiredValid
+  },
+  // require:false
+  // --------------------------------------------------------------------
+  {
+    "rule": {a: {
+      required: false
+    }},
+    "data": {},
+    "test": testRequiredValid
+  },
+  {
+    "rule": {a: {
+      required: false
+    }},
+    "data": {a:1, b:2},
+    "test": testRequiredValid
+  },
+];
 
-describe('uv', function() {
+function getFunctionName(func){
+  var m = func.toString().match(/^function\s+([a-zA-Z0-9]+)/);
+  return m ? m[1] : "anonymous";
+}
 
-  // complete
-  it('required complete', function(done) {
+describe("validator", function(){
 
-    var validator = new Validator({
-      text: { required: true },
-      password: { required: true },
-      search: { required: true }
-    });
+    for(var i=0,l=testCases.length; i<l; i++){
 
-    validator.on("valid", function(name, validity, values){
-      expect(true).to.equal(false);
-      console.log("valid:", name)
-    }).on("invalid", function(name, validity, values){
-      expect(true).to.equal(true);
-      console.log("invalid:", name)
-    }).on("complete", function(certified){
-      console.log("complete", certified);
-      done();
-    });
+      var rule = testCases[i].rule;
+      var data = testCases[i].data;
+      var test = testCases[i].test;
+      var testName = test.name || getFunctionName(test);
+      var certified = testName === "testRequiredValid" ? "valid" : "invalid";
+      var desc = 'RULE:' + JSON.stringify(rule) +
+        ' ,DATA:' + JSON.stringify(data) +
+        ' :' + certified;
 
-    validator.validate({
-      text: "",
-      password: "",
-      search: ""
-    });
+      (function(desc, rule, data, test){
 
-  });
+        it(desc, function(done) {
 
+          var validator = new Validator(rule);
+
+          test(validator, data, done);
+
+          validator.validate(data);
+
+        });
+
+      })(desc, rule, data, test);
+    }
 });
