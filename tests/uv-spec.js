@@ -8,7 +8,7 @@ var rule_required = {
 };
 
 
-function testRequiredInvalid(validator, data, done){
+function testInvalid(validator, data, done){
   validator.on("invalid", function(name, value, validity){
     expect("invalid").to.equal("invalid");
   }).on("valid", function(name, value, validity){
@@ -20,7 +20,7 @@ function testRequiredInvalid(validator, data, done){
   });
 }
 
-function testRequiredValid(validator, data, done){
+function testValid(validator, data, done){
   validator.on("invalid", function(name, values, validity){
     expect("invalid").to.equal("valid");
   }).on("valid", function(name, values, validity){
@@ -37,33 +37,34 @@ var testCases = [
   {
     "rule": {},
     "data": {},
-    "test": testRequiredValid
+    "test": testValid
   },
   {
     "rule": {},
     "data": {a:1},
-    "test": testRequiredValid
+    "test": testValid
   },
   {
     "rule": {},
     "data": {a:1, b:2},
-    "test": testRequiredValid
+    "test": testValid
   },
   // require:false
   // --------------------------------------------------------------------
   {
-    "rule": {a: {
-      required: false
-    }},
+    "rule": {a: { required: false }},
     "data": {},
-    "test": testRequiredValid
+    "test": testValid
   },
   {
-    "rule": {a: {
-      required: false
-    }},
+    "rule": { a: { required: false }},
+    "data": {a:1},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: false }},
     "data": {a:1, b:2},
-    "test": testRequiredValid
+    "test": testValid
   },
 ];
 
@@ -80,7 +81,7 @@ describe("validator", function(){
       var data = testCases[i].data;
       var test = testCases[i].test;
       var testName = test.name || getFunctionName(test);
-      var certified = testName === "testRequiredValid" ? "valid" : "invalid";
+      var certified = testName === "testValid" ? "valid" : "invalid";
       var desc = 'RULE:' + JSON.stringify(rule) +
         ' ,DATA:' + JSON.stringify(data) +
         ' :' + certified;
