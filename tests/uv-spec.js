@@ -49,6 +49,7 @@ var testCases = [
     "data": {a:1, b:2},
     "test": testValid
   },
+
   // require:false
   // --------------------------------------------------------------------
   {
@@ -64,6 +65,146 @@ var testCases = [
   {
     "rule": { a: { required: false }},
     "data": {a:1, b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "password", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "radio", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "checkbox", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "select-one", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "select-multiple", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "hidden", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "search", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "textarea", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "range", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "submit", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "button", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "reset", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "image", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "fieldset", required: false }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "legend", required: false }},
+    "data": {},
     "test": testValid
   },
 ];
