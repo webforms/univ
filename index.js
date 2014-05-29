@@ -22,6 +22,10 @@ function isString(object){
   return typeOf(object, "String");
 }
 
+function isBoolean(object){
+  return typeOf(object, "Boolean");
+}
+
 function isArray(object){
   return typeOf(object, "Array");
 }
@@ -80,12 +84,13 @@ var DEFAULT_RULES = {
 var RE_BLANK = /^\s*$/; // 空白字符。
 
 // 通常情况下的 required 校验。
-function verifyRequired(rule, value){
+function verifyRequired(required, value){
+  if(!isBoolean(required) || !required){return true;}
   return isString(value) && !RE_BLANK.test(value);
 }
 
 // 特殊的密码非空校验。
-function verifyRequiredPassword(value){
+function verifyRequiredPassword(required, value){
   return isString(value) && value === "";
 }
 
@@ -96,7 +101,7 @@ function verifyRequiredPassword(value){
 //
 // @param {Array} values
 // @return {Boolean}
-function verifyRequiredList(values){
+function verifyRequiredList(required, values){
   return isArray(values) && values.length > 0;
 }
 
@@ -308,14 +313,14 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.checkbox:
   case RULE_TYPES["select-multiple"]:
     certified = certified &&
-      verifyRequiredList(values) &&
+      verifyRequiredList(rule.required, values) &&
       verifyMinLengthList(rule.minlength, values) &&
       verifyMaxLengthList(rule.maxlength, values);
     break;
 
   case RULE_TYPES.password:
     certified = certified &&
-      verifyRequiredPassword(values) &&
+      verifyRequiredPassword(rule.required, values) &&
       verifyMinLength(rule.minlength, values) &&
       verifyMaxLength(rule.maxlength, values);
     break;
@@ -325,7 +330,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.date:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsDate(values) &&
       verifyMinDate(rule.min, values) &&
       verifyMaxDate(rule.max, values);
@@ -333,7 +338,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.datetime:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsDateTime(values) &&
       verifyMinDateTime(rule.min, values) &&
       verifyMaxDateTime(rule.max, values);
@@ -341,7 +346,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES["datetime-local"]:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsDateTimeLocal(values) &&
       verifyMinDateTimeLocal(rule.min, values) &&
       verifyMaxDateTimeLocal(rule.max, values);
@@ -349,7 +354,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.week:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsWeek(values) &&
       verifyMinWeek(rule.min, values) &&
       verifyMaxWeek(rule.max, values);
@@ -357,7 +362,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.month:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsMonth(values) &&
       verifyMinMonth(rule.min, values) &&
       verifyMaxMonth(rule.max, values);
@@ -365,7 +370,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.url:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsUrl(values) &&
       verifyMinLength(rule.min, values) &&
       verifyMaxLength(rule.max, values);
@@ -373,7 +378,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.email:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsEmail(values) &&
       verifyMinLength(rule.min, values) &&
       verifyMaxLength(rule.max, values);
@@ -381,7 +386,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.tel:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsTel(values) &&
       verifyMinLength(rule.min, values) &&
       verifyMaxLength(rule.max, values);
@@ -389,7 +394,7 @@ function verify(ruleName, rule, values, instance_context){
 
   case RULE_TYPES.color:
     certified = certified &&
-      verifyRequired(values) &&
+      verifyRequired(rule.required, values) &&
       verifyIsColor(values) &&
       verifyMinLength(rule.min, values) &&
       verifyMaxLength(rule.max, values);
@@ -402,7 +407,7 @@ function verify(ruleName, rule, values, instance_context){
   //case RULE_TYPES.textarea:
   default:
     certified = certified &&
-      verifyRequired(rule, values) &&
+      verifyRequired(rule.required, values) &&
       verifyMinLength(rule.minlength, values) &&
       verifyMaxLength(rule.maxlength, values);
   }
@@ -411,7 +416,7 @@ function verify(ruleName, rule, values, instance_context){
 
   var result = verifyFunction(rule.custom, value, function(certified){
 
-    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, validity, values);
+    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
 
     if(--instance_context._pending === 0){
       instance_context._evt.emit("complete", certified);
@@ -420,7 +425,7 @@ function verify(ruleName, rule, values, instance_context){
 
   if(typeof result !== "undefined"){
     certified = certified && result;
-    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, validity, values);
+    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
     return certified;
   }else{
     instance_context._pending++;
