@@ -121,7 +121,42 @@ var testCases = [
   },
   {
     "rule": {},
+    "data": {a:[0], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
     "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:["1"], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[false], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[true], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[/re/g], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[new Date()], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[{}], b:2},
     "test": testValid
   },
   {
@@ -130,10 +165,140 @@ var testCases = [
     "test": testValid
   },
 
+
   // require:false
   // --------------------------------------------------------------------
+  {
+    "rule": { required: false },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:0},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:1},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:null},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:undefined},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:""},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:"1"},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:false},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:true},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:new Date()},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:/re/g},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:{}},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:1, b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[undefined], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[null], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[,], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[0], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:["1"], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[false], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[true], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[/re/g], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[new Date()], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[{}], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { required: false },
+    "data": {a:[1,2], b:2},
+    "test": testValid
+  },
 
-  // [type=]:not-required
   {
     "rule": {a: { required: false }},
     "data": {},
@@ -164,6 +329,7 @@ var testCases = [
     "data": {a:[1,2], b:2},
     "test": testValid
   },
+
 
   // [type=text]:not-required
   {
