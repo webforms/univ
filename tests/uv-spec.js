@@ -41,7 +41,57 @@ var testCases = [
   },
   {
     "rule": {},
+    "data": {a:0},
+    "test": testValid
+  },
+  {
+    "rule": {},
     "data": {a:1},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:null},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:undefined},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:""},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:"1"},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:false},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:true},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:new Date()},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:/re/g},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:{}},
     "test": testValid
   },
   {
@@ -49,9 +99,41 @@ var testCases = [
     "data": {a:1, b:2},
     "test": testValid
   },
+  {
+    "rule": {},
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[undefined], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[null], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[,], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": {},
+    "data": {a:[1,2], b:2},
+    "test": testValid
+  },
 
   // require:false
   // --------------------------------------------------------------------
+
+  // [type=]:not-required
   {
     "rule": {a: { required: false }},
     "data": {},
@@ -68,20 +150,116 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: false }},
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: false }},
+    "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: false }},
+    "data": {a:[1,2], b:2},
+    "test": testValid
+  },
+
+  // [type=text]:not-required
+  {
     "rule": { a: { type: "text", required: false }},
     "data": {},
     "test": testValid
   },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {a:1},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {a:1, b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "text", required: false }},
+    "data": {a:[1,2], b:2},
+    "test": testValid
+  },
+
+  // [type=password]:not-required
   {
     "rule": { a: { type: "password", required: false }},
     "data": {},
     "test": testValid
   },
   {
+    "rule": { a: { type: "password", required: false }},
+    "data": {a:1},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "password", required: false }},
+    "data": {a:1, b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "password", required: false }},
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "password", required: false }},
+    "data": {a:[1], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "password", required: false }},
+    "data": {a:[1,2], b:2},
+    "test": testValid
+  },
+
+  {
     "rule": { a: { type: "email", required: false }},
     "data": {},
     "test": testValid
   },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {a:1},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {a:1, b:2},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {a:[], b:2},
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {a:[1], b:2},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email", required: false }},
+    "data": {a:[1,2], b:2},
+    "test": testInvalid
+  },
+
   {
     "rule": { a: { type: "radio", required: false }},
     "data": {},

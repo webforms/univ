@@ -85,30 +85,32 @@ var DEFAULT_RULES = {
 var RE_BLANK = /^\s*$/; // 空白字符。
 
 // 通常情况下的 required 校验。
+// @param {Boolean,Undefined} required, is rule required?
+// @param {String,Object} value, validation data.
+// @return {Boolean,Undefined}
+//        if !value and required, return false;
+//        if !value and not-required, return true;
+//        if value, validate passed, and continue next, return undefined.
 function verifyRequired(required, value){
   if("undefined"===typeof value || null===value || ""===value){
     return !isBoolean(required) || !required;
   }
-  //return undefined;
+  //!return undefined;
 }
 
-// 特殊的密码非空校验。
-function verifyRequiredPassword(required, value){
-  if(!isBoolean(required) || !required){return true;}
-  return isString(value) && value === "";
-}
-
-// 列表项非空校验
+// 列表项 required 校验
 //
 // * checkbox
 // * select-multiple
 //
+// @param {Boolean,Undefined} required, is rule required?
 // @param {Array} values
-// @return {Boolean}
+// @return {Boolean,Undefined} same `verifyRequired()`
 function verifyRequiredList(required, values){
-  if(!isBoolean(required) || !required){return true;}
-  return verifyMinLengthList(1, values);
-  //return isArray(values) && values.length > 0;
+  if(!verifyMinLengthList(1, values)){
+    return !isBoolean(required) || !required;
+  }
+  //!return undefined;
 }
 
 function verifyIsNumber(value){
@@ -521,7 +523,11 @@ Validator.prototype.on = function(eventName, handler){
 };
 
 Validator.prototype.off = function(eventName, handler){
-  this._evt.off(eventName, handler);
+  if(isFunction(handler)){
+    this._evt.removeListener(eventName, handler);
+  }else{
+    this._evt.removeAllListeners(eventName);
+  }
   return this;
 };
 
