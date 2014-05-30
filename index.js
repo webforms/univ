@@ -82,8 +82,6 @@ var DEFAULT_RULES = {
 };
 
 
-var RE_BLANK = /^\s*$/; // 空白字符。
-
 // 通常情况下的 required 校验。
 // @param {Boolean,Undefined} required, is rule required?
 // @param {String,Object} value, validation data.
@@ -130,7 +128,7 @@ function verifyMinLengthList(minlength, values){
   if(!isArray(values) || values.length < minlength){return false;}
 
   for(var i=0,l=values.length; i<l; i++){
-    if(!RE_BLANK.test(values[i])){
+    if(values[i]){
       length++;
     }
   }
@@ -143,7 +141,7 @@ function verifyMaxLengthList(maxlength, values){
   if(!isArray(values) || values.length > maxlength){return false;}
 
   for(var i=0,l=values.length; i<l; i++){
-    if(!RE_BLANK.test(values[i])){
+    if(values[i]){
       length++;
     }
   }
