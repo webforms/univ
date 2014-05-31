@@ -152,7 +152,7 @@ function verifyMinLength(minlength, value){
 }
 
 function verifyMaxLength(maxlength, value){
-  return isNaN(maxlength) || value.length <= maxlength;
+  return !isNumber(maxlength) || value.length <= maxlength;
 }
 
 var RE_MONTH = /^\d{4}\-\d{1,2}$/;

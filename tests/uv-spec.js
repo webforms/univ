@@ -513,6 +513,100 @@ var testCases = [
   },
 
 
+  // maxlength.
+  {
+    "rule": { a: { maxlength: NaN } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: "" } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: null }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: undefined }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: "12" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+
+  {
+    "rule": { a: { maxlength: NaN } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: "" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: null } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: undefined }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: [1,2] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: [1,2] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: [1] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: [0,"",null,undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: [0,"",null,undefined] },
+    "test": testInvalid
+  },
+
+
 
 
 
