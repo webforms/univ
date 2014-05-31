@@ -134,8 +134,8 @@ function verifyMinLengthList(minlength, values){
 }
 
 function verifyMaxLengthList(maxlength, values){
-  if(isNaN(maxlength)){return true;}
-  if(!isArray(values) || values.length > maxlength){return false;}
+  if(!isNumber(maxlength)){return true;}
+  if(!isArray(values)){return false;}
 
   var length = 0;
   for(var i=0,l=values.length; i<l; i++){

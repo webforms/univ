@@ -598,11 +598,16 @@ var testCases = [
   {
     "rule": { a: { maxlength: 1 }},
     "data": { a: [0,"",null,undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 1 }},
+    "data": { a: [0,1,"",null,undefined] },
     "test": testInvalid
   },
   {
     "rule": { a: { maxlength: 1 }},
-    "data": { a: [0,"",null,undefined] },
+    "data": { a: [1,2,"",null,undefined] },
     "test": testInvalid
   },
 
