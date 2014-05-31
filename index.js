@@ -30,6 +30,10 @@ function isArray(object){
   return typeOf(object, "Array");
 }
 
+function isNumber(object){
+  return !isNaN(object) && typeOf(object, "Number");
+}
+
 function isRegExp(object){
   return typeOf(object, "RegExp");
 }
@@ -91,7 +95,6 @@ var DEFAULT_RULES = {
 //        if values, validate passed, and continue next, return undefined.
 function verifyRequired(required, values){
   if(isArray(values)){
-    console.log("DEBUG", JSON.stringify(values))
     if(!verifyMinLengthList(1, values)){
       return !isBoolean(required) || !required;
     }
@@ -117,7 +120,7 @@ function verifyMax(max, value){
 }
 
 function verifyMinLengthList(minlength, values){
-  if(isNaN(minlength)){return true;}
+  if(!isNumber(minlength)){return true;}
   if(!isArray(values) || values.length < minlength){return false;}
 
   var length = 0;
@@ -145,7 +148,7 @@ function verifyMaxLengthList(maxlength, values){
 }
 
 function verifyMinLength(minlength, value){
-  return isNaN(minlength) || value.length >= minlength;
+  return !isNumber(minlength) || value.length >= minlength;
 }
 
 function verifyMaxLength(maxlength, value){
@@ -323,15 +326,15 @@ function verify(ruleName, rule, values, instance_context){
   if(isArray(values)){
 
     certified = certified &&
-      verifyMinLengthList(rule.min, values) &&
-      verifyMaxLengthList(rule.max, values) &&
+      verifyMinLengthList(rule.minlength, values) &&
+      verifyMaxLengthList(rule.maxlength, values) &&
       verifyPatternList(rule.pattern, values);
 
   }else{
 
     certified = certified &&
-      verifyMinLength(rule.min, values) &&
-      verifyMaxLength(rule.max, values) &&
+      verifyMinLength(rule.minlength, values) &&
+      verifyMaxLength(rule.maxlength, values) &&
       verifyPattern(rule.pattern, values);
 
   }

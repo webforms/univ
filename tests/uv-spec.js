@@ -434,20 +434,94 @@ var testCases = [
   },
 
 
-
-
-
-
+  // minlength.
   {
-    "rule": {a: { required: true }},
+    "rule": { a: { minlength: NaN } },
     "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: "" } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: null }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: undefined }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: "1" },
     "test": testInvalid
   },
   {
-    "rule": { a: { required: true }},
-    "data": {a:1},
+    "rule": { a: { minlength: 1 }},
+    "data": { a: "1" },
     "test": testValid
   },
+
+  {
+    "rule": { a: { minlength: NaN } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: "" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: null } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: undefined }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: [0] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: [0,"",null,undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: [0,"1"] },
+    "test": testValid
+  },
+
+
+
+
+
+
+
+
+
+
+
   {
     "rule": { a: { required: true }},
     "data": {a:1, b:2},
