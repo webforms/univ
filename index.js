@@ -84,32 +84,24 @@ var DEFAULT_RULES = {
 
 // 通常情况下的 required 校验。
 // @param {Boolean,Undefined} required, is rule required?
-// @param {String,Object} value, validation data.
+// @param {String,Object} values, validation data.
 // @return {Boolean,Undefined}
-//        if !value and required, return false;
-//        if !value and not-required, return true;
-//        if value, validate passed, and continue next, return undefined.
-function verifyRequired(required, value){
-  if("undefined"===typeof value || null===value || ""===value){
-    return !isBoolean(required) || !required;
+//        if !values and required, return false;
+//        if !values and not-required, return true;
+//        if values, validate passed, and continue next, return undefined.
+function verifyRequired(required, values){
+  if(isArray(values)){
+    if(!verifyMinLengthList(1, values)){
+      return !isBoolean(required) || !required;
+    }
+  }else{
+    if("undefined"===typeof values || null===values || ""===values){
+      return !isBoolean(required) || !required;
+    }
   }
   //!return undefined;
 }
 
-// 列表项 required 校验
-//
-// * checkbox
-// * select-multiple
-//
-// @param {Boolean,Undefined} required, is rule required?
-// @param {Array} values
-// @return {Boolean,Undefined} same `verifyRequired()`
-function verifyRequiredList(required, values){
-  if(!verifyMinLengthList(1, values)){
-    return !isBoolean(required) || !required;
-  }
-  //!return undefined;
-}
 
 function verifyIsNumber(value){
   return /^[+-]?\d+$/.test(value) || /^[+-]?(?:\d+)?\.\d+$/.test(value);
@@ -319,86 +311,37 @@ function verify(ruleName, rule, values, instance_context){
     valid: true
   };
 
-  var result;
+  var resultRequired = verifyRequired(rule.required, values);
+  // fast return if required rule not match.
+  if("undefined" !== typeof resultRequired){
+    return resultRequired;
+  }
 
   if(isArray(values)){
-    // fast return if required rule not match.
-    result = verifyRequiredList(rule.required, values);
-    if("undefined"!==typeof result){return result;}
 
     certified = certified &&
       verifyMinLengthList(rule.min, values) &&
       verifyMaxLengthList(rule.max, values) &&
       verifyPatternList(rule.pattern, values);
+
   }else{
-    // fast return if required rule not match.
-    result = verifyRequired(rule.required, values);
-    if("undefined"!==typeof result){return result;}
 
     certified = certified &&
       verifyMinLength(rule.min, values) &&
       verifyMaxLength(rule.max, values) &&
       verifyPattern(rule.pattern, values);
+
   }
 
-  // rule: min & max.
+
+  // rule: type, min, max.
   switch(rule.type){
   case RULE_TYPES.number:
   case RULE_TYPES.range:
-    // XXX: number list.
-    var value = Number(values);
     certified = certified &&
+      verifyIsNumber(values) &&
       verifyMin(rule.min, values) &&
       verifyMax(rule.max, values);
-    break;
-
-  case RULE_TYPES.date:
-    certified = certified &&
-      verifyMinDate(rule.min, values) &&
-      verifyMaxDate(rule.max, values);
-    break;
-
-  case RULE_TYPES.datetime:
-    certified = certified &&
-      verifyMinDateTime(rule.min, values) &&
-      verifyMaxDateTime(rule.max, values);
-    break;
-
-  case RULE_TYPES["datetime-local"]:
-    certified = certified &&
-      verifyMinDateTimeLocal(rule.min, values) &&
-      verifyMaxDateTimeLocal(rule.max, values);
-    break;
-
-  case RULE_TYPES.time:
-    certified = certified &&
-      verifyMinTime(rule.min, values) &&
-      verifyMaxTime(rule.max, values);
-    break;
-
-  case RULE_TYPES.week:
-    certified = certified &&
-      verifyMinWeek(rule.min, values) &&
-      verifyMaxWeek(rule.max, values);
-    break;
-
-  case RULE_TYPES.month:
-    certified = certified &&
-      verifyMinMonth(rule.min, values) &&
-      verifyMaxMonth(rule.max, values);
-    break;
-
-  default:
-    certified = certified &&
-      verifyMin(rule.min, values) &&
-      verifyMax(rule.max, values);
-  }
-
-  // rule: type.
-  switch(rule.type){
-  case RULE_TYPES.number:
-  case RULE_TYPES.range:
-    certified = certified && verifyIsNumber(values);
     break;
 
   case RULE_TYPES.date:
@@ -420,6 +363,13 @@ function verify(ruleName, rule, values, instance_context){
       verifyIsDateTimeLocal(values) &&
       verifyMinDateTimeLocal(rule.min, values) &&
       verifyMaxDateTimeLocal(rule.max, values);
+    break;
+
+  case RULE_TYPES.time:
+    certified = certified &&
+      verifyIsTime(values) &&
+      verifyMinTime(rule.min, values) &&
+      verifyMaxTime(rule.max, values);
     break;
 
   case RULE_TYPES.week:
@@ -463,11 +413,11 @@ function verify(ruleName, rule, values, instance_context){
   //case RULE_TYPES.checkbox:
   //case RULE_TYPES["select-multiple"]:
   //case RULE_TYPES.password:
-  default:
-    break;
+  //default:
+    //break;
   }
 
-  certified = certified && verifyPattern(rule.pattern, value);
+  certified = certified && verifyPattern(rule.pattern, values);
 
   var result = verifyFunction(rule.custom, values, function(certified){
 
