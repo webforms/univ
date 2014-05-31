@@ -91,6 +91,7 @@ var DEFAULT_RULES = {
 //        if values, validate passed, and continue next, return undefined.
 function verifyRequired(required, values){
   if(isArray(values)){
+    console.log("DEBUG", JSON.stringify(values))
     if(!verifyMinLengthList(1, values)){
       return !isBoolean(required) || !required;
     }
@@ -119,8 +120,9 @@ function verifyMinLengthList(minlength, values){
   if(isNaN(minlength)){return true;}
   if(!isArray(values) || values.length < minlength){return false;}
 
+  var length = 0;
   for(var i=0,l=values.length; i<l; i++){
-    if(values[i]){
+    if("undefined"!==typeof values[i] && null!==values[i] && ""!==values[i]){
       length++;
     }
   }
@@ -132,8 +134,9 @@ function verifyMaxLengthList(maxlength, values){
   if(isNaN(maxlength)){return true;}
   if(!isArray(values) || values.length > maxlength){return false;}
 
+  var length = 0;
   for(var i=0,l=values.length; i<l; i++){
-    if(values[i]){
+    if("undefined"!==typeof values[i] && null!==values[i] && ""!==values[i]){
       length++;
     }
   }
