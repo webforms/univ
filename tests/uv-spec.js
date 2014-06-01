@@ -612,6 +612,106 @@ var testCases = [
   },
 
 
+  // rule: pattern.
+  {
+    "rule": { a: { pattern: "" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: null } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: undefined } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "a" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "a" } },
+    "data": { a: "a" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "b" } },
+    "data": { a: "abc" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "^b" } },
+    "data": { a: "abc" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { pattern: "b" } },
+    "data": { a: "a" },
+    "test": testInvalid
+  },
+
+
+  {
+    "rule": { a: { pattern: "" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "" } },
+    "data": { a: ["",null,undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: null } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: undefined } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "a" } }, // not-required.
+    "data": { a: [""] }, // no-value.
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "a" } },
+    "data": { a: ["a"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "b" } },
+    "data": { a: ["abc"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "^b" } },
+    "data": { a: ["abc"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { pattern: "b" } },
+    "data": { a: ["a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { pattern: "a" } },
+    "data": { a: ["a", "abc"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { pattern: "a" } },
+    "data": { a: ["a", "abc", "b"] },
+    "test": testInvalid
+  },
+
+
 
 
 

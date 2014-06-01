@@ -271,23 +271,26 @@ function verifyIsColor(value){
   return RE_COLOR.test(value);
 }
 
-function verifyPattern(pattern, value){
+function verifyPattern(pattern, value, instance_context){
   if(!isRegExp(pattern)){
+
+    if(!isString(pattern)){return true;}
+
     try{
       pattern = new RegExp(pattern);
     }catch(ex){
-      // TODO: emit error event.
-      return false;
+      instance_context._evt.emit("error", ex);
+      return true;
     }
   }
 
   return pattern.test(value);
 }
 
-function verifyPatternList(pattern, values){
+function verifyPatternList(pattern, values, instance_context){
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyPattern(pattern, values[i]);
+    certified = certified && verifyPattern(pattern, values[i], instance_context);
   }
   return certified;
 }
@@ -328,14 +331,14 @@ function verify(ruleName, rule, values, instance_context){
     certified = certified &&
       verifyMinLengthList(rule.minlength, values) &&
       verifyMaxLengthList(rule.maxlength, values) &&
-      verifyPatternList(rule.pattern, values);
+      verifyPatternList(rule.pattern, values, instance_context);
 
   }else{
 
     certified = certified &&
       verifyMinLength(rule.minlength, values) &&
       verifyMaxLength(rule.maxlength, values) &&
-      verifyPattern(rule.pattern, values);
+      verifyPattern(rule.pattern, values, instance_context);
 
   }
 
