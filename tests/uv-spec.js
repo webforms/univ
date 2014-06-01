@@ -713,6 +713,105 @@ var testCases = [
 
 
 
+  // rule: type=number
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: 0 },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: -1 },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: 1 },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "0" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "0.1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-0.1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "+0.1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ".1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-.1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "+.1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "0E0" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "1E0" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-1E0" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "+1E0" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-+.1" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "a" },
+    "test": testInvalid
+  },
+
+
+
 
 
 
