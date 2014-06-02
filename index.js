@@ -108,7 +108,8 @@ function verifyRequired(required, values){
 
 
 function verifyIsNumber(value){
-  return /^[+-]?\d+(?:[eE]\d+)?$/.test(value) || /^[+-]?(?:\d+)?\.\d+(?:[eE]\d+)?$/.test(value);
+  return /^[+-]?\d+(?:[eE]\d+)?$/.test(value) ||
+    /^[+-]?(?:\d+)?\.\d+(?:[eE]\d+)?$/.test(value);
 }
 
 function verifyMin(min, value){
