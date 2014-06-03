@@ -984,6 +984,44 @@ var testCases = [
   },
 
 
+  // rule:type=week
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: "2014-W01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: "2014-W53" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: "2014-W54" },
+    "test": testInvalid
+  },
+  // FIXME: moment() not support 5 digit year.
+  //{
+    //"rule": { a: { type: "week" } },
+    //"data": { a: "12345-W01" },
+    //"test": testValid
+  //},
+
 
 
 
