@@ -902,7 +902,76 @@ var testCases = [
   },
 
 
+  // TODO: rule: type=datetime-local
 
+
+
+  // rule:type=time
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:00:59" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:00:60" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:59:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:60:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "23:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "24:00:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "0a:00:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:0a:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:00:0a" },
+    "test": testInvalid
+  },
 
 
 

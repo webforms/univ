@@ -161,9 +161,10 @@ function verifyIsMonth(value){
   return RE_MONTH.test(value) && moment(value).isValid();
 }
 
+// TODO: #4, remove moment.
 var RE_TIME = /^\d{1,2}:\d{1,2}:\d{1,2}$/;
 function verifyIsTime(value){
-  return RE_TIME.test(value) && moment(value).isValid();
+  return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
 }
 
 function verifyMinMonth(min, value){
@@ -210,8 +211,8 @@ function verifyMaxDateTime(max, value){
 }
 
 
-// TODO:
-var RE_DATETIME_LOCAL = /^\d{4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}$/;
+// [input=type=datetime-local](http://www.w3.org/TR/html-markup/input.datetime-local.html)
+var RE_DATETIME_LOCAL = /^\d{4}\-\d{1,2}\-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/;
 function verifyIsDateTimeLocal(value){
   return RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
 }
