@@ -2,7 +2,10 @@
 
 ---
 
-[![spm version](http://spmjs.io/badge/uv)](http://spmjs.io/package/uv)
+[![NPM version](https://badge.fury.io/js/univalidator.png)](http://badge.fury.io/js/univalidator)
+[![spm package](http://spmjs.io/badge/univalidator)](http://spmjs.io/package/univalidator)
+[![Build Status](https://secure.travis-ci.org/aralejs/univalidator.png?branch=master)](https://travis-ci.org/aralejs/univalidator)
+[![Coverage Status](https://coveralls.io/repos/aralejs/univalidator/badge.png?branch=master)](https://coveralls.io/r/aralejs/univalidator)
 
 Universal Validator.
 
@@ -13,19 +16,19 @@ Universal Validator.
 via spm@3.x:
 
 ```
-$ spm install uv --save
+$ spm install univalidator
 ```
 
 via npm:
 
 ```
-$ npm install uv
+$ npm install univalidator
 ```
 
 ## Usage
 
 ```js
-var Validator = require('uv');
+var Validator = require('univalidator');
 
 var rules = {
   "username": {
