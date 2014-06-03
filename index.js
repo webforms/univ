@@ -156,13 +156,13 @@ function verifyMaxLength(maxlength, value){
   return !isNumber(maxlength) || value.length <= maxlength;
 }
 
-var RE_MONTH = /^\d{4}\-\d{1,2}$/;
+var RE_MONTH = /^\d{4,}\-\d{2}$/;
 function verifyIsMonth(value){
   return RE_MONTH.test(value) && moment(value).isValid();
 }
 
 // TODO: #4, remove moment.
-var RE_TIME = /^\d{1,2}:\d{1,2}:\d{1,2}$/;
+var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
 function verifyIsTime(value){
   return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
 }
@@ -183,7 +183,7 @@ function verifyMaxTime(max, value){
   return isNaN(max) || (verifyIsTime(max) && moment(value) >= moment(max));
 }
 
-var RE_DATE = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
+var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
 function verifyIsDate(value){
   return RE_DATE.test(value) && moment(value).isValid();
 }
@@ -197,7 +197,7 @@ function verifyMaxDate(max, value){
 }
 
 
-var RE_DATETIME = /^\d{4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}$/;
+var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/;
 function verifyIsDateTime(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
 }
@@ -212,7 +212,7 @@ function verifyMaxDateTime(max, value){
 
 
 // [input=type=datetime-local](http://www.w3.org/TR/html-markup/input.datetime-local.html)
-var RE_DATETIME_LOCAL = /^\d{4}\-\d{1,2}\-\d{1,2}T\d{1,2}:\d{1,2}:\d{1,2}$/;
+var RE_DATETIME_LOCAL = /^\d{4,}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}$/;
 function verifyIsDateTimeLocal(value){
   return RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
 }
@@ -227,7 +227,7 @@ function verifyMaxDateTimeLocal(max, value){
 
 
 // TODO: week
-var RE_WEEK = /^\d{4}W\d{1,2}$/;
+var RE_WEEK = /^\d{4,}-W\d{2}$/;
 function verifyIsWeek(value){
   return RE_WEEK.test(value) && moment(value).isValid();
 }
