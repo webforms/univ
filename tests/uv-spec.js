@@ -834,7 +834,7 @@ var testCases = [
   },
   {
     "rule": { a: { type: "date" } },
-    "data": { a: "12345-06-01" },
+    "data": { a: "123456-06-01" },
     "test": testValid
   },
   {
@@ -882,7 +882,7 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "12345-06-01 00:00:00" },
+    "data": { a: "123456-06-01 00:00:00" },
     "test": testValid
   },
   {
@@ -1018,7 +1018,7 @@ var testCases = [
   // FIXME: moment() not support 5 digit year.
   //{
     //"rule": { a: { type: "week" } },
-    //"data": { a: "12345-W01" },
+    //"data": { a: "123456-W01" },
     //"test": testValid
   //},
 
@@ -1061,7 +1061,7 @@ var testCases = [
   },
   {
     "rule": { a: { type: "month" } },
-    "data": { a: "12345-01" },
+    "data": { a: "123456-01" },
     "test": testValid
   },
   {
