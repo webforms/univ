@@ -1441,7 +1441,7 @@ var testCases = [
   },
   {
     "rule": { a: { custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(true);
       }, 100);
     } } },
@@ -1450,7 +1450,7 @@ var testCases = [
   },
   {
     "rule": { a: { custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(false);
       }, 100);
     } } },
@@ -1460,12 +1460,12 @@ var testCases = [
   // 2 async function validation.
   {
     "rule": { a: { custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(true);
       }, 100);
     } },
     b: {custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(true);
       }, 100);
     } } },
@@ -1475,12 +1475,12 @@ var testCases = [
   // XXX: special, test invalid, rule a can-not valid.
   //{
     //"rule": { a: { custom: function(values, callback){
-      //window.setTimeout(function(){
+      //setTimeout(function(){
         //callback(false);
       //}, 100);
     //} },
     //b: {custom: function(values, callback){
-      //window.setTimeout(function(){
+      //setTimeout(function(){
         //callback(true);
       //}, 100);
     //} } },
@@ -1489,12 +1489,12 @@ var testCases = [
   //},
   //{
     //"rule": { a: { custom: function(values, callback){
-      //window.setTimeout(function(){
+      //setTimeout(function(){
         //callback(true);
       //}, 100);
     //} },
     //b: {custom: function(values, callback){
-      //window.setTimeout(function(){
+      //setTimeout(function(){
         //callback(false);
       //}, 100);
     //} } },
@@ -1503,12 +1503,12 @@ var testCases = [
   //},
   {
     "rule": { a: { custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(false);
       }, 100);
     } },
     b: {custom: function(values, callback){
-      window.setTimeout(function(){
+      setTimeout(function(){
         callback(false);
       }, 100);
     } } },
