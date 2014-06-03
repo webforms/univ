@@ -1310,6 +1310,64 @@ var testCases = [
   },
 
 
+  // rule:type=color
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#000000" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#ffffff" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#FFFFFF" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#FFFFFG" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#000" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#12345" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#123456" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: "#1234567" },
+    "test": testInvalid
+  },
+
+
 
 
 
