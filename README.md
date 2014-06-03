@@ -36,7 +36,7 @@ var rules = {
     // @param {Function} certifiedCallback, optional.
     script: function(value, certifiedCallback){
       $.ajax({
-        url: "/checkUserNameAvailable",
+        url: "/check-username-available",
         data: "username="+value,
         success: function(data){
           if(data.state === "ok" && data.available = "yes"){
@@ -60,7 +60,11 @@ var rules = {
 };
 
 var validator = new Validator(rules);
-validator.validate(request.body);
+validator.validate({
+  "username": "hotoo@email.address",
+  "password": "PassWord",
+  "checkbox": ["check-0", "check-1"]
+});
 ```
 
 ## API
@@ -105,4 +109,12 @@ validator.on("complete", function(certified){
 });
 ```
 
-validate data by rule.
+### error
+
+校验过程中出现异常，则抛出 `error` 事件。
+
+```js
+// @param {Error} error
+validator.on("error", function(error){
+});
+```
