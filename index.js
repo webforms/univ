@@ -250,7 +250,7 @@ function verifyIsUrl(value){
 }
 
 
-var RE_EMAIL = /^\w+(?:[\._\-]\w+)*@\w+(?:\.\w+)+$/;
+var RE_EMAIL = /^\w+(?:[\._+\-]\w+)*@\w+(?:\.\w+)+$/;
 function verifyIsEmail(value){
   return RE_EMAIL.test(value);
 }

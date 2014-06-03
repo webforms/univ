@@ -1179,6 +1179,99 @@ var testCases = [
   },
 
 
+  // rule:type=email
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "a@b.c" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@def.ghi" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc.def-ghi_jkl+mn@opq.rst" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: " " },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@def" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@def." },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@def.ghi." },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@.def.ghi" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ".abc@def.ghi" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc.@def.ghi" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "abc@.def" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "@abc" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: "@abc." },
+    "test": testInvalid
+  },
+
+
 
 
 
