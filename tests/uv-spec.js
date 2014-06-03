@@ -1071,6 +1071,114 @@ var testCases = [
   },
 
 
+  // rule:type=url
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com/" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com#" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com/#" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com/####" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com/#flat:path/to/snip-code" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com?" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "https://www.example.com/?" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?a=1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?a=1&b=2" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?a=1&b=%E4%B8%AD%E6%96%87" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?a=1&b=2#flag" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html#flag" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?#flag" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "http://www.example.com/path/to/page.html?#flag" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: "ftp://www.example.com/path/to/page.html?#flag" },
+    "test": testInvalid
+  },
+
+
 
 
 
