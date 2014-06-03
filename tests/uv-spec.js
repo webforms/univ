@@ -1023,6 +1023,54 @@ var testCases = [
   //},
 
 
+  // rule:type=month
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "2014-00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "2014-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "2014-12" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "2014-13" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "12345-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: "2014-13" },
+    "test": testInvalid
+  },
+
+
 
 
 
