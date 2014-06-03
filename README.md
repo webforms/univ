@@ -4,8 +4,8 @@
 
 [![NPM version](https://badge.fury.io/js/univalidator.png)](http://badge.fury.io/js/univalidator)
 [![spm package](http://spmjs.io/badge/univalidator)](http://spmjs.io/package/univalidator)
-[![Build Status](https://secure.travis-ci.org/aralejs/univalidator.png?branch=master)](https://travis-ci.org/aralejs/univalidator)
-[![Coverage Status](https://coveralls.io/repos/aralejs/univalidator/badge.png?branch=master)](https://coveralls.io/r/aralejs/univalidator)
+[![Build Status](https://secure.travis-ci.org/webforms/univalidator.png?branch=master)](https://travis-ci.org/webforms/univalidator)
+[![Coverage Status](https://coveralls.io/repos/webforms/univalidator/badge.png?branch=master)](https://coveralls.io/r/webforms/univalidator)
 
 Universal Validator.
 
