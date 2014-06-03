@@ -428,16 +428,17 @@ function verify(ruleName, rule, values, instance_context){
     //break;
   }
 
-  certified = certified && verifyPattern(rule.pattern, values);
-
   var result = verifyFunction(rule.custom, values, function(certified){
 
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
 
     if(--instance_context._pending === 0){
-      instance_context._evt.emit("complete", certified);
+      instance_context._evt.emit("complete", instance_context._certified && certified);
+      instance_context._certified = true;
     }
   });
+
+  instance_context._certified = certified;
 
   if(typeof result !== "undefined"){
     certified = certified && result;
@@ -454,6 +455,7 @@ var Validator = function(rules){
   this._rules = rules;
   this._evt = new events();
   this._pending = 0;
+  this._certified = true;
 };
 
 Validator.prototype.validate = function(data){
@@ -470,7 +472,8 @@ Validator.prototype.validate = function(data){
   });
 
   if(this._pending === 0){
-    this._evt.emit("complete", certified);
+    ME._evt.emit("complete", certified);
+    ME._certified = true;
   }
 
   return this;
