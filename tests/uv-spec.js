@@ -1272,6 +1272,44 @@ var testCases = [
   },
 
 
+  // rule:type=tel
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: "0571-26888888" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: "(+86)0571-26888888" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: "0571-268888889" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: "0571-2688888a" },
+    "test": testInvalid
+  },
+
+
 
 
 

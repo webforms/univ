@@ -262,7 +262,7 @@ function verifyIsMobile(value){
 }
 
 
-var RE_TEL = /^\d{3,4}\-\d{7,8}$/;
+var RE_TEL = /^(?:\(\+\d{2}\))?\d{3,4}\-\d{7,8}$/;
 function verifyIsTel(value){
   return RE_TEL.test(value);
 }
