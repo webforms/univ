@@ -880,6 +880,7 @@ var testCases = [
     "data": { a: "2014-06-01 00:00:00" },
     "test": testValid
   },
+  // FIXME: moment() not support 5 digit year.
   //{
     //"rule": { a: { type: "datetime" } },
     //"data": { a: "123456-06-01 00:00:00" },
@@ -1364,6 +1365,154 @@ var testCases = [
   {
     "rule": { a: { type: "color" } },
     "data": { a: "#1234567" },
+    "test": testInvalid
+  },
+
+
+  // rule:custom function.
+  {
+    "rule": { a: { custom: null } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: null } },
+    "data": { a: "whatever." },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: undefined } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: undefined } },
+    "data": { a: "whatever." },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(){
+      return true;
+    } } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(){
+      return true;
+    } } },
+    "data": { a: "whatever." },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(){
+      return false;
+    } } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(){
+      return false;
+    } } },
+    "data": { a: "whatever." },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { custom: function(values){
+      return values==="ok";
+    } } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values){
+      return values==="ok";
+    } } },
+    "data": { a: "ok" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values){
+      return values === "ok";
+    } } },
+    "data": { a: "whatever." },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(true);
+      }, 100);
+    } } },
+    "data": { a: "whatever." },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(false);
+      }, 100);
+    } } },
+    "data": { a: "whatever." },
+    "test": testInvalid
+  },
+  // 2 async function validation.
+  {
+    "rule": { a: { custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(true);
+      }, 100);
+    } },
+    b: {custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(true);
+      }, 100);
+    } } },
+    "data": { a: "whatever.", b: "something..." },
+    "test": testValid
+  },
+  // XXX: special, test invalid, rule a can-not valid.
+  //{
+    //"rule": { a: { custom: function(values, callback){
+      //window.setTimeout(function(){
+        //callback(false);
+      //}, 100);
+    //} },
+    //b: {custom: function(values, callback){
+      //window.setTimeout(function(){
+        //callback(true);
+      //}, 100);
+    //} } },
+    //"data": { a: "whatever.", b: "something..." },
+    //"test": testInvalid
+  //},
+  //{
+    //"rule": { a: { custom: function(values, callback){
+      //window.setTimeout(function(){
+        //callback(true);
+      //}, 100);
+    //} },
+    //b: {custom: function(values, callback){
+      //window.setTimeout(function(){
+        //callback(false);
+      //}, 100);
+    //} } },
+    //"data": { a: "whatever." },
+    //"test": testInvalid
+  //},
+  {
+    "rule": { a: { custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(false);
+      }, 100);
+    } },
+    b: {custom: function(values, callback){
+      window.setTimeout(function(){
+        callback(false);
+      }, 100);
+    } } },
+    "data": { a: "whatever.", b: "something..." },
     "test": testInvalid
   },
 
