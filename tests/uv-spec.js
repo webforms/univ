@@ -834,6 +834,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "date" } },
+    "data": { a: "12345-06-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date" } },
     "data": { a: "2014-06-01 00:00:00" },
     "test": testInvalid
   },
@@ -872,13 +877,18 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-06-01" },
-    "test": testInvalid
+    "data": { a: "2014-06-01 00:00:00" },
+    "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-06-01 00:00:00" },
+    "data": { a: "12345-06-01 00:00:00" },
     "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-06-01" },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
@@ -887,7 +897,7 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-06-41 00:00:00" },
+    "data": { a: "2014-01-32 00:00:00" },
     "test": testInvalid
   },
   {
