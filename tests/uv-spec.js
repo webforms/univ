@@ -441,9 +441,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: NaN } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: "" } },
     "data": {},
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlength: "" } },
+    "data": {},
+    "test": testInvalid
   },
   {
     "rule": { a: { minlength: null }},
@@ -451,14 +461,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: null }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: undefined }},
     "data": {},
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: undefined }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: 2 }},
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlength: 2 }},
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { minlength: 2 }},
@@ -477,9 +502,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: NaN } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: "" } },
     "data": { a: [] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlength: "" } },
+    "data": { a: [] },
+    "test": testInvalid
   },
   {
     "rule": { a: { minlength: null } },
@@ -487,14 +522,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: null } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: undefined }},
     "data": { a: [] },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, minlength: undefined }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { minlength: 2 }},
     "data": { a: [] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlength: 2 }},
+    "data": { a: [] },
+    "test": testInvalid
   },
   {
     "rule": { a: { minlength: 2 }},
@@ -520,9 +570,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: NaN } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: "" } },
     "data": {},
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlength: "" } },
+    "data": {},
+    "test": testInvalid
   },
   {
     "rule": { a: { maxlength: null }},
@@ -530,14 +590,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: null }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: undefined }},
     "data": {},
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: undefined }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: 2 }},
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlength: 2 }},
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { maxlength: 1 }},
@@ -561,9 +636,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: NaN } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: "" } },
     "data": { a: [] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlength: "" } },
+    "data": { a: [] },
+    "test": testInvalid
   },
   {
     "rule": { a: { maxlength: null } },
@@ -571,14 +656,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: null } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: undefined }},
     "data": { a: [] },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, maxlength: undefined }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { maxlength: 2 }},
     "data": { a: [] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlength: 2 }},
+    "data": { a: [] },
+    "test": testInvalid
   },
   {
     "rule": { a: { maxlength: 1 }},
@@ -619,9 +719,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, pattern: "" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { pattern: null } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, pattern: null } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { pattern: undefined } },
@@ -629,9 +739,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, pattern: undefined } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { pattern: "a" } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, pattern: "a" } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { pattern: "a" } },
@@ -653,12 +773,15 @@ var testCases = [
     "data": { a: "a" },
     "test": testInvalid
   },
-
-
   {
     "rule": { a: { pattern: "" } },
     "data": { a: [] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, pattern: "" } },
+    "data": { a: [] },
+    "test": testInvalid
   },
   {
     "rule": { a: { pattern: "" } },
@@ -666,9 +789,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, pattern: "" } },
+    "data": { a: ["",null,undefined] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { pattern: null } },
     "data": { a: [""] },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, pattern: null } },
+    "data": { a: [""] },
+    "test": testInvalid
   },
   {
     "rule": { a: { pattern: undefined } },
@@ -676,9 +809,19 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, pattern: undefined } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { pattern: "a" } }, // not-required.
     "data": { a: [""] }, // no-value.
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, pattern: "a" } }, // required.
+    "data": { a: [""] }, // no-value.
+    "test": testInvalid
   },
   {
     "rule": { a: { pattern: "a" } },
@@ -712,12 +855,19 @@ var testCases = [
   },
 
 
+  // TODO: data: [list]
+
 
   // rule: type=number
   {
     "rule": { a: { type: "number" } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "number" } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "number" } },
@@ -818,14 +968,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "date" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "date" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "date" } },
@@ -866,14 +1031,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "datetime" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "datetime" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
@@ -924,14 +1104,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "time" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "time" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "time" } },
@@ -992,14 +1187,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "week" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "week" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "week" } },
@@ -1031,14 +1241,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "month" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "month" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "month" } },
@@ -1079,14 +1304,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "url" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "url" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "url" } },
@@ -1187,14 +1427,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "email" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "email" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "email" } },
@@ -1280,14 +1535,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "tel" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "tel" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "tel" } },
@@ -1318,14 +1588,29 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "color" } },
     "data": { a: null },
     "test": testValid
   },
   {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { type: "color" } },
     "data": { a: undefined },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: undefined },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "color" } },
@@ -1376,6 +1661,11 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: { required: true, custom: null } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
     "rule": { a: { custom: null } },
     "data": { a: "whatever." },
     "test": testValid
@@ -1384,6 +1674,11 @@ var testCases = [
     "rule": { a: { custom: undefined } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, custom: undefined } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { custom: undefined } },
@@ -1396,6 +1691,13 @@ var testCases = [
     } } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, custom: function(){
+      return true;
+    } } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { custom: function(){
@@ -1410,6 +1712,13 @@ var testCases = [
     } } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, custom: function(){
+      return false;
+    } } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { custom: function(){
@@ -1424,6 +1733,13 @@ var testCases = [
     } } },
     "data": { a: "" },
     "test": testValid
+  },
+  {
+    "rule": { a: { required: true, custom: function(values){
+      return values==="ok";
+    } } },
+    "data": { a: "" },
+    "test": testInvalid
   },
   {
     "rule": { a: { custom: function(values){
@@ -1515,6 +1831,22 @@ var testCases = [
     "data": { a: "whatever.", b: "something..." },
     "test": testInvalid
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
