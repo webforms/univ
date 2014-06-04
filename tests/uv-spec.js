@@ -374,17 +374,7 @@ var testCases = [
   },
   {
     "rule": { a: {required: true} },
-    "data": {a:[undefined], b:2},
-    "test": testInvalid
-  },
-  {
-    "rule": { a: {required: true} },
-    "data": {a:[null], b:2},
-    "test": testInvalid
-  },
-  {
-    "rule": { a: {required: true} },
-    "data": {a:[,], b:2},
+    "data": {a:["", , , undefined, null], b:2},
     "test": testInvalid
   },
   {
@@ -820,7 +810,7 @@ var testCases = [
   },
   {
     "rule": { a: { required: true, pattern: "a" } }, // required.
-    "data": { a: [""] }, // no-value.
+    "data": { a: ["", , , null, undefined] }, // no-value.
     "test": testInvalid
   },
   {
@@ -853,9 +843,6 @@ var testCases = [
     "data": { a: ["a", "abc", "b"] },
     "test": testInvalid
   },
-
-
-  // TODO: data: [list]
 
 
   // rule: type=number
@@ -959,6 +946,179 @@ var testCases = [
     "data": { a: "a" },
     "test": testInvalid
   },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: NaN },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: Number.MAX_VALUE },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: Number.MIN_VALUE },
+    "test": testValid
+  },
+  // [Infinity is NOT a number](http://scienceblogs.com/goodmath/2008/10/13/infinity-is-not-a-number/)
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: Number.POSITIVE_INFINITY },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: Number.NEGATIVE_INFINITY },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "number" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["", , , null, undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "number" } },
+    "data": { a: ["", , , null, undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [0] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [-1] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [1] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["0"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["-1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["0.1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["-0.1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["+0.1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [".1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["-.1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["+.1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["0E0"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["1E0"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["-1E0"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["+1E0"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [Number.MAX_VALUE] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [Number.MIN_VALUE] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [0, -1, 1, +1, 0.1, -0.1, +0.1, .1, -.1, +.1,
+                  "0", "-1", "1", "+1", "0.1", "-0.1", "+0.1", ".1", "-.1", "+.1",
+                  Number.MAX_VALUE, Number.MIN_VALUE] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "-+.1" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: "a" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [NaN] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [Number.POSITIVE_INFINITY] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [Number.NEGATIVE_INFINITY] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: ["-+.1", "a", NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY] },
+    "test": testInvalid
+  },
 
 
   // rule:type=date
@@ -1009,7 +1169,7 @@ var testCases = [
   },
   {
     "rule": { a: { type: "date" } },
-    "data": { a: "2014-06-41" },
+    "data": { a: "2014-06-32" },
     "test": testInvalid
   },
   {
@@ -1022,8 +1182,112 @@ var testCases = [
     "data": { a: "a" },
     "test": testInvalid
   },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ['', "", , , null, undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "date" } },
+    "data": { a: ['', "", , , null, undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-06-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["123456-06-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-06-01", "123456-06-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-06-01 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-06-00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-06-32"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-00-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["2014-13-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ["a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date" } },
+    "data": { a: ['', "", , , null, undefined,
+      "2014-06-01 00:00:00",
+      "2014-06-00", "2014-06-32",
+      "2014-00-01", "2014-13-01", "a"] },
+    "test": testInvalid
+  },
 
 
+  // TODO data: [list]
   // rule:type=datetime
   {
     "rule": { a: { type: "datetime" } },
