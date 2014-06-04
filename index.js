@@ -108,8 +108,8 @@ function verifyRequired(required, values){
 
 
 function isNumberString(string){
-  return /^[+-]?\d+(?:[eE]\d+)?$/.test(string) ||
-    /^[+-]?(?:\d+)?\.\d+(?:[eE]\d+)?$/.test(string);
+  return /^[+-]?\d+(?:[eE][+-]?\d+)?$/.test(string) ||
+    /^[+-]?(?:\d+)?\.\d+(?:[eE][+-]?\d+)?$/.test(string);
 }
 
 function verifyIsNumber(values){
