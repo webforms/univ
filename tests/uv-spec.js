@@ -31,6 +31,9 @@ function testValid(validator, data, done){
   });
 }
 
+// TODO: add test case for more than two rule item.
+// TODO: add test case for diff certify rule and data.
+
 var testCases = [
   // non-rule
   // --------------------------------------------------------------------
@@ -1287,7 +1290,6 @@ var testCases = [
   },
 
 
-  // TODO data: [list]
   // rule:type=datetime
   {
     "rule": { a: { type: "datetime" } },
@@ -1321,7 +1323,17 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-06-01 00:00:00" },
+    "data": { a: "2014-01-01 00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-01-31 00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31 23:59:59" },
     "test": testValid
   },
   // FIXME: moment() not support 5 digit year.
@@ -1352,7 +1364,169 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31 24:59:59" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31 23:60:59" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31 23:59:60" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
     "data": { a: "a" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["", '', , , null, undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime" } },
+    "data": { a: ["", '', , , null, undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-06-01 00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-01 00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-31 00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-31 00:00:00"] },
+    "test": testValid
+  },
+  // FIXME: moment() not support 5 digit year.
+  //{
+    //"rule": { a: { type: "datetime" } },
+    //"data": { a: ["123456-06-01 00:00:00"] },
+    //"test": testValid
+  //},
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: [
+      "2014-01-01 00:00:00", "2014-01-31 00:00:00", "2014-12-31 23:59:59"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-00-01 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-00 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-01 60:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-01 00:60:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-01 00:00:60"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-32 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-13-01 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-06-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-06-01T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-01-32 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-13-01 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: ["2014-06-01", "2014-06-00", "a"] },
     "test": testInvalid
   },
 
