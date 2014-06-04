@@ -201,8 +201,20 @@ function verifyMaxTime(max, value){
 }
 
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
-function verifyIsDate(value){
+function isDateString(value){
   return RE_DATE.test(value) && moment(value).isValid();
+}
+function verifyIsDate(values){
+
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isDateString(values[i]);
+    }
+    return certified;
+  }
+
+  return isDateString(values);
 }
 
 function verifyMinDate(min, value){
