@@ -227,8 +227,18 @@ function verifyMaxDate(max, value){
 
 
 var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/;
-function verifyIsDateTime(value){
+function isDateTimeString(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
+}
+function verifyIsDateTime(values){
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isDateTimeString(values[i])
+    }
+    return certified;
+  }
+  return isDateTimeString(values);
 }
 
 function verifyMinDateTime(min, value){
