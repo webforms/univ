@@ -107,9 +107,26 @@ function verifyRequired(required, values){
 }
 
 
-function verifyIsNumber(value){
-  return /^[+-]?\d+(?:[eE]\d+)?$/.test(value) ||
-    /^[+-]?(?:\d+)?\.\d+(?:[eE]\d+)?$/.test(value);
+function isNumberString(string){
+  return /^[+-]?\d+(?:[eE]\d+)?$/.test(string) ||
+    /^[+-]?(?:\d+)?\.\d+(?:[eE]\d+)?$/.test(string);
+}
+
+function verifyIsNumber(values){
+
+  if(isArray(values)){
+
+    var certified = true;
+
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isNumberString(values[i]);
+    }
+
+    return certified;
+  }
+
+  return isNumberString(values);
+
 }
 
 function verifyMin(min, value){
