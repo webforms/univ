@@ -277,8 +277,18 @@ function verifyMaxDateTimeLocal(max, value){
 
 // TODO: week
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
-function verifyIsWeek(value){
+function isWeekString(value){
   return RE_WEEK.test(value) && moment(value).isValid();
+}
+function verifyIsWeek(values){
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isWeekString(values[i]);
+    }
+    return certified;
+  }
+  return isWeekString(values);
 }
 
 // TODO:
