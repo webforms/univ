@@ -180,8 +180,18 @@ function verifyIsMonth(value){
 
 // TODO: #4, remove moment.
 var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
-function verifyIsTime(value){
+function isTimeString(value){
   return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
+}
+function verifyIsTime(values){
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isTimeString(values[i]);
+    }
+    return certified;
+  }
+  return isTimeString(values)
 }
 
 function verifyMinMonth(min, value){
