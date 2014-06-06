@@ -416,11 +416,11 @@ function verify(ruleName, rule, values, instance_context){
     break;
 
   case RULE_TYPES.tel:
-    certified = certified && verifyIsTel(values);
+    certified = certified && eachValues(verifyIsTel, values);
     break;
 
   case RULE_TYPES.color:
-    certified = certified && verifyIsColor(values);
+    certified = certified && eachValues(verifyIsColor, values);
     break;
 
   case RULE_TYPES.file:
