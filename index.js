@@ -314,8 +314,15 @@ function verifyMaxWeek(max, value){
 
 // [RFC1738](http://www.faqs.org/rfcs/rfc1738.html)
 var RE_URL = /^https?:\/\/(?:[\w.-]*(?::[^@]+)?@)?(?:[\w-]+\.){1,3}[\w]+(?::\d+)?(?:\/.*)?$/;
-function verifyIsUrl(value){
-  return RE_URL.test(value);
+function verifyIsUrl(values){
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && RE_URL.test(values[i]);
+    }
+    return certified;
+  }
+  return RE_URL.test(values);
 }
 
 
