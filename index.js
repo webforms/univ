@@ -11,6 +11,16 @@ function eachRules(rules, handler){
     }
   }
 }
+function eachValues(handler, values){
+  var certified = true;
+  if(isArray(values)){
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && handler(values[i]);
+    }
+    return certified;
+  }
+  return handler(values);
+}
 
 // @param {Object} object.
 // @param {String} type, like `Array`, `RegExp`, etc.
@@ -107,26 +117,9 @@ function verifyRequired(required, values){
 }
 
 
-function isNumberString(string){
-  return /^[+-]?\d+(?:[eE][+-]?\d+)?$/.test(string) ||
-    /^[+-]?(?:\d+)?\.\d+(?:[eE][+-]?\d+)?$/.test(string);
-}
-
-function verifyIsNumber(values){
-
-  if(isArray(values)){
-
-    var certified = true;
-
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isNumberString(values[i]);
-    }
-
-    return certified;
-  }
-
-  return isNumberString(values);
-
+function verifyIsNumber(value){
+  return /^[+-]?\d+(?:[eE][+-]?\d+)?$/.test(value) ||
+    /^[+-]?(?:\d+)?\.\d+(?:[eE][+-]?\d+)?$/.test(value);
 }
 
 function verifyMin(min, value){
@@ -174,34 +167,14 @@ function verifyMaxLength(maxlength, value){
 }
 
 var RE_MONTH = /^\d{4,}\-\d{2}$/;
-function isMonthString(value){
+function verifyIsMonth(value){
   return RE_MONTH.test(value) && moment(value).isValid();
-}
-function verifyIsMonth(values){
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isMonthString(values[i]);
-    }
-    return certified;
-  }
-  return isMonthString(values);
 }
 
 // TODO: #4, remove moment.
 var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
-function isTimeString(value){
+function verifyIsTime(value){
   return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
-}
-function verifyIsTime(values){
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isTimeString(values[i]);
-    }
-    return certified;
-  }
-  return isTimeString(values)
 }
 
 function verifyMinMonth(min, value){
@@ -221,20 +194,8 @@ function verifyMaxTime(max, value){
 }
 
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
-function isDateString(value){
+function verifyIsDate(value){
   return RE_DATE.test(value) && moment(value).isValid();
-}
-function verifyIsDate(values){
-
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isDateString(values[i]);
-    }
-    return certified;
-  }
-
-  return isDateString(values);
 }
 
 function verifyMinDate(min, value){
@@ -247,18 +208,8 @@ function verifyMaxDate(max, value){
 
 
 var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/;
-function isDateTimeString(value){
+function verifyIsDateTime(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
-}
-function verifyIsDateTime(values){
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isDateTimeString(values[i])
-    }
-    return certified;
-  }
-  return isDateTimeString(values);
 }
 
 function verifyMinDateTime(min, value){
@@ -287,18 +238,8 @@ function verifyMaxDateTimeLocal(max, value){
 
 // TODO: week
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
-function isWeekString(value){
+function verifyIsWeek(value){
   return RE_WEEK.test(value) && moment(value).isValid();
-}
-function verifyIsWeek(values){
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && isWeekString(values[i]);
-    }
-    return certified;
-  }
-  return isWeekString(values);
 }
 
 // TODO:
@@ -315,13 +256,6 @@ function verifyMaxWeek(max, value){
 // [RFC1738](http://www.faqs.org/rfcs/rfc1738.html)
 var RE_URL = /^https?:\/\/(?:[\w.-]*(?::[^@]+)?@)?(?:[\w-]+\.){1,3}[\w]+(?::\d+)?(?:\/.*)?$/;
 function verifyIsUrl(values){
-  if(isArray(values)){
-    var certified = true;
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && RE_URL.test(values[i]);
-    }
-    return certified;
-  }
   return RE_URL.test(values);
 }
 
@@ -426,59 +360,59 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.number:
   case RULE_TYPES.range:
     certified = certified &&
-      verifyIsNumber(values) &&
+      eachValues(verifyIsNumber, values) &&
       verifyMin(rule.min, values) &&
       verifyMax(rule.max, values);
     break;
 
   case RULE_TYPES.date:
     certified = certified &&
-      verifyIsDate(values) &&
+      eachValues(verifyIsDate, values) &&
       verifyMinDate(rule.min, values) &&
       verifyMaxDate(rule.max, values);
     break;
 
   case RULE_TYPES.datetime:
     certified = certified &&
-      verifyIsDateTime(values) &&
+      eachValues(verifyIsDateTime, values) &&
       verifyMinDateTime(rule.min, values) &&
       verifyMaxDateTime(rule.max, values);
     break;
 
   case RULE_TYPES["datetime-local"]:
     certified = certified &&
-      verifyIsDateTimeLocal(values) &&
+      eachValues(verifyIsDateTimeLocal, values) &&
       verifyMinDateTimeLocal(rule.min, values) &&
       verifyMaxDateTimeLocal(rule.max, values);
     break;
 
   case RULE_TYPES.time:
     certified = certified &&
-      verifyIsTime(values) &&
+      eachValues(verifyIsTime, values) &&
       verifyMinTime(rule.min, values) &&
       verifyMaxTime(rule.max, values);
     break;
 
   case RULE_TYPES.week:
     certified = certified &&
-      verifyIsWeek(values) &&
+      eachValues(verifyIsWeek, values) &&
       verifyMinWeek(rule.min, values) &&
       verifyMaxWeek(rule.max, values);
     break;
 
   case RULE_TYPES.month:
     certified = certified &&
-      verifyIsMonth(values) &&
+      eachValues(verifyIsMonth, values) &&
       verifyMinMonth(rule.min, values) &&
       verifyMaxMonth(rule.max, values);
     break;
 
   case RULE_TYPES.url:
-    certified = certified && verifyIsUrl(values);
+    certified = certified && eachValues(verifyIsUrl, values);
     break;
 
   case RULE_TYPES.email:
-    certified = certified && verifyIsEmail(values);
+    certified = certified && eachValues(verifyIsEmail, values);
     break;
 
   case RULE_TYPES.tel:
