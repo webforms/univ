@@ -1526,7 +1526,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-06-01", "2014-06-00", "a"] },
+    "data": { a: ["2014-01-01 23:59:60", "2014-01-01 23:60:59",
+      "2014-01-01 24:59:59", "2014-01-01 00:59:59",
+      "2014-01-00 23:59:59", "2014-01-32 23:59:59",
+      "2014-00-01 23:59:59", "2014-13-01 23:59:59",
+      "2014-06-00", "a"] },
     "test": testInvalid
   },
 
@@ -1578,23 +1582,28 @@ var testCases = [
   },
   {
     "rule": { a: { type: "time" } },
-    "data": { a: "00:00:60" },
-    "test": testInvalid
-  },
-  {
-    "rule": { a: { type: "time" } },
     "data": { a: "00:59:00" },
     "test": testValid
   },
   {
     "rule": { a: { type: "time" } },
-    "data": { a: "00:60:00" },
+    "data": { a: "23:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "23:59:59" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: "00:00:60" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "time" } },
-    "data": { a: "23:00:00" },
-    "test": testValid
+    "data": { a: "00:60:00" },
+    "test": testInvalid
   },
   {
     "rule": { a: { type: "time" } },
@@ -1614,6 +1623,101 @@ var testCases = [
   {
     "rule": { a: { type: "time" } },
     "data": { a: "00:00:0a" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "time" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:59"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:59:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["23:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["23:59:59"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:00", "00:00:59", "00:59:00", "23:00:00", "23:59:59"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:60"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:60:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["24:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["0a:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:0a:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:0a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time" } },
+    "data": { a: ["00:00:60", "00:60:00", "24:00:00", "00:0a:00", "00:0a:00", "00:00:0a"] },
     "test": testInvalid
   },
 
@@ -1661,6 +1765,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "week" } },
+    "data": { a: "2014-W1" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
     "data": { a: "2014-W54" },
     "test": testInvalid
   },
@@ -1670,6 +1779,72 @@ var testCases = [
     //"data": { a: "123456-W01" },
     //"test": testValid
   //},
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "week" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W53"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W01", "2014-W53"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W1"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W54"] },
+    "test": testInvalid
+  },
+  // FIXME: moment() not support 5 digit year.
+  //{
+    //"rule": { a: { type: "week" } },
+    //"data": { a: "123456-W01" },
+    //"test": testValid
+  //},
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W1", "2014-W54"] },
+    "test": testInvalid
+  },
 
 
   // rule:type=month
@@ -1705,11 +1880,6 @@ var testCases = [
   },
   {
     "rule": { a: { type: "month" } },
-    "data": { a: "2014-00" },
-    "test": testInvalid
-  },
-  {
-    "rule": { a: { type: "month" } },
     "data": { a: "2014-01" },
     "test": testValid
   },
@@ -1720,17 +1890,92 @@ var testCases = [
   },
   {
     "rule": { a: { type: "month" } },
-    "data": { a: "2014-13" },
-    "test": testInvalid
-  },
-  {
-    "rule": { a: { type: "month" } },
     "data": { a: "123456-01" },
     "test": testValid
   },
   {
     "rule": { a: { type: "month" } },
+    "data": { a: "2014-00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
     "data": { a: "2014-13" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "month" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-12"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["123456-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-01", "2014-12", "123456-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-1"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["214-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-13"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month" } },
+    "data": { a: ["2014-1", "214-01", "2014-00", "2014-13"] },
     "test": testInvalid
   },
 
@@ -1856,6 +2101,136 @@ var testCases = [
     "data": { a: "ftp://www.example.com/path/to/page.html?#flag" },
     "test": testInvalid
   },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "url" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com/"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com#"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com/#"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com/####"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com/#flat:path/to/snip-code"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com?"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com/?"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?a=1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?a=1&b=2"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?a=1&b=%E4%B8%AD%E6%96%87"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?a=1&b=2#flag"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html#flag"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?#flag"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com/path/to/page.html?#flag"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["http://www.example.com", "http://www.example.com/path/to/page.html?#flag"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["ftp://www.example.com/path/to/page.html?#flag"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "url" } },
+    "data": { a: ["https://www.example.com?", "ftp://www.example.com/path/to/page.html?#flag"] },
+    "test": testInvalid
+  },
 
 
   // rule:type=email
@@ -1964,6 +2339,124 @@ var testCases = [
     "data": { a: "@abc." },
     "test": testInvalid
   },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "email" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["a@b.c"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@def.ghi"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc.def-ghi_jkl+mn@opq.rst"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["a@b.c", "abc@def.ghi", "abc.def-ghi_jkl+mn@opq.rst"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [" "] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@def"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@def."] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@def.ghi."] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@.def.ghi"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [".abc@def.ghi"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc.@def.ghi"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["abc@.def"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["@abc"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: ["@abc."] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "email" } },
+    "data": { a: [" ", "abc", "abc@",
+     "abc@def", "abc@def.", "abc@def.ghi.", "abc@.def.ghi",
+     ".abc@def.ghi", "abc.@def.ghi",
+      "abc@.def", "@abc", "@abc."] },
+    "test": testInvalid
+  },
 
 
   // rule:type=tel
@@ -2015,6 +2508,66 @@ var testCases = [
   {
     "rule": { a: { type: "tel" } },
     "data": { a: "0571-2688888a" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "tel" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["0571-26888888"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["(+86)0571-26888888"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["0571-26888888", "(+86)0571-26888888"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["0571-268888889"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["0571-2688888a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "tel" } },
+    "data": { a: ["0571-268888889", "0571-2688888a"] },
     "test": testInvalid
   },
 
@@ -2088,6 +2641,91 @@ var testCases = [
   {
     "rule": { a: { type: "color" } },
     "data": { a: "#1234567" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "color" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#000000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#ffffff"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#FFFFFF"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#123456"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#000000", "#ffffff", "#FFFFFF", "#123456"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#000"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#fffffg"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#FFFFFG"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#12345"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#1234567"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "color" } },
+    "data": { a: ["#000", "#fffffg", "#FFFFFG", "#12345", "#1234567"] },
     "test": testInvalid
   },
 
