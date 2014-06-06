@@ -76,9 +76,41 @@ validator.validate({
 
 constructor, new a validator by rulers.
 
+```
+{
+  // rule name.
+  "name": {
+    type: {TypeEnum},
+    required: {Boolean},
+    max: {Number},
+    min: {Number},
+    maxlength: {Number},
+    minlength: {Number},
+    pattern: {RegExp},
+    multiple: {Boolean},
+    step: {Number},
+    accept: {String,Array},
+    custom: {Function}
+  },
+  "other-name": {
+    // ...
+  },
+  // ...
+}
+```
+
 
 ### &lt;Validator&gt; validate(&lt;Object&gt; data)
 
+data:
+
+```
+{
+  "name": "value",
+  "other-name": ["item-1", "item-2"],
+  // ...
+}
+```
 
 ## Events
 
