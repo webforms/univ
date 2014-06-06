@@ -1336,6 +1336,21 @@ var testCases = [
     "data": { a: "2014-12-31T23:59:59" },
     "test": testValid
   },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31T23:59:59Z" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31T23:59:59-08:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime" } },
+    "data": { a: "2014-12-31T23:59:59+08:00" },
+    "test": testValid
+  },
   // FIXME: moment() not support 5 digit year.
   //{
     //"rule": { a: { type: "datetime" } },
@@ -1377,6 +1392,17 @@ var testCases = [
     "data": { a: "2014-12-31T23:59:60" },
     "test": testInvalid
   },
+  // FIXME: 时区加减范围为 12，共 24个时区
+  //{
+    //"rule": { a: { type: "datetime" } },
+    //"data": { a: "2014-12-31T23:59:59-12:00" },
+    //"test": testInvalid
+  //},
+  //{
+    //"rule": { a: { type: "datetime" } },
+    //"data": { a: "2014-12-31T23:59:59-11:60" },
+    //"test": testInvalid
+  //},
   {
     "rule": { a: { type: "datetime" } },
     "data": { a: "a" },

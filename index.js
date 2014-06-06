@@ -208,7 +208,7 @@ function verifyMaxDate(max, value){
 
 
 // http://www.w3.org/TR/html-markup/input.datetime.html
-var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}$/;
+var RE_DATETIME = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTime(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
 }
@@ -223,7 +223,7 @@ function verifyMaxDateTime(max, value){
 
 
 // [input=type=datetime-local](http://www.w3.org/TR/html-markup/input.datetime-local.html)
-var RE_DATETIME_LOCAL = /^\d{4,}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}$/;
+var RE_DATETIME_LOCAL = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTimeLocal(value){
   return RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
 }
