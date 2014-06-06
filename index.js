@@ -437,7 +437,7 @@ function verify(ruleName, rule, values, instance_context){
     //break;
   }
 
-  //! Note: do not each values for verifyFunction, each values in
+  //! NOTE: do not each values for verifyFunction, each values in
   //        custom function if need.
   var result = verifyFunction(rule.custom, values, function(certified){
 
