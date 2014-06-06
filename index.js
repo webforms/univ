@@ -307,7 +307,6 @@ function verifyPatternList(pattern, values, instance_context){
   return certified;
 }
 
-// TODO:
 function verifyFunction(ruleFunction, value, certifiedCallback){
   if(!isFunction(ruleFunction)){return true;}
   var result = ruleFunction.call(null, value, certifiedCallback);
@@ -438,6 +437,8 @@ function verify(ruleName, rule, values, instance_context){
     //break;
   }
 
+  //! Note: do not each values for verifyFunction, each values in
+  //        custom function if need.
   var result = verifyFunction(rule.custom, values, function(certified){
 
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
