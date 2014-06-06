@@ -174,8 +174,18 @@ function verifyMaxLength(maxlength, value){
 }
 
 var RE_MONTH = /^\d{4,}\-\d{2}$/;
-function verifyIsMonth(value){
+function isMonthString(value){
   return RE_MONTH.test(value) && moment(value).isValid();
+}
+function verifyIsMonth(values){
+  if(isArray(values)){
+    var certified = true;
+    for(var i=0,l=values.length; i<l; i++){
+      certified = certified && isMonthString(values[i]);
+    }
+    return certified;
+  }
+  return isMonthString(values);
 }
 
 // TODO: #4, remove moment.
