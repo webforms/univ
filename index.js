@@ -207,7 +207,8 @@ function verifyMaxDate(max, value){
 }
 
 
-var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/;
+// http://www.w3.org/TR/html-markup/input.datetime.html
+var RE_DATETIME = /^\d{4,}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}$/;
 function verifyIsDateTime(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
 }

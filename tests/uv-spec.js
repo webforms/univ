@@ -1323,23 +1323,23 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-01-01 00:00:00" },
+    "data": { a: "2014-01-01T00:00:00" },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-01-31 00:00:00" },
+    "data": { a: "2014-01-31T00:00:00" },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-12-31 23:59:59" },
+    "data": { a: "2014-12-31T23:59:59" },
     "test": testValid
   },
   // FIXME: moment() not support 5 digit year.
   //{
     //"rule": { a: { type: "datetime" } },
-    //"data": { a: "123456-06-01 00:00:00" },
+    //"data": { a: "123456-06-01T00:00:00" },
     //"test": testValid
   //},
   {
@@ -1349,32 +1349,32 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-06-01T00:00:00" },
+    "data": { a: "2014-06-01 00:00:00" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-01-32 00:00:00" },
+    "data": { a: "2014-01-32T00:00:00" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-13-01 00:00:00" },
+    "data": { a: "2014-13-01T00:00:00" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-12-31 24:59:59" },
+    "data": { a: "2014-12-31T24:59:59" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-12-31 23:60:59" },
+    "data": { a: "2014-12-31T23:60:59" },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: "2014-12-31 23:59:60" },
+    "data": { a: "2014-12-31T23:59:60" },
     "test": testInvalid
   },
   {
@@ -1434,69 +1434,69 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-06-01 00:00:00"] },
+    "data": { a: ["2014-06-01T00:00:00"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-01 00:00:00"] },
+    "data": { a: ["2014-01-01T00:00:00"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-31 00:00:00"] },
+    "data": { a: ["2014-01-31T00:00:00"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-31 00:00:00"] },
+    "data": { a: ["2014-01-31T00:00:00"] },
     "test": testValid
   },
   // FIXME: moment() not support 5 digit year.
   //{
     //"rule": { a: { type: "datetime" } },
-    //"data": { a: ["123456-06-01 00:00:00"] },
+    //"data": { a: ["123456-06-01T00:00:00"] },
     //"test": testValid
   //},
   {
     "rule": { a: { type: "datetime" } },
     "data": { a: [
-      "2014-01-01 00:00:00", "2014-01-31 00:00:00", "2014-12-31 23:59:59"] },
+      "2014-01-01T00:00:00", "2014-01-31T00:00:00", "2014-12-31T23:59:59"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-00-01 00:00:00"] },
+    "data": { a: ["2014-00-01T00:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-00 00:00:00"] },
+    "data": { a: ["2014-01-00T00:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-01 60:00:00"] },
+    "data": { a: ["2014-01-01T60:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-01 00:60:00"] },
+    "data": { a: ["2014-01-01T00:60:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-01 00:00:60"] },
+    "data": { a: ["2014-01-01T00:00:60"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-32 00:00:00"] },
+    "data": { a: ["2014-01-32T00:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-13-01 00:00:00"] },
+    "data": { a: ["2014-13-01T00:00:00"] },
     "test": testInvalid
   },
   {
@@ -1506,17 +1506,17 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-06-01T00:00:00"] },
+    "data": { a: ["2014-06-01 00:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-32 00:00:00"] },
+    "data": { a: ["2014-01-32T00:00:00"] },
     "test": testInvalid
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-13-01 00:00:00"] },
+    "data": { a: ["2014-13-01T00:00:00"] },
     "test": testInvalid
   },
   {
@@ -1526,10 +1526,10 @@ var testCases = [
   },
   {
     "rule": { a: { type: "datetime" } },
-    "data": { a: ["2014-01-01 23:59:60", "2014-01-01 23:60:59",
-      "2014-01-01 24:59:59", "2014-01-01 00:59:59",
-      "2014-01-00 23:59:59", "2014-01-32 23:59:59",
-      "2014-00-01 23:59:59", "2014-13-01 23:59:59",
+    "data": { a: ["2014-01-01T23:59:60", "2014-01-01T23:60:59",
+      "2014-01-01T24:59:59", "2014-01-01T00:59:59",
+      "2014-01-00T23:59:59", "2014-01-32T23:59:59",
+      "2014-00-01T23:59:59", "2014-13-01T23:59:59",
       "2014-06-00", "a"] },
     "test": testInvalid
   },
