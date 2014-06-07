@@ -383,13 +383,11 @@ function verifyFileType(file, accept){
 }
 
 function verifyMinFileSize(file, min){
-  if(!isNumber(min)){return true;}
-  if(!file.size){return true;} // unknow file size.
+  if(!isNumber(min) || !isNumber(file.size)){return true;}
   return file.size >= min;
 }
 function verifyMaxFileSize(file, max){
-  if(!isNumber(max)){return true;}
-  if(!file.size){return true;} // unknow file size.
+  if(!isNumber(max) || !isNumber(file.size)){return true;}
   return file.size <= max;
 }
 
