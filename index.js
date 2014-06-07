@@ -11,7 +11,8 @@ function eachRules(rules, handler){
     }
   }
 }
-function eachValues(handler, values){
+// TODO: to remove.
+function eachValues0(handler, values){
   var certified = true;
   if(isArray(values)){
     for(var i=0,l=values.length; i<l; i++){
@@ -20,6 +21,18 @@ function eachValues(handler, values){
     return certified;
   }
   return handler(values);
+}
+function eachValues(handler, values /* ,... */){
+  var certified = true;
+  var args = Array.prototype.slice.call(arguments, 0).slice(1);
+  if(isArray(values)){
+    for(var i=0,l=values.length; i<l; i++){
+      args[0] = values[i];
+      certified = certified && handler.apply(null, args);
+    }
+    return certified;
+  }
+  return handler.apply(null, args);
 }
 
 // @param {Object} object.
@@ -50,6 +63,14 @@ function isRegExp(object){
 
 function isFunction(object){
   return typeOf(object, "Function");
+}
+
+function startsWith(string, prefix){
+  return isString(string) && string.indexOf(prefix) === 0;
+}
+function endsWith(string, suffix) {
+  return isString(string) &&
+    string.indexOf(suffix, string.length - suffix.length) !== -1;
 }
 
 
@@ -316,6 +337,62 @@ function verifyFunction(ruleFunction, value, certifiedCallback){
   }
 }
 
+var MIME_TYPE = {
+  "txt": "text/plain",
+  "htm": "text/html",
+  "html": "text/html",
+  "js": "application/javascript",
+  "css": "text/css",
+  "csv": "text/csv",
+  "xml": "text/xml",
+  "jpg": "image/jpeg",
+  "jpeg": "image/jpeg",
+  "png": "image/png",
+  "gif": "image/gif",
+  "pdf": "application/pdf",
+  "doc": "application/msword",
+  "docx": "application/msword",
+  "zip": "application/zip",
+  "mp3": "audio/mpeg",
+  "ogg": "audio/ogg"
+};
+function typeByName(fileName){
+  var ext = fileName.split(".").slice(-1);
+  if(MIME_TYPE.hasOwnProperty(ext)){
+    return MIME_TYPE[ext];
+  }
+}
+
+// @param {Array} accept.
+// @param {File} file.
+// @return {Boolean}
+function verifyFileType(file, accept){
+  if(!isArray(accept) || !file || !file.name){return true;}
+  for(var i=0,l=accept.length; i<l; i++){
+    if(!file.type){
+      file.type = typeByName(file.name);
+    }
+    if(accept[i] === file.type){
+      return true;
+    }else if(endsWith(accept[i], "/*") &&
+        startsWith(file.type, accept[i].replace(/\*$/, "")) ){
+      return true;
+    }
+  }
+  return false;
+}
+
+function verifyMinFileSize(file, min){
+  if(!isNumber(min)){return true;}
+  if(!file.size){return true;} // unknow file size.
+  return file.size >= min;
+}
+function verifyMaxFileSize(file, max){
+  if(!isNumber(max)){return true;}
+  if(!file.size){return true;} // unknow file size.
+  return file.size <= max;
+}
+
 function verify(ruleName, rule, values, instance_context){
 
   var certified = true;
@@ -424,7 +501,11 @@ function verify(ruleName, rule, values, instance_context){
     break;
 
   case RULE_TYPES.file:
-    return false; // TODO: diff for web and node.
+    certified = certified &&
+      eachValues(verifyFileType, values, rule.accept) &&
+      eachValues(verifyMinFileSize, values, rule.min) &&
+      eachValues(verifyMaxFileSize, values, rule.max);
+    break;
 
   //case RULE_TYPES.select-one:
   //case RULE_TYPES.radio:

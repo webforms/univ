@@ -2756,6 +2756,204 @@ var testCases = [
   },
 
 
+  // rule:type=file
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: undefined },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: {} },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: { name: "a.jpg" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: { name: "a.jpg" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: { name: "a", type:"image/jpeg" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: { name: "a", type:"image/jpeg" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: { name: "a.png" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: { name: "a", type:"image/png" } },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: { name: "a.png" } },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: { name: "a", type:"audio/mpeg" } },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: { name: "a.mp3" } },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "file" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: [{}] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" } },
+    "data": { a: [{ name: "a.jpg" }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: [{ name: "a.jpg" }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: [{ name: "a", type:"image/jpeg" }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: [ { name:"b", type:"image/png"} ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: [
+      { name: "a", type:"image/jpeg" },
+      { name:"b", type:"image/png"}
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*", "audio/*"] } },
+    "data": { a: [
+      { name: "a", type:"image/jpeg" },
+      { name:"b", type:"image/png"},
+      { name:"c.gif"},
+      { name:"d", type:"audio/ogg"},
+      { name:"e", type:"audio/mpeg"},
+      { name:"f.mp3"}
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: [
+      {},
+      { name: "a.jpg" },
+      { name: "a.jpg" },
+      { name: "a", type:"image/jpeg" }
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: [{ name: "a", type:"image/png" }] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg"] } },
+    "data": { a: [{ name: "a.png" }] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: [{ name: "a", type:"audio/mpeg" }] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/*"] } },
+    "data": { a: [{ name: "a.mp3" }] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , accept: ["image/jpeg", "audio/*"] } },
+    "data": { a: [
+      { name: "a", type:"image/png" },
+      { name: "b.png" },
+      { name: "c.js" },
+      { name: "d", type: "application/javascript"}
+    ] },
+    "test": testInvalid
+  },
+
+
   // rule:custom function.
   {
     "rule": { a: { custom: null } },
