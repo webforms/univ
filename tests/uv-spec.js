@@ -3006,6 +3006,63 @@ var testCases = [
     ] },
     "test": testInvalid
   },
+  // rule:[type=file][max]
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: { name: "a.mp3" } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: { name: "a.mp3", size: 1000 } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: { name: "a.mp3", size: 0 } },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: { name: "a.mp3", size: 1001 } },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [{ name: "a.mp3" }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [{ name: "a.mp3", size: 0 }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [{ name: "a.mp3", size: 1000 }] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [
+      { name: "a.mp3" },
+      { name: "a.mp3", size: 0 },
+      { name: "a.mp3", size: 1000 }
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [{ name: "a.mp3", size: 1001 }] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "file" , max: 1000 } },
+    "data": { a: [
+      { name: "a.mp3", size: 1001 }
+    ] },
+    "test": testInvalid
+  },
 
 
   // rule:custom function.
