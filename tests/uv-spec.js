@@ -1122,6 +1122,147 @@ var testCases = [
     "data": { a: ["-+.1", "a", NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY] },
     "test": testInvalid
   },
+  // [type=number][min]
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: 0 },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: 0 },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: "0" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: "0" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: 999 },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: 999 },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: "999" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: "999" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: 1000 },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: 1000 },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: "1000" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: "1000" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: [0] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: [0] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: ["0"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: ["0"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: [999] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: [999] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: ["999"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: ["999"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: [0, "0", 999, "999"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: [0, "0", 999, "999"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: [1000] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: [1000] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: ["1000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: ["1000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: "1000" } },
+    "data": { a: [1000, "1000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "number", min: 1000 } },
+    "data": { a: [1000, "1000"] },
+    "test": testValid
+  },
 
 
   // rule:type=date

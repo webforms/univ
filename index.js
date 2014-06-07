@@ -143,12 +143,12 @@ function verifyIsNumber(value){
     /^[+-]?(?:\d+)?\.\d+(?:[eE][+-]?\d+)?$/.test(value);
 }
 
-function verifyMin(min, value){
-  return isNaN(min) || value >= min;
+function verifyMin(value, min){
+  return isNaN(min) || Number(value) >= Number(min);
 }
 
-function verifyMax(max, value){
-  return isNaN(max) || value <= max;
+function verifyMax(value, max){
+  return isNaN(max) || Number(value) <= Number(max);
 }
 
 function verifyMinLengthList(minlength, values){
@@ -436,8 +436,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.range:
     certified = certified &&
       eachValues(verifyIsNumber, values) &&
-      verifyMin(rule.min, values) &&
-      verifyMax(rule.max, values);
+      eachValues(verifyMin, values, rule.min) &&
+      eachValues(verifyMax, values, rule.max);
     break;
 
   case RULE_TYPES.date:
