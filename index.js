@@ -219,12 +219,25 @@ function verifyIsDate(value){
   return RE_DATE.test(value) && moment(value).isValid();
 }
 
-function verifyMinDate(min, value){
-  return isNaN(min) || (verifyIsDate(min) && moment(value) >= moment(min));
+function verifyMinDate(value, min, instance_context){
+  console.log(instance_context._evt.emit)
+  if(!min){return true;}
+  if(!verifyIsDate(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=date][min='+min+'] is invalid date.'));
+    return true;
+  }
+  return  moment(value) >= moment(min);
 }
 
-function verifyMaxDate(max, value){
-  return isNaN(max) || (verifyIsDate(max) && moment(value) >= moment(max));
+function verifyMaxDate(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsDate(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=date][max='+max+'] is invalid date.'));
+    return true;
+  }
+  return  moment(value) >= moment(max);
 }
 
 
@@ -443,8 +456,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.date:
     certified = certified &&
       eachValues(verifyIsDate, values) &&
-      verifyMinDate(rule.min, values) &&
-      verifyMaxDate(rule.max, values);
+      eachValues(verifyMinDate, values, rule.min, instance_context) &&
+      eachValues(verifyMaxDate, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES.datetime:

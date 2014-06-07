@@ -17,7 +17,7 @@ function testInvalid(validator, data, done){
     expect(certified).to.equal(false);
     validator.off();
     done();
-  });
+  }).on("error", function(){ });
 }
 
 function testValid(validator, data, done){
@@ -28,7 +28,7 @@ function testValid(validator, data, done){
   }).on("complete", function(certified){
     expect(certified).to.equal(true);
     done();
-  });
+  }).on("error", function(){ });
 }
 
 // TODO: add test case for more than two rule item.
@@ -1427,6 +1427,47 @@ var testCases = [
       "2014-06-01 00:00:00",
       "2014-06-00", "2014-06-32",
       "2014-00-01", "2014-13-01", "a"] },
+    "test": testInvalid
+  },
+  // [type=date][min]
+  {
+    "rule": { a: { type: "date", min: "" } },
+    "data": { a: "2014-01-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014" } },
+    "data": { a: "2014-01-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014-01-01" } },
+    "data": { a: "2014-01-02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014-01-02" } },
+    "data": { a: "2014-01-01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date", min: "" } },
+    "data": { a: ["2014-01-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014" } },
+    "data": { a: ["2014-01-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014-01-01" } },
+    "data": { a: ["2014-01-02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", min: "2014-01-02" } },
+    "data": { a: ["2014-01-01"] },
     "test": testInvalid
   },
 
