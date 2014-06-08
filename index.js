@@ -220,7 +220,6 @@ function verifyIsDate(value){
 }
 
 function verifyMinDate(value, min, instance_context){
-  console.log(instance_context._evt.emit)
   if(!min){return true;}
   if(!verifyIsDate(min)){
     instance_context._evt.emit("error",
@@ -237,7 +236,7 @@ function verifyMaxDate(value, max, instance_context){
       new TypeError('[type=date][max='+max+'] is invalid date.'));
     return true;
   }
-  return  moment(value) >= moment(max);
+  return  moment(value) <= moment(max);
 }
 
 

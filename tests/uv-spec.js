@@ -1470,6 +1470,47 @@ var testCases = [
     "data": { a: ["2014-01-01"] },
     "test": testInvalid
   },
+  // [type=date][max]
+  {
+    "rule": { a: { type: "date", max: "" } },
+    "data": { a: "2014-01-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014" } },
+    "data": { a: "2014-01-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014-01-02" } },
+    "data": { a: "2014-01-02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014-01-02" } },
+    "data": { a: "2014-01-03" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "date", max: "" } },
+    "data": { a: ["2014-01-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014" } },
+    "data": { a: ["2014-01-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014-01-02" } },
+    "data": { a: ["2014-01-01", "2014-01-02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "date", max: "2014-01-02" } },
+    "data": { a: ["2014-01-03", "2014-02-01", "2015-01-01"] },
+    "test": testInvalid
+  },
 
 
   // rule:type=datetime
