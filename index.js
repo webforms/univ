@@ -308,20 +308,29 @@ function verifyMaxDateTimeLocal(value, max, instance_context){
 }
 
 
-// TODO: week
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
 function verifyIsWeek(value){
   return RE_WEEK.test(value) && moment(value).isValid();
 }
 
-// TODO:
-function verifyMinWeek(min, value){
-  return isNaN(min) || (verifyIsWeek(min) && moment(value) >= moment(min));
+function verifyMinWeek(value, min, instance_context){
+  if(!min){return true;}
+  if(!verifyIsWeek(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=week][min='+min+'] is invalid week.'));
+    return true;
+  }
+  return moment(value) >= moment(min);
 }
 
-// TODO:
-function verifyMaxWeek(max, value){
-  return isNaN(max) || (verifyIsWeek(max) && moment(value) >= moment(max));
+function verifyMaxWeek(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsWeek(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=week][max='+max+'] is invalid week.'));
+    return true;
+  }
+  return moment(value) <= moment(max);
 }
 
 
@@ -521,8 +530,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.week:
     certified = certified &&
       eachValues(verifyIsWeek, values) &&
-      verifyMinWeek(rule.min, values) &&
-      verifyMaxWeek(rule.max, values);
+      eachValues(verifyMinWeek, values, rule.min, instance_context) &&
+      eachValues(verifyMaxWeek, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES.month:
