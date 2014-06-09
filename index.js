@@ -192,26 +192,38 @@ function verifyIsMonth(value){
   return RE_MONTH.test(value) && moment(value).isValid();
 }
 
-// TODO: #4, remove moment.
-var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
-function verifyIsTime(value){
-  return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
-}
-
 function verifyMinMonth(min, value){
   return isNaN(min) || (verifyIsMonth(min) && moment(value) >= moment(min));
-}
-
-function verifyMinTime(min, value){
-  return isNaN(min) || (verifyIsTime(min) && moment(value) >= moment(min));
 }
 
 function verifyMaxMonth(max, value){
   return isNaN(max) || (verifyIsMonth(max) && moment(value) >= moment(max));
 }
 
-function verifyMaxTime(max, value){
-  return isNaN(max) || (verifyIsTime(max) && moment(value) >= moment(max));
+// TODO: #4, remove moment.
+var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
+function verifyIsTime(value){
+  return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
+}
+
+function verifyMinTime(value, min, instance_context){
+  if(!min){return true;}
+  if(!verifyIsTime(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=time][min='+min+'] is invalid time.'));
+    return true;
+  }
+  return moment(value) >= moment(min);
+}
+
+function verifyMaxTime(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsTime(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=time][max='+max+'] is invalid time.'));
+    return true;
+  }
+  return moment(value) <= moment(max);
 }
 
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
@@ -500,8 +512,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.time:
     certified = certified &&
       eachValues(verifyIsTime, values) &&
-      verifyMinTime(rule.min, values) &&
-      verifyMaxTime(rule.max, values);
+      eachValues(verifyMinTime, values, rule.min, instance_context) &&
+      eachValues(verifyMaxTime, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES.week:
