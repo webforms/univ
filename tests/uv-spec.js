@@ -2586,6 +2586,88 @@ var testCases = [
     "data": { a: ["2014-W1", "2014-W54"] },
     "test": testInvalid
   },
+  // [type=week][min]
+  {
+    "rule": { a: { type: "week", min:"" } },
+    "data": { a: "2014-W01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: "2014-W02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: "2014-W03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: "2015-W01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: ["2014-W02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: ["2014-W03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: ["2015-W01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", min:"2014-W02" } },
+    "data": { a: ["2014-W02", "2014-W03", "2015-W01"] },
+    "test": testValid
+  },
+  // [type=week][max]
+  {
+    "rule": { a: { type: "week", max:"" } },
+    "data": { a: "2014-W01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: "2014-W02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: "2014-W01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: "2013-W03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: ["2014-W02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: ["2014-W01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: ["2013-W03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "week", max:"2014-W02" } },
+    "data": { a: ["2014-W02", "2014-W01", "2013-W03"] },
+    "test": testValid
+  },
 
 
   // rule:type=month
