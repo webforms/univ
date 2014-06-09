@@ -2801,6 +2801,148 @@ var testCases = [
     "data": { a: ["2014-1", "214-01", "2014-00", "2014-13"] },
     "test": testInvalid
   },
+  // [type=month][min]
+  {
+    "rule": { a: { type: "month", min:"" } },
+    "data": { a: "2014-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: "2014-02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: "2014-03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: "2015-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"" } },
+    "data": { a: ["2014-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2014-02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2014-03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2015-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2014-02", "2014-03", "2015-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: "2014-01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: "2013-03" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2014-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2013-03"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", min:"2014-02" } },
+    "data": { a: ["2014-01", "2013-03"] },
+    "test": testInvalid
+  },
+  // [type=month][max]
+  {
+    "rule": { a: { type: "month", max:"" } },
+    "data": { a: "2014-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: "2014-02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: "2014-01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: "2013-03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"" } },
+    "data": { a: ["2014-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2014-02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2014-01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2013-03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2014-02", "2014-01", "2013-03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: "2014-03" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: "2015-01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2014-03"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2015-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "month", max:"2014-02" } },
+    "data": { a: ["2014-03", "2015-01"] },
+    "test": testInvalid
+  },
 
 
   // rule:type=url
