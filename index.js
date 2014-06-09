@@ -11,17 +11,7 @@ function eachRules(rules, handler){
     }
   }
 }
-// TODO: to remove.
-function eachValues0(handler, values){
-  var certified = true;
-  if(isArray(values)){
-    for(var i=0,l=values.length; i<l; i++){
-      certified = certified && handler(values[i]);
-    }
-    return certified;
-  }
-  return handler(values);
-}
+
 function eachValues(handler, values /* ,... */){
   var certified = true;
   var args = Array.prototype.slice.call(arguments, 0).slice(1);
@@ -348,8 +338,8 @@ function verifyMaxWeek(value, max, instance_context){
 
 // [RFC1738](http://www.faqs.org/rfcs/rfc1738.html)
 var RE_URL = /^https?:\/\/(?:[\w.-]*(?::[^@]+)?@)?(?:[\w-]+\.){1,3}[\w]+(?::\d+)?(?:\/.*)?$/;
-function verifyIsUrl(values){
-  return RE_URL.test(values);
+function verifyIsUrl(value){
+  return RE_URL.test(value);
 }
 
 
@@ -402,10 +392,27 @@ function verifyPatternList(pattern, values, instance_context){
 
 function verifyFunction(ruleFunction, value, certifiedCallback){
   if(!isFunction(ruleFunction)){return true;}
-  var result = ruleFunction.call(null, value, certifiedCallback);
+
+  var build_rule = {
+    isEmail: verifyIsEmail,
+    isUrl: verifyIsUrl,
+    isNumber: verifyIsNumber,
+    isTel: verifyIsTel,
+    isColor: verifyIsColor,
+    isDate: verifyIsDate,
+    isDateTime: verifyIsDateTime,
+    isDateTimeLocal: verifyIsDateTimeLocal,
+    isMonth: verifyIsMonth,
+    isWeek: verifyIsWeek,
+    isTime: verifyIsTime,
+    isMobile: verifyIsMobile
+  };
+
+  var result = ruleFunction.call(build_rule, value, certifiedCallback);
   if("undefined" !== typeof result){
     return result;
   }
+
 }
 
 var MIME_TYPE = {
