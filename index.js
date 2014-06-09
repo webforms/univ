@@ -246,12 +246,24 @@ function verifyIsDateTime(value){
   return RE_DATETIME.test(value) && moment(value).isValid();
 }
 
-function verifyMinDateTime(min, value){
-  return isNaN(min) || (verifyIsDateTime(min) && moment(value) >= moment(min));
+function verifyMinDateTime(value, min, instance_context){
+  if(!min){return true;}
+  if(!verifyIsDateTime(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=datetime][min='+min+'] is invalid datetime.'));
+    return true;
+  }
+  return moment(value) >= moment(min);
 }
 
-function verifyMaxDateTime(max, value){
-  return isNaN(max) || (verifyIsDateTime(max) && moment(value) >= moment(max));
+function verifyMaxDateTime(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsDateTime(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=datetime][max='+max+'] is invalid datetime.'));
+    return true;
+  }
+  return moment(value) <= moment(max);
 }
 
 
@@ -462,8 +474,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.datetime:
     certified = certified &&
       eachValues(verifyIsDateTime, values) &&
-      verifyMinDateTime(rule.min, values) &&
-      verifyMaxDateTime(rule.max, values);
+      eachValues(verifyMinDateTime, values, rule.min, instance_context) &&
+      eachValues(verifyMaxDateTime, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES["datetime-local"]:
