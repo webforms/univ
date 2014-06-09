@@ -4181,6 +4181,64 @@ var testCases = [
     "data": { a: "whatever.", b: "something..." },
     "test": testInvalid
   },
+  // custom function, and multiple rule mixin.
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isEmail(values) || this.isMobile(values);
+    } } },
+    "data": { a: "a@b.c" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isEmail(values) || this.isMobile(values);
+    } } },
+    "data": { a: "13900000000" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      var certified = true;
+      for(var i=0,l=values.length; i<l; i++){
+        certified = certified &&
+          (this.isEmail(values[i]) || this.isMobile(values[i]));
+      }
+      return certified;
+    } } },
+    "data": { a: ["a@b.c"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      var certified = true;
+      for(var i=0,l=values.length; i<l; i++){
+        certified = certified &&
+          (this.isEmail(values[i]) || this.isMobile(values[i]));
+      }
+      return certified;
+    } } },
+    "data": { a: ["13900000000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      var certified = true;
+      for(var i=0,l=values.length; i<l; i++){
+        certified = certified &&
+          (this.isEmail(values[i]) || this.isMobile(values[i]));
+      }
+      return certified;
+    } } },
+    "data": { a: ["a@b.c", "13900000000"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isEmail(values) || this.isMobile(values);
+    } } },
+    "data": { a: "139000000000" },
+    "test": testInvalid
+  }
 
 ];
 
