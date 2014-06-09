@@ -192,12 +192,24 @@ function verifyIsMonth(value){
   return RE_MONTH.test(value) && moment(value).isValid();
 }
 
-function verifyMinMonth(min, value){
-  return isNaN(min) || (verifyIsMonth(min) && moment(value) >= moment(min));
+function verifyMinMonth(value, min, instance_context){
+  if(!min){return true;}
+  if(!verifyIsMonth(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=month][min='+min+'] is invalid month.'));
+    return true;
+  }
+  return moment(value) >= moment(min);
 }
 
-function verifyMaxMonth(max, value){
-  return isNaN(max) || (verifyIsMonth(max) && moment(value) >= moment(max));
+function verifyMaxMonth(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsMonth(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=month][max='+max+'] is invalid month.'));
+    return true;
+  }
+  return moment(value) <= moment(max);
 }
 
 // TODO: #4, remove moment.
@@ -537,8 +549,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES.month:
     certified = certified &&
       eachValues(verifyIsMonth, values) &&
-      verifyMinMonth(rule.min, values) &&
-      verifyMaxMonth(rule.max, values);
+      eachValues(verifyMinMonth, values, rule.min, instance_context) &&
+      eachValues(verifyMaxMonth, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES.url:
