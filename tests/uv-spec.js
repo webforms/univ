@@ -2284,6 +2284,183 @@ var testCases = [
     "data": { a: ["00:00:60", "00:60:00", "24:00:00", "00:0a:00", "00:0a:00", "00:00:0a"] },
     "test": testInvalid
   },
+  // [type=time][min]
+  {
+    "rule": { a: { type: "time", min:"" } },
+    "data": { a: "00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "02:02:02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "02:02:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "02:03:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "03:01:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:02:02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:02:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:03:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["03:01:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:02:02", "02:02:03", "02:03:01", "03:01:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "02:02:01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "02:01:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: "01:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:02:01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:01:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["01:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", min:"02:02:02" } },
+    "data": { a: ["02:02:01", "02:01:02", "01:02:02"] },
+    "test": testInvalid
+  },
+  // [type=time][max]
+  {
+    "rule": { a: { type: "time", max:"" } },
+    "data": { a: "02:02:02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "02:02:02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "02:02:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "02:01:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "01:03:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"" } },
+    "data": { a: ["02:02:02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:02:02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:02:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:01:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["01:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:02:02", "02:02:01", "02:01:03", "01:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "02:02:03" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "02:03:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: "03:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:02:03"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:03:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["03:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "time", max:"02:02:02" } },
+    "data": { a: ["02:02:03", "02:03:01", "03:02:02"] },
+    "test": testInvalid
+  },
 
 
   // rule:type=week
