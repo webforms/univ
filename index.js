@@ -213,7 +213,8 @@ function verifyMinTime(value, min, instance_context){
       new TypeError('[type=time][min='+min+'] is invalid time.'));
     return true;
   }
-  return moment(value) >= moment(min);
+  var date = '2014-01-01T';
+  return moment(date+value) >= moment(date+min);
 }
 
 function verifyMaxTime(value, max, instance_context){
@@ -223,7 +224,8 @@ function verifyMaxTime(value, max, instance_context){
       new TypeError('[type=time][max='+max+'] is invalid time.'));
     return true;
   }
-  return moment(value) <= moment(max);
+  var date = '2014-01-01T';
+  return moment(date+value) <= moment(date+max);
 }
 
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
