@@ -273,12 +273,24 @@ function verifyIsDateTimeLocal(value){
   return RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
 }
 
-function verifyMinDateTimeLocal(min, value){
-  return isNaN(min) || (verifyIsDateTimeLocal(min) && moment(value) >= moment(min));
+function verifyMinDateTimeLocal(value, min, instance_context){
+  if(!min){return true;}
+  if(!verifyIsDateTimeLocal(min)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=datetime-local][min='+min+'] is invalid datetime.'));
+    return true;
+  }
+  return moment(value) >= moment(min);
 }
 
-function verifyMaxDateTimeLocal(max, value){
-  return isNaN(max) || (verifyIsDateTimeLocal(max) && moment(value) >= moment(max));
+function verifyMaxDateTimeLocal(value, max, instance_context){
+  if(!max){return true;}
+  if(!verifyIsDateTimeLocal(max)){
+    instance_context._evt.emit("error",
+      new TypeError('[type=datetime-local][max='+max+'] is invalid datetime.'));
+    return true;
+  }
+  return moment(value) <= moment(max);
 }
 
 
@@ -481,8 +493,8 @@ function verify(ruleName, rule, values, instance_context){
   case RULE_TYPES["datetime-local"]:
     certified = certified &&
       eachValues(verifyIsDateTimeLocal, values) &&
-      verifyMinDateTimeLocal(rule.min, values) &&
-      verifyMaxDateTimeLocal(rule.max, values);
+      eachValues(verifyMinDateTimeLocal, values, rule.min, instance_context) &&
+      eachValues(verifyMaxDateTimeLocal, values, rule.max, instance_context);
     break;
 
   case RULE_TYPES.time:
