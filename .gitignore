@@ -2,3 +2,4 @@ _site/
 sea-modules/
 node_modules/
 .DS_Store
+dist/
