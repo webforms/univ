@@ -1,6 +1,6 @@
 {
   "name": "univ",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Universal Validator.",
   "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
   "homepage": "https://github.com/webforms/univ",
@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git@github.com:webforms/univ.git"
   },
+  "main": "index.js",
   "bugs": {
     "url": "https://github.com/webforms/univ/issues"
   },
