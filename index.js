@@ -2,68 +2,20 @@
 var moment = require("moment");
 var events = require("events").EventEmitter;
 
-// @param {Object} rules
-// @param {Function} handler
-function eachRules(rules, handler){
-  for(var ruleName in rules){
-    if(rules.hasOwnProperty(ruleName)){
-      handler.call(rules, ruleName, rules[ruleName]);
-    }
-  }
-}
-
-function eachValues(handler, values /* ,... */){
-  var certified = true;
-  var args = Array.prototype.slice.call(arguments, 0).slice(1);
-  if(isArray(values)){
-    for(var i=0,l=values.length; i<l; i++){
-      args[0] = values[i];
-      certified = certified && handler.apply(null, args);
-    }
-    return certified;
-  }
-  return handler.apply(null, args);
-}
-
-// @param {Object} object.
-// @param {String} type, like `Array`, `RegExp`, etc.
-function typeOf(object, type){
-  return Object.prototype.toString.call(object) === "[object " + type + "]";
-}
-
-function isString(object){
-  return typeOf(object, "String");
-}
-
-function isBoolean(object){
-  return typeOf(object, "Boolean");
-}
-
-function isArray(object){
-  return typeOf(object, "Array");
-}
-
-function isNumber(object){
-  return !isNaN(object) && typeOf(object, "Number");
-}
-
-function isRegExp(object){
-  return typeOf(object, "RegExp");
-}
-
-function isFunction(object){
-  return typeOf(object, "Function");
-}
-
-function startsWith(string, prefix){
-  return isString(string) && string.indexOf(prefix) === 0;
-}
-function endsWith(string, suffix) {
-  return isString(string) &&
-    string.indexOf(suffix, string.length - suffix.length) !== -1;
-}
-
-
+var BUILD_IN_RULE = {
+  isEmail: verifyIsEmail,
+  isUrl: verifyIsUrl,
+  isNumber: verifyIsNumber,
+  isTel: verifyIsTel,
+  isColor: verifyIsColor,
+  isDate: verifyIsDate,
+  isDateTime: verifyIsDateTime,
+  isDateTimeLocal: verifyIsDateTimeLocal,
+  isMonth: verifyIsMonth,
+  isWeek: verifyIsWeek,
+  isTime: verifyIsTime,
+  isMobile: verifyIsMobile
+};
 
 var RULE_TYPES = {
   "text": "text",
@@ -95,16 +47,88 @@ var RULE_TYPES = {
   "fieldset": "fieldset",
   "legend": "legend"
 };
-var DEFAULT_RULES = {
-  type: RULE_TYPES["text"],
-  required: false,
-  max: NaN,
-  min: NaN,
-  maxlength: NaN,
-  minlength: NaN,
-  pattern: /.*/,
-  custom: function(){return true;}
-};
+
+
+// @param {Object} object.
+// @param {String} type, like `Array`, `RegExp`, etc.
+function typeOf(object, type){
+  return Object.prototype.toString.call(object) === "[object " + type + "]";
+}
+
+function isString(object){
+  return typeOf(object, "String");
+}
+
+function isBoolean(object){
+  return typeOf(object, "Boolean");
+}
+
+function isArray(object){
+  return typeOf(object, "Array");
+}
+
+function isNumber(object){
+  return !isNaN(object) && typeOf(object, "Number");
+}
+
+function isRegExp(object){
+  return typeOf(object, "RegExp");
+}
+
+function isFunction(object){
+  return typeOf(object, "Function");
+}
+function isObject(object){
+  return null!==object && typeOf(object, "Object");
+}
+
+// @param {Object} rules
+// @param {Function} handler
+function eachRules(rules, handler){
+  for(var ruleName in rules){
+    if(rules.hasOwnProperty(ruleName)){
+      handler.call(rules, ruleName, rules[ruleName]);
+    }
+  }
+}
+
+function eachValues(handler, values /* ,... */){
+  var certified = true;
+  var args = Array.prototype.slice.call(arguments, 0).slice(1);
+  if(isArray(values)){
+    for(var i=0,l=values.length; i<l; i++){
+      args[0] = values[i];
+      certified = certified && handler.apply(null, args);
+    }
+    return certified;
+  }
+  return handler.apply(null, args);
+}
+
+function merge(/* ... */){
+  var result = {};
+  for(var i=0,object,l=arguments.length; i<l; i++){
+    object = arguments[i];
+    if(!isObject(object)){continue;}
+
+    for(var key in object){
+      if(object.hasOwnProperty(key)){
+        result[key] = object[key]
+      }
+    }
+
+  }
+
+  return result;
+}
+
+function startsWith(string, prefix){
+  return isString(string) && string.indexOf(prefix) === 0;
+}
+function endsWith(string, suffix) {
+  return isString(string) &&
+    string.indexOf(suffix, string.length - suffix.length) !== -1;
+}
 
 
 // 通常情况下的 required 校验。
@@ -390,25 +414,16 @@ function verifyPatternList(pattern, values, instance_context){
   return certified;
 }
 
-function verifyFunction(ruleFunction, value, certifiedCallback){
+function verifyFunction(ruleFunction, value, datas, certifiedCallback){
   if(!isFunction(ruleFunction)){return true;}
 
-  var build_rule = {
-    isEmail: verifyIsEmail,
-    isUrl: verifyIsUrl,
-    isNumber: verifyIsNumber,
-    isTel: verifyIsTel,
-    isColor: verifyIsColor,
-    isDate: verifyIsDate,
-    isDateTime: verifyIsDateTime,
-    isDateTimeLocal: verifyIsDateTimeLocal,
-    isMonth: verifyIsMonth,
-    isWeek: verifyIsWeek,
-    isTime: verifyIsTime,
-    isMobile: verifyIsMobile
-  };
+  var build_in_rule = merge(BUILD_IN_RULE, {
+    data: function(key){
+      return datas[key];
+    }
+  });
 
-  var result = ruleFunction.call(build_rule, value, certifiedCallback);
+  var result = ruleFunction.call(build_in_rule, value, certifiedCallback);
   if("undefined" !== typeof result){
     return result;
   }
@@ -469,7 +484,7 @@ function verifyMaxFileSize(file, max){
   return file.size <= max;
 }
 
-function verify(ruleName, rule, values, instance_context){
+function verify(ruleName, rule, values, datas, instance_context){
 
   var certified = true;
   var validity = {
@@ -597,7 +612,7 @@ function verify(ruleName, rule, values, instance_context){
 
   //! NOTE: do not each values for verifyFunction, each values in
   //        custom function if need.
-  var result = verifyFunction(rule.custom, values, function(certified){
+  var result = verifyFunction(rule.custom, values, datas, function(certified){
 
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
 
@@ -635,7 +650,7 @@ Validator.prototype.validate = function(data){
   eachRules(this._rules, function(ruleName, rule){
 
     var values = data[ruleName];
-    var result = verify(ruleName, rule, values, ME);
+    var result = verify(ruleName, rule, values, data, ME);
     certified = certified && result;
 
   });
@@ -660,6 +675,14 @@ Validator.prototype.off = function(eventName, handler){
     this._evt.removeAllListeners(eventName);
   }
   return this;
+};
+
+Validator.rule = function(ruleName, validation){
+  if(!isString(ruleName)){return false;}
+  if(!isFunction(validation)){return BUILD_IN_RULE[ruleName];}
+
+  BUILD_IN_RULE[ruleName] = validation;
+  return true;
 };
 
 module.exports = Validator;

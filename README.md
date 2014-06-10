@@ -52,6 +52,9 @@ var rules = {
           certifiedCallback(false);
         }
       });
+
+      //!return undefined;
+
     }
   },
   "password": {
@@ -59,6 +62,15 @@ var rules = {
     required: true,
     minlength: 6,
     maxlength: 30
+  },
+  "re-password": {
+    type: "password",
+    required: true,
+    minlength: 6,
+    maxlength: 30,
+    custom: function(value, callback){
+      return value === this.data("password");
+    }
   }
 };
 
@@ -72,15 +84,26 @@ validator.validate({
 
 ## API
 
-### &lt;Validator&gt; Validator(&lt;Object&gt; ruler)
+### Validator(ruler)
 
 constructor, new a validator by rulers.
 
-```
+```js
 {
   // rule name.
   "name": {
-    type: {TypeEnum},
+    type: {TypeEnum(
+      text,password,
+      radio,checkbox,
+      select-one,select-multiple,
+      search,textarea,
+      number,range,
+      date,week,month,time,datetime,datetime-local,
+      email,url,tel,color,
+      file,
+      submit,button,image,
+      hidden
+    )},
     required: {Boolean},
     max: {Number},
     min: {Number},
@@ -89,7 +112,7 @@ constructor, new a validator by rulers.
     pattern: {RegExp},
     multiple: {Boolean},
     step: {Number},
-    accept: {String,Array},
+    accept: {Array<String>},
     custom: {Function}
   },
   "other-name": {
@@ -100,16 +123,29 @@ constructor, new a validator by rulers.
 ```
 
 
-### &lt;Validator&gt; validate(&lt;Object&gt; data)
+### Univ.rule(name, rule)
+
+Set or get a custom rule.
+
+```js
+validator.rule("isBankCard", function(values, callback){
+  return true;
+});
+```
+
+
+### univ.validate(data)
 
 data:
 
-```
-{
-  "name": "value",
-  "other-name": ["item-1", "item-2"],
-  // ...
-}
+```js
+univ.validate(
+  {
+    "name": "value",
+    "other-name": ["item-1", "item-2"],
+    // ...
+  }
+);
 ```
 
 ## Events
@@ -139,6 +175,7 @@ validator.on("valid", function(name, value, validity){
 所有数据校验完成。数据是否全部通过校验，则视事件处理函数的对应参数。
 
 ```js
+// @param {Boolean} certified.
 validator.on("complete", function(certified){
   console.log("Form validation", certified ? "Passed" : "Failed");
 });

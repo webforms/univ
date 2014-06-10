@@ -1,6 +1,41 @@
 var expect = require('expect.js');
 var Validator = require('../index');
 
+// Luhn 算法
+// @see http://en.wikipedia.org/wiki/Luhn_algorithm
+// @param {String} card, 被校验的号码。
+// @return {Boolean} `true` 如果通过校验，否则返回 `false`。
+function luhn(card){
+  var sum = 0;
+  for(var i=card.length-1,c,even; i>=0; i--){
+    c = parseInt(card.charAt(i), 10);
+    even = (i % 2) === (card.length % 2);
+    if(even){
+      c = c * 2;
+      if(c > 9){
+        c = c - 9;
+      }
+    }
+    sum += c;
+  }
+  return sum % 10 === 0;
+}
+
+Validator.rule("isBankCard", function(values){
+
+  if(Object.prototype.toString.call(values) !== '[object Array]'){
+    values = [values.toString()];
+  }
+
+  var certified = true;
+  var re_card = /^[34569][0-9]{12,18}$/;
+
+  for(var i=0,l=values.length; i<l; i++){
+    certified = certified && re_card.test(values[i]) && luhn(values[i]);
+  }
+  return certified;
+});
+
 var rule_required = {
   text: { type: "text", required: true },
   password: { type:"password", required: true },
@@ -4238,7 +4273,53 @@ var testCases = [
     } } },
     "data": { a: "139000000000" },
     "test": testInvalid
-  }
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: "6228480323012001315" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: ["6228480323012001315"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: ["6228480323012001315", // 农行
+      "6226095711688726", "6225885860600709", // 招行
+      "603367100131942126", // 杭州银行
+      "6225683428000243950" //广发银行
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: "139000000000" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: "6228480323012001314" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { custom: function(values, callback){
+      return this.isBankCard(values);
+    } } },
+    "data": { a: ["6228480323012001314"] },
+    "test": testInvalid
+  },
 
 ];
 
@@ -4249,29 +4330,30 @@ function getFunctionName(func){
 
 describe("validator", function(){
 
-    for(var i=0,l=testCases.length; i<l; i++){
+  for(var i=0,l=testCases.length; i<l; i++){
 
-      var rule = testCases[i].rule;
-      var data = testCases[i].data;
-      var test = testCases[i].test;
-      var testName = test.name || getFunctionName(test);
-      var certified = testName === "testValid" ? "valid" : "invalid";
-      var desc = 'RULE:' + JSON.stringify(rule) +
-        ' ,DATA:' + JSON.stringify(data) +
-        ' :' + certified;
+    var rule = testCases[i].rule;
+    var data = testCases[i].data;
+    var test = testCases[i].test;
+    var testName = test.name || getFunctionName(test);
+    var certified = testName === "testValid" ? "valid" : "invalid";
+    var desc = 'RULE:' + JSON.stringify(rule) +
+      ' ,DATA:' + JSON.stringify(data) +
+      ' :' + certified;
 
-      (function(desc, rule, data, test){
+    (function(desc, rule, data, test){
 
-        it(desc, function(done) {
+      it(desc, function(done) {
 
-          var validator = new Validator(rule);
+        var validator = new Validator(rule);
 
-          test(validator, data, done);
+        test(validator, data, done);
 
-          validator.validate(data);
+        validator.validate(data);
 
-        });
+      });
 
-      })(desc, rule, data, test);
-    }
+    })(desc, rule, data, test);
+  }
+
 });
