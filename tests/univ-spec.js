@@ -2134,7 +2134,590 @@ var testCases = [
   },
 
 
-  // TODO: rule: type=datetime-local
+  // rule: type=datetime-local
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: null },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: null },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: undefined },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: undefined },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-01-01T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-01-31T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:59:59" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:59:59Z" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:59:59-08:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:59:59+08:00" },
+    "test": testValid
+  },
+  // FIXME: moment() not support 5 digit year.
+  //{
+    //"rule": { a: { type: "datetime-local" } },
+    //"data": { a: "123456-06-01T00:00:00" },
+    //"test": testValid
+  //},
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-06-01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-06-01 00:00:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-01-32T00:00:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-13-01T00:00:00" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T24:59:59" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:60:59" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "2014-12-31T23:59:60" },
+    "test": testInvalid
+  },
+  // FIXME: 时区加减范围为 12，共 24个时区
+  //{
+    //"rule": { a: { type: "datetime-local" } },
+    //"data": { a: "2014-12-31T23:59:59-12:00" },
+    //"test": testInvalid
+  //},
+  //{
+    //"rule": { a: { type: "datetime-local" } },
+    //"data": { a: "2014-12-31T23:59:59-11:60" },
+    //"test": testInvalid
+  //},
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: "a" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: [""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: [""] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: [null] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: [null] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: [undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: [undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["", '', , , null, undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, type: "datetime-local" } },
+    "data": { a: ["", '', , , null, undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-06-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-31T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-31T00:00:00"] },
+    "test": testValid
+  },
+  // FIXME: moment() not support 5 digit year.
+  //{
+    //"rule": { a: { type: "datetime-local" } },
+    //"data": { a: ["123456-06-01T00:00:00"] },
+    //"test": testValid
+  //},
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: [
+      "2014-01-01T00:00:00", "2014-01-31T00:00:00", "2014-12-31T23:59:59"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-00-01T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-00T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-01T60:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-01T00:60:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-01T00:00:60"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-32T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-13-01T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-06-01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-06-01 00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-32T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-13-01T00:00:00"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["a"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local" } },
+    "data": { a: ["2014-01-01T23:59:60", "2014-01-01T23:60:59",
+      "2014-01-01T24:59:59", "2014-01-01T00:59:59",
+      "2014-01-00T23:59:59", "2014-01-32T23:59:59",
+      "2014-00-01T23:59:59", "2014-13-01T23:59:59",
+      "2014-06-00", "a"] },
+    "test": testInvalid
+  },
+  // [type=datetime-local][min]
+  {
+    "rule": { a: { type: "datetime-local", min:"" } },
+    "data": { a: "2014-01-01T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-01-01T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-01-01T00:00:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-01-01T00:01:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-01-01T01:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-01-02T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2014-02-01T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: "2015-01-01T00:00:00" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:02:01" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:01:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T01:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-01T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-01-02T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: "2013-02-02T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"" } },
+    "data": { a: ["2014-01-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-01-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-01-01T00:00:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-01-01T00:01:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-01-01T01:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-01-02T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2014-02-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: ["2015-01-01T00:00:00"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-01-01T00:00:00" } },
+    "data": { a: [
+      "2014-01-01T00:00:00", "2014-01-01T00:00:01", "2014-01-01T00:01:00",
+      "2014-01-01T01:00:00", "2014-01-02T00:00:00", "2014-02-01T00:00:00",
+      "2015-01-01T00:00:00"
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:02:01"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:01:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T01:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-01T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-01-02T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: ["2013-02-02T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", min:"2014-02-02T02:02:02" } },
+    "data": { a: [
+      "2014-02-02T02:02:01", "2014-02-02T02:01:02", "2014-02-02T01:02:02",
+      "2014-02-01T02:02:02", "2014-01-02T02:02:02", "2013-02-02T02:02:02"
+    ] },
+    "test": testInvalid
+  },
+  // [type=datetime-local][max]
+  {
+    "rule": { a: { type: "datetime-local", max:"" } },
+    "data": { a: "2014-02-02T02:02:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:02:02" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:02:01" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:01:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T01:03:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-01T03:03:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-01-03T03:03:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2013-03-03T03:03:03" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"" } },
+    "data": { a: ["2014-02-02T02:02:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:02:02"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:02:01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:01:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T01:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-01T03:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-01-03T03:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2013-03-03T03:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: [
+      "2014-02-02T02:02:02", "2014-02-02T02:02:01", "2014-02-02T02:01:03",
+      "2014-02-02T01:03:03", "2014-02-01T03:03:03", "2014-01-03T03:03:03",
+      "2013-03-03T03:03:03"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:02:03" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T02:03:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-02T03:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-02-03T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2014-03-02T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: "2015-02-02T02:02:02" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:02:03"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T02:03:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-02T03:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-02-03T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2014-03-02T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: ["2015-02-02T02:02:02"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "datetime-local", max:"2014-02-02T02:02:02" } },
+    "data": { a: [
+      "2014-02-02T02:02:03", "2014-02-02T02:03:02", "2014-02-02T03:02:02",
+      "2014-02-03T02:02:02", "2014-03-02T02:02:02", "2015-02-02T02:02:02"
+    ] },
+    "test": testInvalid
+  },
 
 
 
