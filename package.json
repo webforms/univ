@@ -1,19 +1,19 @@
 {
-  "name": "uv",
+  "name": "univ",
   "version": "1.0.0",
   "description": "Universal Validator.",
   "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
-  "homepage": "https://github.com/webforms/validator",
+  "homepage": "https://github.com/webforms/univ",
   "author": "闲耘<hotoo.cn@gmail.com>",
   "maintainers": [
     "闲耘<hotoo.cn@gmail.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:webforms/validator.git"
+    "url": "git@github.com:webforms/univ.git"
   },
   "bugs": {
-    "url": "https://github.com/webforms/validator/issues"
+    "url": "https://github.com/webforms/univ/issues"
   },
   "dependencies": {
     "moment": "2.6.0"

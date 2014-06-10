@@ -2,10 +2,10 @@
 
 ---
 
-[![NPM version](https://badge.fury.io/js/univalidator.png)](http://badge.fury.io/js/univalidator)
-[![spm package](http://spmjs.io/badge/univalidator)](http://spmjs.io/package/univalidator)
-[![Build Status](https://secure.travis-ci.org/webforms/univalidator.png?branch=master)](https://travis-ci.org/webforms/univalidator)
-[![Coverage Status](https://coveralls.io/repos/webforms/univalidator/badge.png?branch=master)](https://coveralls.io/r/webforms/univalidator)
+[![NPM version](https://badge.fury.io/js/univ.png)](http://badge.fury.io/js/univ)
+[![spm package](http://spmjs.io/badge/univ)](http://spmjs.io/package/univ)
+[![Build Status](https://secure.travis-ci.org/webforms/univ.png?branch=master)](https://travis-ci.org/webforms/univ)
+[![Coverage Status](https://coveralls.io/repos/webforms/univ/badge.png?branch=master)](https://coveralls.io/r/webforms/univ)
 
 Universal Validator.
 
@@ -16,19 +16,19 @@ Universal Validator.
 via spm@3.x:
 
 ```
-$ spm install univalidator
+$ spm install univ
 ```
 
 via npm:
 
 ```
-$ npm install univalidator
+$ npm install univ
 ```
 
 ## Usage
 
 ```js
-var Validator = require('univalidator');
+var Validator = require('univ');
 
 var rules = {
   "username": {
