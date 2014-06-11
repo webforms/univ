@@ -1,0 +1,40 @@
+{
+  "name": "univ",
+  "version": "0.1.0",
+  "description": "Universal Validator.",
+  "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
+  "homepage": "https://github.com/webforms/univ",
+  "author": "闲耘<hotoo.cn@gmail.com>",
+  "maintainers": [
+    "闲耘<hotoo.cn@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:webforms/univ.git"
+  },
+  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/webforms/univ/issues"
+  },
+  "dependencies": {
+    "moment": "2.6.0"
+  },
+  "devDependencies": {
+    "expect.js": "0.3.1"
+  },
+  "spm": {
+    "main": "index.js",
+    "dependencies": {
+      "moment": "2.6.0",
+      "events": "1.0.1"
+    },
+    "devDependencies": {
+      "expect.js": "0.3.1"
+    },
+    "engines": {
+      "seajs": "2.2.1"
+    },
+    "tests": "tests/*.js"
+  },
+  "licenses": "MIT"
+}

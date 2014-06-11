@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>univ - Universal Validator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.5.1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link type="image/x-icon" href="./static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="./static/css/normalize.css" />
+    <link rel="stylesheet" href="./static/css/site.css" />
+    <link rel="stylesheet" href="./static/css/solarized.css" />
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-50522089-2', 'spm documentation');
+  ga('send', 'pageview');
+</script>
+<script src="./sea-modules/seajs/2.2.1/dist/sea.js?nowrap"></script>
+
+<script>
+  (function() {
+  seajs.config({
+    base: "./"
+  });
+
+  seajs.config({
+    alias: {"events":"sea-modules/events/1.0.1/./events.js","expect.js":"sea-modules/expect.js/0.3.1/index.js","moment":"sea-modules/moment/2.6.0/moment.js","seajs":"sea-modules/seajs/2.2.1/dist/sea.js"}
+  });
+})();
+</script>
+    <!--[if lt IE 9]>
+    <script src="./static/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body class="spmjs">
+    <div class="body-wrapper">
+      <aside class="sidebar-wrapper">
+      <h1>
+          <a href="./">Univ</a>
+      </h1>
+        <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.0</a></p>
+        <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
+        <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
+        <ul class="sidebar-navigation" role="navigation">
+          <li><a href="./">Doc</a></li>
+          <li><a href="examples/">Demo</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a class="test-link" href="tests/runner.html" target="_blank">Test</a></li>
+          <li><a class="issue-link" href="https://github.com/webforms/univ/issues" target="_blank">Issues</a></li>
+        </ul>
+        
+
+      </aside>
+      <div class="content-wrapper">
+        
+<article class="hentry">
+  <h1 class="entry-title">Universal Validator</h1>
+  <div class="entry-content">
+    <p><a href="http://badge.fury.io/js/univ"><img src="https://badge.fury.io/js/univ.png" alt="NPM version"></a>
+<a href="http://spmjs.io/package/univ"><img src="http://spmjs.io/badge/univ" alt="spm package"></a>
+<a href="https://travis-ci.org/webforms/univ"><img src="https://secure.travis-ci.org/webforms/univ.png?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/r/webforms/univ"><img src="https://coveralls.io/repos/webforms/univ/badge.png?branch=master" alt="Coverage Status"></a></p>
+<p>Universal Validator.</p>
+<hr>
+<h2 id="install">Install<a href="#install" class="anchor">¶</a></h2><p>via spm@3.x:</p>
+<pre>$ spm install univ</pre><p>via npm:</p>
+<pre>$ npm install univ</pre><h2 id="usage">Usage<a href="#usage" class="anchor">¶</a></h2><div class="highlight"><pre><code class="javascript"><span class="keyword">var</span> Validator = require(<span class="string">'univ'</span>);
+
+<span class="keyword">var</span> rules = {
+  <span class="string">"username"</span>: {
+    type: <span class="string">"email"</span>,
+    required: <span class="literal">true</span>,
+
+    <span class="comment">// @param {String} value.</span>
+    <span class="comment">// @param {Function} certifiedCallback, optional.</span>
+    script: <span class="function"><span class="keyword">function</span><span class="params">(value, certifiedCallback)</span>{</span>
+      $.ajax({
+        url: <span class="string">"/check-username-available"</span>,
+        data: <span class="string">"username="</span>+value,
+        success: <span class="function"><span class="keyword">function</span><span class="params">(data)</span>{</span>
+          <span class="keyword">if</span>(data.state === <span class="string">"ok"</span> &amp;&amp; data.available = <span class="string">"yes"</span>){
+            callback(<span class="literal">true</span>);
+          }<span class="keyword">else</span>{
+            certifiedCallback(<span class="literal">false</span>);
+          }
+        },
+        error: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+          certifiedCallback(<span class="literal">false</span>);
+        }
+      });
+
+      <span class="comment">//!return undefined;</span>
+
+    }
+  },
+  <span class="string">"password"</span>: {
+    type: <span class="string">"password"</span>,
+    required: <span class="literal">true</span>,
+    minlength: <span class="number">6</span>,
+    maxlength: <span class="number">30</span>
+  },
+  <span class="string">"re-password"</span>: {
+    type: <span class="string">"password"</span>,
+    required: <span class="literal">true</span>,
+    minlength: <span class="number">6</span>,
+    maxlength: <span class="number">30</span>,
+    custom: <span class="function"><span class="keyword">function</span><span class="params">(value, callback)</span>{</span>
+      <span class="keyword">return</span> value === <span class="keyword">this</span>.data(<span class="string">"password"</span>);
+    }
+  }
+};
+
+<span class="keyword">var</span> validator = <span class="keyword">new</span> Validator(rules);
+validator.validate({
+  <span class="string">"username"</span>: <span class="string">"hotoo@email.address"</span>,
+  <span class="string">"password"</span>: <span class="string">"PassWord"</span>,
+  <span class="string">"checkbox"</span>: [<span class="string">"check-0"</span>, <span class="string">"check-1"</span>]
+});</code></pre></div><h2 id="api">API<a href="#api" class="anchor">¶</a></h2><h3 id="validator-ruler">Validator(ruler)<a href="#validator-ruler" class="anchor">¶</a></h3><p>constructor, new a validator by rulers.</p>
+<div class="highlight"><pre><code class="javascript">{
+  <span class="comment">// rule name.</span>
+  <span class="string">"name"</span>: {
+    type: {TypeEnum(
+      text,password,
+      radio,checkbox,
+      select-one,select-multiple,
+      search,textarea,
+      number,range,
+      date,week,month,time,datetime,datetime-local,
+      email,url,tel,color,
+      file,
+      submit,button,image,
+      hidden
+    )},
+    required: {Boolean},
+    max: {Number},
+    min: {Number},
+    maxlength: {Number},
+    minlength: {Number},
+    pattern: {RegExp},
+    multiple: {Boolean},
+    step: {Number},
+    accept: {Array&lt;String&gt;},
+    custom: {Function}
+  },
+  <span class="string">"other-name"</span>: {
+    <span class="comment">// ...</span>
+  },
+  <span class="comment">// ...</span>
+}</code></pre></div><h3 id="univ-rule-name-rule">Univ.rule(name, rule)<a href="#univ-rule-name-rule" class="anchor">¶</a></h3><p>Set or get a custom rule.</p>
+<div class="highlight"><pre><code class="javascript">validator.rule(<span class="string">"isBankCard"</span>, <span class="function"><span class="keyword">function</span><span class="params">(values, callback)</span>{</span>
+  <span class="keyword">return</span> <span class="literal">true</span>;
+});</code></pre></div><h3 id="univ-validate-data">univ.validate(data)<a href="#univ-validate-data" class="anchor">¶</a></h3><p>data:</p>
+<div class="highlight"><pre><code class="javascript">univ.validate(
+  {
+    <span class="string">"name"</span>: <span class="string">"value"</span>,
+    <span class="string">"other-name"</span>: [<span class="string">"item-1"</span>, <span class="string">"item-2"</span>],
+    <span class="comment">// ...</span>
+  }
+);</code></pre></div><h2 id="events">Events<a href="#events" class="anchor">¶</a></h2><h3 id="valid">valid<a href="#valid" class="anchor">¶</a></h3><p>单个数据项通过校验，数据合法有效。</p>
+<div class="highlight"><pre><code class="javascript">validator.on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">(name, value, validity)</span>{</span>
+  console.log(<span class="string">"Field [name="</span> + name + <span class="string">"] Passed."</span>);
+});</code></pre></div><h3 id="invalid">invalid<a href="#invalid" class="anchor">¶</a></h3><p>单个数据项未通过校验，数据无效、不合法。</p>
+<div class="highlight"><pre><code class="javascript">validator.on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">(name, value, validity)</span>{</span>
+  console.log(<span class="string">"Field [name="</span> + name + <span class="string">"] Failed."</span>);
+});</code></pre></div><h3 id="complete">complete<a href="#complete" class="anchor">¶</a></h3><p>所有数据校验完成。数据是否全部通过校验，则视事件处理函数的对应参数。</p>
+<div class="highlight"><pre><code class="javascript"><span class="comment">// @param {Boolean} certified.</span>
+validator.on(<span class="string">"complete"</span>, <span class="function"><span class="keyword">function</span><span class="params">(certified)</span>{</span>
+  console.log(<span class="string">"Form validation"</span>, certified ? <span class="string">"Passed"</span> : <span class="string">"Failed"</span>);
+});</code></pre></div><h3 id="error">error<a href="#error" class="anchor">¶</a></h3><p>校验过程中出现异常，则抛出 <code>error</code> 事件。</p>
+<div class="highlight"><pre><code class="javascript"><span class="comment">// @param {Error} error</span>
+validator.on(<span class="string">"error"</span>, <span class="function"><span class="keyword">function</span><span class="params">(error)</span>{</span>
+});</code></pre></div>
+  </div>
+</article>
+
+      </div>
+      
+    </div>
+    <div class="footer-wrapper">
+      <footer>
+        <p class="footer-powered"><a href="http://spmjs.io">spmjs.io</a> •
+<a href="https://github.com/spmjs/spm">spm</a> •
+<a href="http://seajs.org">Sea.js</a> •
+<a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
