@@ -82,6 +82,20 @@ function isObject(object){
   return null!==object && typeOf(object, "Object");
 }
 
+function trim(string){
+  return String(string).replace(/^\s+/, "").replace(/\s+$/, "");
+}
+
+// @param {Object} object.
+// @return {Number} return number if object can convert to number,
+//                  else return NaN.
+function toNumber(object){
+  if(isNumber(object)){return object;}
+  object = trim(object);
+  if("" === object){return NaN;}
+  return Number(object);
+}
+
 // @param {Object} rules
 // @param {Function} handler
 function eachRules(rules, handler){
@@ -166,6 +180,7 @@ function verifyMax(value, max){
 }
 
 function verifyMinLengthList(minlength, values){
+  minlength = toNumber(minlength);
   if(!isNumber(minlength)){return true;}
   if(!isArray(values) || values.length < minlength){return false;}
 
@@ -180,6 +195,7 @@ function verifyMinLengthList(minlength, values){
 }
 
 function verifyMaxLengthList(maxlength, values){
+  maxlength = toNumber(maxlength);
   if(!isNumber(maxlength)){return true;}
   if(!isArray(values)){return false;}
 
