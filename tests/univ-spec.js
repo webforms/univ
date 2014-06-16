@@ -463,6 +463,7 @@ var testCases = [
 
 
   // minlength.
+  // FIXME: test for minlength is minlimit now.
   {
     "rule": { a: { minlength: NaN } },
     "data": {},
@@ -586,7 +587,7 @@ var testCases = [
   },
   {
     "rule": { a: { minlength: 2 }},
-    "data": { a: [0,"1"] },
+    "data": { a: ["01","ab"] },
     "test": testValid
   },
 
@@ -715,17 +716,17 @@ var testCases = [
   },
   {
     "rule": { a: { maxlength: 2 }},
-    "data": { a: [1,2] },
+    "data": { a: ["12","23"] },
     "test": testValid
   },
   {
     "rule": { a: { maxlength: 2 }},
-    "data": { a: [1] },
+    "data": { a: ["1"] },
     "test": testValid
   },
   {
     "rule": { a: { maxlength: 1 }},
-    "data": { a: [0,"",null,undefined] },
+    "data": { a: ["0","",null,undefined] },
     "test": testValid
   },
   {

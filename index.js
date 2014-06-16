@@ -154,7 +154,7 @@ function endsWith(string, suffix) {
 //        if values, validate passed, and continue next, return undefined.
 function verifyRequired(required, values){
   if(isArray(values)){
-    if(!verifyMinLengthList(1, values)){
+    if(!verifyMinLimit(1, values)){
       return !isBoolean(required) || !required;
     }
   }else{
@@ -179,10 +179,10 @@ function verifyMax(value, max){
   return isNaN(max) || Number(value) <= Number(max);
 }
 
-function verifyMinLengthList(minlength, values){
-  minlength = toNumber(minlength);
-  if(!isNumber(minlength)){return true;}
-  if(!isArray(values) || values.length < minlength){return false;}
+function verifyMinLimit(minlimit, values){
+  minlimit = toNumber(minlimit);
+  if(!isNumber(minlimit)){return true;}
+  if(!isArray(values) || values.length < minlimit){return false;}
 
   var length = 0;
   for(var i=0,l=values.length; i<l; i++){
@@ -191,12 +191,12 @@ function verifyMinLengthList(minlength, values){
     }
   }
 
-  return length >= minlength;
+  return length >= minlimit;
 }
 
-function verifyMaxLengthList(maxlength, values){
-  maxlength = toNumber(maxlength);
-  if(!isNumber(maxlength)){return true;}
+function verifyMaxLimit(maxlimit, values){
+  maxlimit = toNumber(maxlimit);
+  if(!isNumber(maxlimit)){return true;}
   if(!isArray(values)){return false;}
 
   var length = 0;
@@ -206,15 +206,43 @@ function verifyMaxLengthList(maxlength, values){
     }
   }
 
-  return length <= maxlength;
+  return length <= maxlimit;
+}
+
+function verifyMinLengthList(minlength, values){
+  minlength = toNumber(minlength);
+  if(!isNumber(minlength)){return true;}
+
+  var certified = true;
+  for(var i=0,l=values.length; i<l; i++){
+    certified = certified && verifyMinLength(minlength, values[i]);
+  }
+
+  return certified;
+}
+
+function verifyMaxLengthList(maxlength, values){
+  maxlength = toNumber(maxlength);
+  if(!isNumber(maxlength)){return true;}
+
+  var certified = true;
+  for(var i=0,l=values.length; i<l; i++){
+    certified = certified && verifyMaxLength(values[i]);
+  }
+
+  return certified;
 }
 
 function verifyMinLength(minlength, value){
-  return !isNumber(minlength) || value.length >= minlength;
+  minlength = toNumber(minlength);
+  if(!isNumber(minlength)){return true;}
+  if(!isString(value)){return false;}
+  return value.length >= minlength;
+  //return !isNumber(minlength) || (isString(value) && value.length >= minlength);
 }
 
 function verifyMaxLength(maxlength, value){
-  return !isNumber(maxlength) || value.length <= maxlength;
+  return !isNumber(maxlength) || (isString(value) && value.length <= maxlength);
 }
 
 var RE_MONTH = /^\d{4,}\-\d{2}$/;
