@@ -182,7 +182,10 @@ function verifyMax(value, max){
 function verifyMinLimit(minlimit, values){
   minlimit = toNumber(minlimit);
   if(!isNumber(minlimit)){return true;}
-  if(!isArray(values) || values.length < minlimit){return false;}
+  if(!isArray(values)){
+    values = [ values ];
+  }
+  if(values.length < minlimit){return false;}
 
   var length = 0;
   for(var i=0,l=values.length; i<l; i++){
@@ -197,7 +200,9 @@ function verifyMinLimit(minlimit, values){
 function verifyMaxLimit(maxlimit, values){
   maxlimit = toNumber(maxlimit);
   if(!isNumber(maxlimit)){return true;}
-  if(!isArray(values)){return false;}
+  if(!isArray(values)){
+    values = [ values ];
+  }
 
   var length = 0;
   for(var i=0,l=values.length; i<l; i++){
@@ -565,6 +570,10 @@ function verify(ruleName, rule, values, datas, instance_context){
       verifyPattern(rule.pattern, values, instance_context);
 
   }
+
+  certified = certified &&
+    verifyMinLimit(rule.minlimit, values) &&
+    verifyMaxLimit(rule.maxlimit, values);
 
 
   // rule: type, min, max.

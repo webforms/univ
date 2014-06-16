@@ -741,6 +741,284 @@ var testCases = [
   },
 
 
+  // minlimit.
+  {
+    "rule": { a: { minlimit: NaN } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: NaN } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: "" } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: "" } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: null }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: null }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: undefined }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: undefined }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: 2 }},
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: "1" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 1 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+
+  {
+    "rule": { a: { minlimit: NaN } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: NaN } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: "" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: "" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: null } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: null } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: undefined }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: undefined }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, minlimit: 2 }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: [0] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: [0,"",null,undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { minlimit: 2 }},
+    "data": { a: ["0","a"] },
+    "test": testValid
+  },
+
+
+  // maxlimit.
+  {
+    "rule": { a: { maxlimit: NaN } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: NaN } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: "" } },
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: "" } },
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: null }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: null }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: undefined }},
+    "data": {},
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: undefined }},
+    "data": {},
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 2 }},
+    "data": { a: "" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: 2 }},
+    "data": { a: "" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlimit: 2 }},
+    "data": { a: "1" },
+    "test": testValid
+  },
+
+  {
+    "rule": { a: { maxlimit: NaN } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: NaN } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: "" } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: "" } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: null } },
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: null } },
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: undefined }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: undefined }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 2 }},
+    "data": { a: [] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { required: true, maxlimit: 2 }},
+    "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: [1,2] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 2 }},
+    "data": { a: ["1","2"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlimit: 2 }},
+    "data": { a: ["1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: ["0","",null,undefined] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: [0,1,"",null,undefined] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { maxlimit: 1 }},
+    "data": { a: [1,2,"",null,undefined] },
+    "test": testInvalid
+  },
+
+
   // rule: pattern.
   {
     "rule": { a: { pattern: "" } },
