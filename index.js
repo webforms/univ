@@ -232,7 +232,7 @@ function verifyMaxLengthList(maxlength, values){
 
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyMaxLength(values[i]);
+    certified = certified && verifyMaxLength(maxlength, values[i]);
   }
 
   return certified;
