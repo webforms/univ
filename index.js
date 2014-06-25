@@ -172,11 +172,21 @@ function verifyIsNumber(value){
 }
 
 function verifyMin(value, min){
-  return isNaN(min) || Number(value) >= Number(min);
+  value = toNumber(value);
+  min = toNumber(min);
+  if(!isNumber(min)){return true;}
+  if(!isNumber(value)){return false;}
+  return value >= min;
+  //return !isNumber(min) || isNumber(value) && Number(value) >= Number(min);
 }
 
 function verifyMax(value, max){
-  return isNaN(max) || Number(value) <= Number(max);
+  value = toNumber(value);
+  max = toNumber(max);
+  if(!isNumber(max)){return true;}
+  if(!isNumber(value)){return false;}
+  return value <= max;
+  //return !isNumber(max) || isNumber(value) && Number(value) <= Number(max);
 }
 
 function verifyMinLimit(minlimit, values){
