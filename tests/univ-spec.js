@@ -520,8 +520,13 @@ var testCases = [
     "test": testInvalid
   },
   {
-    "rule": { a: { minlength: 1 }},
-    "data": { a: "1" },
+    "rule": { a: { minlength: 2 }},
+    "data": { a: "12" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: "123" },
     "test": testValid
   },
 
@@ -587,7 +592,17 @@ var testCases = [
   },
   {
     "rule": { a: { minlength: 2 }},
-    "data": { a: ["01","ab"] },
+    "data": { a: ["01"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: ["012"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { minlength: 2 }},
+    "data": { a: ["01","abc"] },
     "test": testValid
   },
 
@@ -644,13 +659,13 @@ var testCases = [
     "test": testInvalid
   },
   {
-    "rule": { a: { maxlength: 1 }},
-    "data": { a: "12" },
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: "123" },
     "test": testInvalid
   },
   {
-    "rule": { a: { maxlength: 1 }},
-    "data": { a: "1" },
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: "12" },
     "test": testValid
   },
   {
@@ -710,8 +725,23 @@ var testCases = [
     "test": testInvalid
   },
   {
-    "rule": { a: { maxlength: 1 }},
-    "data": { a: [1,2] },
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: [null,undefined,,,""] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: ["1"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: ["12"] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: ["123"] },
     "test": testInvalid
   },
   {
@@ -725,13 +755,13 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { maxlength: 1 }},
-    "data": { a: ["0","",null,undefined] },
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: ["","0","12"] },
     "test": testValid
   },
   {
-    "rule": { a: { maxlength: 1 }},
-    "data": { a: [0,1,"",null,undefined] },
+    "rule": { a: { maxlength: 2 }},
+    "data": { a: ["012","1",""] },
     "test": testInvalid
   },
   {
