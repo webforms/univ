@@ -1380,6 +1380,22 @@ var testCases = [
     "test": testValid
   },
   {
+    "rule": { a: {
+      accept: null,
+      max: null,
+      maxlength: null,
+      min: null,
+      minlength: null,
+      multiple: false,
+      pattern: null,
+      required: false,
+      step: null,
+      type: "number"}
+    },
+    "data": { a: ["1"] },
+    "test": testValid
+  },
+  {
     "rule": { a: { type: "number" } },
     "data": { a: ["0.1"] },
     "test": testValid
