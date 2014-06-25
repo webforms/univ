@@ -1205,6 +1205,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "number" } },
+    "data": { a: " " },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
     "data": { a: 0 },
     "test": testValid
   },
@@ -1327,6 +1332,11 @@ var testCases = [
   {
     "rule": { a: { required: true, type: "number" } },
     "data": { a: [] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "number" } },
+    "data": { a: [" "] },
     "test": testInvalid
   },
   {
