@@ -232,7 +232,7 @@ function verifyMaxLengthList(maxlength, values){
 
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyMaxLength(values[i]);
+    certified = certified && verifyMaxLength(maxlength, values[i]);
   }
 
   return certified;
@@ -240,14 +240,14 @@ function verifyMaxLengthList(maxlength, values){
 
 function verifyMinLength(minlength, value){
   minlength = toNumber(minlength);
-  if(!isNumber(minlength)){return true;}
-  if(!isString(value)){return false;}
-  return value.length >= minlength;
-  //return !isNumber(minlength) || (isString(value) && value.length >= minlength);
+  return !isNumber(minlength) ||
+         (isString(value) && value.length >= minlength);
 }
 
 function verifyMaxLength(maxlength, value){
-  return !isNumber(maxlength) || (isString(value) && value.length <= maxlength);
+  maxlength = toNumber(maxlength);
+  return !isNumber(maxlength) ||
+         (isString(value) && value.length <= maxlength);
 }
 
 var RE_MONTH = /^\d{4,}\-\d{2}$/;
