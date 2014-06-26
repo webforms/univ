@@ -4420,6 +4420,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "tel" } },
+    "data": { a: "13900000000" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "tel" } },
     "data": { a: "0571-268888889" },
     "test": testInvalid
   },
@@ -4487,6 +4492,22 @@ var testCases = [
     "rule": { a: { type: "tel" } },
     "data": { a: ["0571-268888889", "0571-2688888a"] },
     "test": testInvalid
+  },
+  {
+    "rule": { a: {
+      accept: null,
+      max: null,
+      maxlength: null,
+      min: null,
+      minlength: null,
+      multiple: false,
+      pattern: null,
+      required: false,
+      step: null,
+      type: "tel",
+    } },
+    "data": { a: ["13900000000"] },
+    "test": testValid
   },
 
 

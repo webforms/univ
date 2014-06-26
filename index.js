@@ -647,7 +647,10 @@ function verify(ruleName, rule, values, datas, instance_context){
     break;
 
   case RULE_TYPES.tel:
-    certified = certified && eachValues(verifyIsTel, values);
+    certified = certified && (
+        eachValues(verifyIsTel, values) ||
+        eachValues(verifyIsMobile, values)
+      );
     break;
 
   case RULE_TYPES.color:
