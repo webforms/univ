@@ -43,25 +43,45 @@ var rule_required = {
 };
 
 
-function testInvalid(validator, data, done){
+function isEmptyObject(object){
+  var isEmpty = true;
+  for(var key in object){
+    if (object.hasOwnProperty(key)){
+      isEmpty = false;
+    }
+  }
+  return isEmpty;
+}
+
+function testInvalid(validator, rule, data, done){
+  var emitInvalidEvent = false;
   validator.on("invalid", function(name, value, validity){
     expect("invalid").to.equal("invalid");
+    emitInvalidEvent = true;
   }).on("valid", function(name, value, validity){
     expect("valid").to.equal("invalid");
   }).on("complete", function(certified){
     expect(certified).to.equal(false);
+    if (!isEmptyObject(rule)){
+      expect(emitInvalidEvent).to.equal(true);
+    }
     validator.off();
     done();
   }).on("error", function(){ });
 }
 
-function testValid(validator, data, done){
+function testValid(validator, rule, data, done){
+  var emitValidEvent = false;
   validator.on("invalid", function(name, values, validity){
     expect("invalid").to.equal("valid");
   }).on("valid", function(name, values, validity){
+    emitValidEvent = true;
     expect("valid").to.equal("valid");
   }).on("complete", function(certified){
     expect(certified).to.equal(true);
+    if (!isEmptyObject(rule)){
+      expect(emitValidEvent).to.equal(true);
+    }
     done();
   }).on("error", function(){ });
 }
@@ -5286,7 +5306,7 @@ describe("validator", function(){
 
         var validator = new Validator(rule);
 
-        test(validator, data, done);
+        test(validator, rule, data, done);
 
         validator.validate(data);
 

@@ -562,6 +562,7 @@ function verify(ruleName, rule, values, datas, instance_context){
   var resultRequired = verifyRequired(rule.required, values);
   // fast return if required rule not match.
   if("undefined" !== typeof resultRequired){
+    instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
     return resultRequired;
   }
 
