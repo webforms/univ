@@ -41,7 +41,7 @@
       <h1>
           <a href="../">Univ</a>
       </h1>
-        <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.4</a></p>
+        <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.5</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -61,11 +61,15 @@
   <div class="entry-content">
     <h2 id="normal-usage">Normal usage<a href="#normal-usage" class="anchor">¶</a></h2><script>seajs.use('index', function(Univ){
 
+  var rule = {};
+  var data = {};
   var valid = new Univ(rule);
   valid.validate(data);
 
-});</script><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'univ/0.1.4/index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
+});</script><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'univ/0.1.5/index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
 
+  <span class="keyword">var</span> rule = {};
+  <span class="keyword">var</span> data = {};
   <span class="keyword">var</span> valid = <span class="keyword">new</span> Univ(rule);
   valid.validate(data);
 
