@@ -37,7 +37,7 @@ var rules = {
 
     // @param {String} value.
     // @param {Function} certifiedCallback, optional.
-    script: function(value, certifiedCallback){
+    custom: function(value, certifiedCallback){
       $.ajax({
         url: "/check-username-available",
         data: "username="+value,
