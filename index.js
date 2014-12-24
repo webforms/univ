@@ -376,13 +376,16 @@ function verifyMaxTime(value, max, instance_context, validity){
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
 function verifyIsDate(value, validity){
   var certified = RE_DATE.test(value) && moment(value).isValid();
-  validity.typeMismatch = !certified;
+  if (validity){
+    validity.typeMismatch = !certified;
+  }
   return certified;
 }
 
 function verifyMinDate(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDate(min, validity)){
+  // Do't change validity on verify `min` rule.
+  if(!verifyIsDate(min /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=date][min='+min+'] is invalid date.'));
     return true;
@@ -394,7 +397,8 @@ function verifyMinDate(value, min, instance_context, validity){
 
 function verifyMaxDate(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDate(max, validity)){
+  // Do't change validity on verify `max` rule.
+  if(!verifyIsDate(max/* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=date][max='+max+'] is invalid date.'));
     return true;
@@ -409,13 +413,17 @@ function verifyMaxDate(value, max, instance_context, validity){
 var RE_DATETIME = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTime(value, validity){
   var certified = RE_DATETIME.test(value) && moment(value).isValid();
-  validity.typeMismatch = !certified;
+  if (validity) {
+    validity.typeMismatch = !certified;
+  }
   return certified;
 }
 
 function verifyMinDateTime(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDateTime(min, validity)){
+  // Do't change validity on verify `min` rule.
+  // TODO: test cases.
+  if(!verifyIsDateTime(min /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime][min='+min+'] is invalid datetime.'));
     return true;
@@ -427,7 +435,9 @@ function verifyMinDateTime(value, min, instance_context, validity){
 
 function verifyMaxDateTime(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDateTime(max, validity)){
+  // Do't change validity on verify `max` rule.
+  // TODO: test cases.
+  if(!verifyIsDateTime(max /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime][max='+max+'] is invalid datetime.'));
     return true;
@@ -442,13 +452,17 @@ function verifyMaxDateTime(value, max, instance_context, validity){
 var RE_DATETIME_LOCAL = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTimeLocal(value, validity){
   var certified = RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
-  validity.typeMismatch = !certified;
+  if (validity) {
+    validity.typeMismatch = !certified;
+  }
   return certified;
 }
 
 function verifyMinDateTimeLocal(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDateTimeLocal(min, validity)){
+  // Do't change validity on verify `min` rule.
+  // TODO: test cases.
+  if(!verifyIsDateTimeLocal(min /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime-local][min='+min+'] is invalid datetime.'));
     return true;
@@ -460,7 +474,9 @@ function verifyMinDateTimeLocal(value, min, instance_context, validity){
 
 function verifyMaxDateTimeLocal(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDateTimeLocal(max, validity)){
+  // Do't change validity on verify `max` rule.
+  // TODO: test cases.
+  if(!verifyIsDateTimeLocal(max /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime-local][max='+max+'] is invalid datetime.'));
     return true;
@@ -474,13 +490,17 @@ function verifyMaxDateTimeLocal(value, max, instance_context, validity){
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
 function verifyIsWeek(value, validity){
   var certified = RE_WEEK.test(value) && moment(value).isValid();
-  validity.typeMismatch = !certified;
+  if (validity) {
+    validity.typeMismatch = !certified;
+  }
   return certified;
 }
 
 function verifyMinWeek(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsWeek(min, validity)){
+  // Do't change validity on verify `min` rule.
+  // TODO: test cases.
+  if(!verifyIsWeek(min /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=week][min='+min+'] is invalid week.'));
     return true;
@@ -493,7 +513,9 @@ function verifyMinWeek(value, min, instance_context, validity){
 
 function verifyMaxWeek(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsWeek(max, validity)){
+  // Do't change validity on verify `max` rule.
+  // TODO: test cases.
+  if(!verifyIsWeek(max /* , validity */)){
     instance_context._evt.emit("error",
       new TypeError('[type=week][max='+max+'] is invalid week.'));
     return true;
