@@ -3,7 +3,9 @@ var moment = require("moment");
 var events = require("events").EventEmitter;
 
 var BUILD_IN_RULE = {
-  isEmail: verifyIsEmail,
+  isEmail: function(email){
+    return verifyIsEmail(email, {});
+  },
   isUrl: verifyIsUrl,
   isNumber: verifyIsNumber,
   isTel: verifyIsTel,
@@ -14,7 +16,9 @@ var BUILD_IN_RULE = {
   isMonth: verifyIsMonth,
   isWeek: verifyIsWeek,
   isTime: verifyIsTime,
-  isMobile: verifyIsMobile
+  isMobile: function(mobile){
+    return verifyIsMobile(mobile, {});
+  }
 };
 
 var RULE_TYPES = {
@@ -166,48 +170,83 @@ function verifyRequired(required, values){
 }
 
 
-function verifyIsNumber(value){
-  return /^[+-]?\d+(?:[eE][+-]?\d+)?$/.test(value) ||
+function verifyIsNumber(value, validity){
+  var certified = /^[+-]?\d+(?:[eE][+-]?\d+)?$/.test(value) ||
     /^[+-]?(?:\d+)?\.\d+(?:[eE][+-]?\d+)?$/.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMin(value, min){
+function verifyMin(value, min, validity){
+  var certified;
   value = toNumber(value);
   min = toNumber(min);
-  if(!isNumber(min)){return true;}
-  if(!isNumber(value)){return false;}
-  return value >= min;
+  if(!isNumber(min)){
+    certified = true;
+  } else if(!isNumber(value)){
+    certified = false;
+  } else {
+    certified = value >= min;
+  }
+
+  validity.rangeUnderflow = !certified;
+
+  return certified;
+
   //return !isNumber(min) || isNumber(value) && Number(value) >= Number(min);
 }
 
-function verifyMax(value, max){
+function verifyMax(value, max, validity){
+  var certified;
   value = toNumber(value);
   max = toNumber(max);
-  if(!isNumber(max)){return true;}
-  if(!isNumber(value)){return false;}
-  return value <= max;
+  if(!isNumber(max)){
+    certified = true;
+  } else if(!isNumber(value)){
+    certified = false;
+  } else {
+    certified = value <= max;
+  }
+  // XXX: Non-Effect.
+  validity.rangeOverflow = !certified;
+  return certified;
+
   //return !isNumber(max) || isNumber(value) && Number(value) <= Number(max);
 }
 
-function verifyMinLimit(minlimit, values){
+function verifyMinLimit(minlimit, values, validity){
+  var certified;
+  var length = 0;
+
   minlimit = toNumber(minlimit);
+
   if(!isNumber(minlimit)){return true;}
   if(!isArray(values)){
     values = [ values ];
   }
-  if(values.length < minlimit){return false;}
 
-  var length = 0;
-  for(var i=0,l=values.length; i<l; i++){
-    if("undefined"!==typeof values[i] && null!==values[i] && ""!==values[i]){
-      length++;
+  if(values.length < minlimit){
+    certified = false;
+  } else {
+
+    for(var i=0,l=values.length; i<l; i++){
+      if("undefined"!==typeof values[i] && null!==values[i] && ""!==values[i]){
+        length++;
+      }
     }
+
   }
 
-  return length >= minlimit;
+  certified = length >= minlimit;
+  if (validity) {
+    // XXX: tooShort? no. rangeUnderflow? no. is tooFew.
+    validity.customError = !certified;
+  }
+  return certified;
 }
 
-function verifyMaxLimit(maxlimit, values){
+function verifyMaxLimit(maxlimit, values, validity){
+
   maxlimit = toNumber(maxlimit);
   if(!isNumber(maxlimit)){return true;}
   if(!isArray(values)){
@@ -221,235 +260,292 @@ function verifyMaxLimit(maxlimit, values){
     }
   }
 
-  return length <= maxlimit;
+  var certified = length <= maxlimit;
+  if (validity) {
+    // XXX: tooLong? no. rangeOverflow? no. is tooMuch.
+    validity.customError = !certified;
+  }
+  return certified;
 }
 
-function verifyMinLengthList(minlength, values){
+function verifyMinLengthList(minlength, values, validity){
   minlength = toNumber(minlength);
   if(!isNumber(minlength)){return true;}
 
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyMinLength(minlength, values[i]);
+    certified = certified && verifyMinLength(minlength, values[i], validity);
   }
 
   return certified;
 }
 
-function verifyMaxLengthList(maxlength, values){
+function verifyMaxLengthList(maxlength, values, validity){
   maxlength = toNumber(maxlength);
   if(!isNumber(maxlength)){return true;}
 
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyMaxLength(maxlength, values[i]);
+    certified = certified && verifyMaxLength(maxlength, values[i], validity);
   }
 
   return certified;
 }
 
-function verifyMinLength(minlength, value){
+function verifyMinLength(minlength, value, validity){
   minlength = toNumber(minlength);
-  return !isNumber(minlength) ||
+  var certified = !isNumber(minlength) ||
          (isString(value) && value.length >= minlength);
+  validity.tooShort = !certified;
+  return certified;
 }
 
-function verifyMaxLength(maxlength, value){
+function verifyMaxLength(maxlength, value, validity){
   maxlength = toNumber(maxlength);
-  return !isNumber(maxlength) ||
+  var certified = !isNumber(maxlength) ||
          (isString(value) && value.length <= maxlength);
+  validity.tooLong = !certified;
+  return certified;
 }
 
 var RE_MONTH = /^\d{4,}\-\d{2}$/;
-function verifyIsMonth(value){
-  return RE_MONTH.test(value) && moment(value).isValid();
+function verifyIsMonth(value, validity){
+  var certified = RE_MONTH.test(value) && moment(value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinMonth(value, min, instance_context){
+function verifyMinMonth(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsMonth(min)){
+  if(!verifyIsMonth(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=month][min='+min+'] is invalid month.'));
     return true;
   }
-  return moment(value) >= moment(min);
+  var certified = moment(value) >= moment(min);
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxMonth(value, max, instance_context){
+function verifyMaxMonth(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsMonth(max)){
+  if(!verifyIsMonth(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=month][max='+max+'] is invalid month.'));
     return true;
   }
-  return moment(value) <= moment(max);
+  var certified = moment(value) <= moment(max);
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 // TODO: #4, remove moment.
 var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
-function verifyIsTime(value){
-  return RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
+function verifyIsTime(value, validity){
+  var certified = RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinTime(value, min, instance_context){
+function verifyMinTime(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsTime(min)){
+  if(!verifyIsTime(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=time][min='+min+'] is invalid time.'));
     return true;
   }
   var date = '2014-01-01T';
-  return moment(date+value) >= moment(date+min);
+  var certified = moment(date+value) >= moment(date+min);
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxTime(value, max, instance_context){
+function verifyMaxTime(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsTime(max)){
+  if(!verifyIsTime(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=time][max='+max+'] is invalid time.'));
     return true;
   }
   var date = '2014-01-01T';
-  return moment(date+value) <= moment(date+max);
+  var certified = moment(date+value) <= moment(date+max);
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
-function verifyIsDate(value){
-  return RE_DATE.test(value) && moment(value).isValid();
+function verifyIsDate(value, validity){
+  var certified = RE_DATE.test(value) && moment(value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinDate(value, min, instance_context){
+function verifyMinDate(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDate(min)){
+  if(!verifyIsDate(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=date][min='+min+'] is invalid date.'));
     return true;
   }
-  return  moment(value) >= moment(min);
+  var certified = moment(value) >= moment(min);
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxDate(value, max, instance_context){
+function verifyMaxDate(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDate(max)){
+  if(!verifyIsDate(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=date][max='+max+'] is invalid date.'));
     return true;
   }
-  return  moment(value) <= moment(max);
+  var certified = moment(value) <= moment(max);
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 
 // http://www.w3.org/TR/html-markup/input.datetime.html
 var RE_DATETIME = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
-function verifyIsDateTime(value){
-  return RE_DATETIME.test(value) && moment(value).isValid();
+function verifyIsDateTime(value, validity){
+  var certified = RE_DATETIME.test(value) && moment(value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinDateTime(value, min, instance_context){
+function verifyMinDateTime(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDateTime(min)){
+  if(!verifyIsDateTime(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime][min='+min+'] is invalid datetime.'));
     return true;
   }
-  return moment(value) >= moment(min);
+  var certified = moment(value) >= moment(min);
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxDateTime(value, max, instance_context){
+function verifyMaxDateTime(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDateTime(max)){
+  if(!verifyIsDateTime(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime][max='+max+'] is invalid datetime.'));
     return true;
   }
-  return moment(value) <= moment(max);
+  var certified = moment(value) <= moment(max);
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 
 // [input=type=datetime-local](http://www.w3.org/TR/html-markup/input.datetime-local.html)
 var RE_DATETIME_LOCAL = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
-function verifyIsDateTimeLocal(value){
-  return RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
+function verifyIsDateTimeLocal(value, validity){
+  var certified = RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinDateTimeLocal(value, min, instance_context){
+function verifyMinDateTimeLocal(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsDateTimeLocal(min)){
+  if(!verifyIsDateTimeLocal(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime-local][min='+min+'] is invalid datetime.'));
     return true;
   }
-  return moment(value) >= moment(min);
+  var certified = moment(value) >= moment(min);
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxDateTimeLocal(value, max, instance_context){
+function verifyMaxDateTimeLocal(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsDateTimeLocal(max)){
+  if(!verifyIsDateTimeLocal(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=datetime-local][max='+max+'] is invalid datetime.'));
     return true;
   }
-  return moment(value) <= moment(max);
+  var certified = moment(value) <= moment(max);
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
-function verifyIsWeek(value){
-  return RE_WEEK.test(value) && moment(value).isValid();
+function verifyIsWeek(value, validity){
+  var certified = RE_WEEK.test(value) && moment(value).isValid();
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyMinWeek(value, min, instance_context){
+function verifyMinWeek(value, min, instance_context, validity){
   if(!min){return true;}
-  if(!verifyIsWeek(min)){
+  if(!verifyIsWeek(min, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=week][min='+min+'] is invalid week.'));
     return true;
   }
-  return moment(value) >= moment(min);
+  var certified = moment(value) >= moment(min);
+  // XXX: Non-Effect.
+  validity.rangeUnderflow = !certified;
+  return certified;
 }
 
-function verifyMaxWeek(value, max, instance_context){
+function verifyMaxWeek(value, max, instance_context, validity){
   if(!max){return true;}
-  if(!verifyIsWeek(max)){
+  if(!verifyIsWeek(max, validity)){
     instance_context._evt.emit("error",
       new TypeError('[type=week][max='+max+'] is invalid week.'));
     return true;
   }
-  return moment(value) <= moment(max);
+  var certified = moment(value) <= moment(max);
+  // XXX: Non-Effect.
+  validity.rangeOverflow = !certified;
+  return certified;
 }
 
 
 // [RFC1738](http://www.faqs.org/rfcs/rfc1738.html)
 var RE_URL = /^https?:\/\/(?:[\w.-]*(?::[^@]+)?@)?(?:[\w-]+\.){1,3}[\w]+(?::\d+)?(?:\/.*)?$/;
-function verifyIsUrl(value){
-  return RE_URL.test(value);
+function verifyIsUrl(value, validity){
+  var certified = RE_URL.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
 
 var RE_EMAIL = /^\w+(?:[\._+\-]\w+)*@\w+(?:\.\w+)+$/;
-function verifyIsEmail(value){
-  return RE_EMAIL.test(value);
+function verifyIsEmail(value, validity){
+  var certified = RE_EMAIL.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
 
 var RE_MOBILE = /^(?:13[0-9]|14[57]|15[0-35-9]|170|18[0-9])\d{8}$/;
-function verifyIsMobile(value){
-  return RE_MOBILE.test(value);
+function verifyIsMobile(value, validity){
+  var certified = RE_MOBILE.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
 
 var RE_TEL = /^(?:\(\+\d{2}\))?\d{3,4}\-\d{7,8}$/;
-function verifyIsTel(value){
-  return RE_TEL.test(value);
+function verifyIsTel(value, validity){
+  var certified = RE_TEL.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
 
 var RE_COLOR = /^#[0-9a-fA-F]{6}$/;
-function verifyIsColor(value){
-  return RE_COLOR.test(value);
+function verifyIsColor(value, validity){
+  var certified = RE_COLOR.test(value);
+  validity.typeMismatch = !certified;
+  return certified;
 }
 
-function verifyPattern(pattern, value, instance_context){
+function verifyPattern(pattern, value, instance_context, validity){
   if(!isRegExp(pattern)){
 
     if(!isString(pattern)){return true;}
@@ -461,14 +557,16 @@ function verifyPattern(pattern, value, instance_context){
       return true;
     }
   }
+  var certified = pattern.test(value);
+  validity.patternMismatch = !certified;
 
-  return pattern.test(value);
+  return certified;
 }
 
-function verifyPatternList(pattern, values, instance_context){
+function verifyPatternList(pattern, values, instance_context, validity){
   var certified = true;
   for(var i=0,l=values.length; i<l; i++){
-    certified = certified && verifyPattern(pattern, values[i], instance_context);
+    certified = certified && verifyPattern(pattern, values[i], instance_context, validity);
   }
   return certified;
 }
@@ -518,7 +616,7 @@ function typeByName(fileName){
 // @param {Array} accept.
 // @param {File} file.
 // @return {Boolean}
-function verifyFileType(file, accept){
+function verifyFileType(file, accept, validity){
   if(!isArray(accept) || !file || !file.name){return true;}
   for(var i=0,l=accept.length; i<l; i++){
     if(!file.type){
@@ -531,17 +629,36 @@ function verifyFileType(file, accept){
       return true;
     }
   }
+  validity.typeMismatch = true;
   return false;
 }
 
-function verifyMinFileSize(file, min){
+function verifyMinFileSize(file, min, validity){
   if(!isNumber(min) || !isNumber(file.size)){return true;}
-  return file.size >= min;
+  var certified = file.size >= min;
+  validity.tooShort = !certified;
+  return certified;
 }
-function verifyMaxFileSize(file, max){
+function verifyMaxFileSize(file, max, validity){
   if(!isNumber(max) || !isNumber(file.size)){return true;}
-  return file.size <= max;
+  var certified = file.size <= max;
+  validity.tooLong = !certified;
+  return certified;
 }
+
+var ValidityState = {
+  customError: "customError",
+  patternMismatch: "patternMismatch",
+  rangeOverflow: "rangeOverflow",
+  rangeUnderflow: "rangeUnderflow",
+  stepMismatch: "stepMismatch",
+  tooLong: "tooLong",
+  tooShort: "tooShort",
+  typeMismatch: "typeMismatch",
+  valueMissing: "valueMissing",
+  badInput: "badInput",
+  valid: "valid"
+};
 
 function verify(ruleName, rule, values, datas, instance_context){
 
@@ -553,15 +670,24 @@ function verify(ruleName, rule, values, datas, instance_context){
     rangeUnderflow: false,
     stepMismatch: false,
     tooLong: false,
+    tooShort: false,
     typeMismatch: false,
     valueMissing: false,
     badInput: false,
-    valid: true
+    valid: true,
+    validationMessage: ValidityState.valid
   };
 
   var resultRequired = verifyRequired(rule.required, values);
   // fast return if required rule not match.
   if("undefined" !== typeof resultRequired){
+
+    if (resultRequired === false) {
+      validity.valueMissing = true;
+      validity.valid = false;
+      validity.validationMessage = ValidityState.valueMissing;
+    }
+
     instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
     return resultRequired;
   }
@@ -569,22 +695,23 @@ function verify(ruleName, rule, values, datas, instance_context){
   if(isArray(values)){
 
     certified = certified &&
-      verifyMinLengthList(rule.minlength, values) &&
-      verifyMaxLengthList(rule.maxlength, values) &&
-      verifyPatternList(rule.pattern, values, instance_context);
+      verifyMinLengthList(rule.minlength, values, validity) &&
+      verifyMaxLengthList(rule.maxlength, values, validity) &&
+      verifyPatternList(rule.pattern, values, instance_context, validity);
 
   }else{
 
     certified = certified &&
-      verifyMinLength(rule.minlength, values) &&
-      verifyMaxLength(rule.maxlength, values) &&
-      verifyPattern(rule.pattern, values, instance_context);
+      verifyMinLength(rule.minlength, values, validity) &&
+      verifyMaxLength(rule.maxlength, values, validity) &&
+      verifyPattern(rule.pattern, values, instance_context, validity);
 
   }
 
+  // FIXME: validity.
   certified = certified &&
-    verifyMinLimit(rule.minlimit, values) &&
-    verifyMaxLimit(rule.maxlimit, values);
+    verifyMinLimit(rule.minlimit, values, validity) &&
+    verifyMaxLimit(rule.maxlimit, values, validity);
 
 
   // rule: type, min, max.
@@ -592,77 +719,77 @@ function verify(ruleName, rule, values, datas, instance_context){
   case RULE_TYPES.number:
   case RULE_TYPES.range:
     certified = certified &&
-      eachValues(verifyIsNumber, values) &&
-      eachValues(verifyMin, values, rule.min) &&
-      eachValues(verifyMax, values, rule.max);
+      eachValues(verifyIsNumber, values, validity) &&
+      eachValues(verifyMin, values, rule.min, validity) &&
+      eachValues(verifyMax, values, rule.max, validity);
     break;
 
   case RULE_TYPES.date:
     certified = certified &&
-      eachValues(verifyIsDate, values) &&
-      eachValues(verifyMinDate, values, rule.min, instance_context) &&
-      eachValues(verifyMaxDate, values, rule.max, instance_context);
+      eachValues(verifyIsDate, values, validity) &&
+      eachValues(verifyMinDate, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxDate, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES.datetime:
     certified = certified &&
-      eachValues(verifyIsDateTime, values) &&
-      eachValues(verifyMinDateTime, values, rule.min, instance_context) &&
-      eachValues(verifyMaxDateTime, values, rule.max, instance_context);
+      eachValues(verifyIsDateTime, values, validity) &&
+      eachValues(verifyMinDateTime, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxDateTime, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES["datetime-local"]:
     certified = certified &&
-      eachValues(verifyIsDateTimeLocal, values) &&
-      eachValues(verifyMinDateTimeLocal, values, rule.min, instance_context) &&
-      eachValues(verifyMaxDateTimeLocal, values, rule.max, instance_context);
+      eachValues(verifyIsDateTimeLocal, values, validity) &&
+      eachValues(verifyMinDateTimeLocal, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxDateTimeLocal, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES.time:
     certified = certified &&
-      eachValues(verifyIsTime, values) &&
-      eachValues(verifyMinTime, values, rule.min, instance_context) &&
-      eachValues(verifyMaxTime, values, rule.max, instance_context);
+      eachValues(verifyIsTime, values, validity) &&
+      eachValues(verifyMinTime, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxTime, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES.week:
     certified = certified &&
-      eachValues(verifyIsWeek, values) &&
-      eachValues(verifyMinWeek, values, rule.min, instance_context) &&
-      eachValues(verifyMaxWeek, values, rule.max, instance_context);
+      eachValues(verifyIsWeek, values, validity) &&
+      eachValues(verifyMinWeek, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxWeek, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES.month:
     certified = certified &&
-      eachValues(verifyIsMonth, values) &&
-      eachValues(verifyMinMonth, values, rule.min, instance_context) &&
-      eachValues(verifyMaxMonth, values, rule.max, instance_context);
+      eachValues(verifyIsMonth, values, validity) &&
+      eachValues(verifyMinMonth, values, rule.min, instance_context, validity) &&
+      eachValues(verifyMaxMonth, values, rule.max, instance_context, validity);
     break;
 
   case RULE_TYPES.url:
-    certified = certified && eachValues(verifyIsUrl, values);
+    certified = certified && eachValues(verifyIsUrl, values, validity);
     break;
 
   case RULE_TYPES.email:
-    certified = certified && eachValues(verifyIsEmail, values);
+    certified = certified && eachValues(verifyIsEmail, values, validity);
     break;
 
   case RULE_TYPES.tel:
     certified = certified && (
-        eachValues(verifyIsTel, values) ||
-        eachValues(verifyIsMobile, values)
+        eachValues(verifyIsTel, values, validity) ||
+        eachValues(verifyIsMobile, values, validity)
       );
     break;
 
   case RULE_TYPES.color:
-    certified = certified && eachValues(verifyIsColor, values);
+    certified = certified && eachValues(verifyIsColor, values, validity);
     break;
 
   case RULE_TYPES.file:
     certified = certified &&
-      eachValues(verifyFileType, values, rule.accept) &&
-      eachValues(verifyMinFileSize, values, rule.min) &&
-      eachValues(verifyMaxFileSize, values, rule.max);
+      eachValues(verifyFileType, values, rule.accept, validity) &&
+      eachValues(verifyMinFileSize, values, rule.min, validity) &&
+      eachValues(verifyMaxFileSize, values, rule.max, validity);
     break;
 
   //case RULE_TYPES.select-one:
@@ -677,9 +804,15 @@ function verify(ruleName, rule, values, datas, instance_context){
     //break;
   }
 
-  //! NOTE: do not each values for verifyFunction, each values in
-  //        custom function if need.
+  //! NOTE: Do't each loop values by verifyFunction,
+  //        each loop values in user custom function if need.
   var result = verifyFunction(rule.custom, values, datas, function(certified){
+
+    if (!certified) {
+      validity.customError = true;
+      validity.valid = false;
+      validity.validationMessage = ValidityState.customError;
+    }
 
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
 
@@ -692,7 +825,23 @@ function verify(ruleName, rule, values, datas, instance_context){
   instance_context._certified = certified;
 
   if(typeof result !== "undefined"){
+
+    if (!result) {
+      validity.customError = true;
+      validity.valid = false;
+    }
+
+    for(var key in validity){
+      if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
+        validity.validationMessage = ValidityState[key];
+        validity.valid = false;
+      }
+    }
+
     certified = certified && result;
+
+    validity.valid = certified;
+
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
     return certified;
   }else{
