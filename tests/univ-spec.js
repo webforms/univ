@@ -56,8 +56,25 @@ function isEmptyObject(object){
 function testInvalid(validator, rule, data, done){
   var emitInvalidEvent = false;
   validator.on("invalid", function(name, value, validity){
-    expect("invalid").to.equal("invalid");
+    //!expect("invalid").to.equal("invalid");
     emitInvalidEvent = true;
+
+    expect(validity.valid).to.equal(false);
+    expect(validity.validationMessage).not.to.equal("valid");
+    expect(
+        validity.valid | 0 +
+        validity.customError | 0 +
+        validity.patternMismatch | 0 +
+        validity.rangeOverflow | 0 +
+        validity.rangeUnderflow | 0 +
+        validity.stepMismatch | 0 +
+        validity.tooLong | 0 +
+        validity.tooShort | 0 +
+        validity.typeMismatch | 0 +
+        validity.valueMissing | 0 +
+        validity.badInput | 0
+      ).to.equal(1);
+
   }).on("valid", function(name, value, validity){
     expect("valid").to.equal("invalid");
   }).on("complete", function(certified){
@@ -76,6 +93,19 @@ function testValid(validator, rule, data, done){
     expect("invalid").to.equal("valid");
   }).on("valid", function(name, values, validity){
     emitValidEvent = true;
+
+    expect(validity.valid).to.equal(true);
+
+    expect(validity.customError).to.equal(false);
+    expect(validity.patternMismatch).to.equal(false);
+    expect(validity.rangeOverflow).to.equal(false);
+    expect(validity.rangeUnderflow).to.equal(false);
+    expect(validity.stepMismatch).to.equal(false);
+    expect(validity.tooLong).to.equal(false);
+    expect(validity.tooShort).to.equal(false);
+    expect(validity.typeMismatch).to.equal(false);
+    expect(validity.badInput).to.equal(false);
+
     expect("valid").to.equal("valid");
   }).on("complete", function(certified){
     expect(certified).to.equal(true);

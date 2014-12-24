@@ -1,14 +1,15 @@
 @font-face {
-  font-family:'Open Sans';
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(OpenSans.woff) format('woff');
+  src: local('Open Sans'), local('OpenSans'), url(http://fontscontent.useso.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
 }
+
 @font-face {
-  font-family:'Open Sans';
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(OpenSans-Bold.woff) format('woff');
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://fontscontent.useso.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
 }
 html {
   text-rendering: optimizeLegibility;
@@ -61,7 +62,7 @@ body.spmjs {
 }
 .spmjs .sidebar-wrapper h1 {
   margin: 0;
-  font-family:"Open Sans", sans-serif;
+  font-family:"Open Sans", "Lucida Grande", 'Hiragino Sans GB', Georgia, sans-serif;
 }
 .spmjs .sidebar-wrapper .sidebar-version {
   font-size: 14px;
@@ -158,7 +159,7 @@ body.spmjs {
 }
 .spmjs .content-wrapper .entry-title {
   margin-bottom: 12px;
-  font-family:"Open Sans", sans-serif;
+  font-family:"Open Sans", "Lucida Grande", 'Hiragino Sans GB', Georgia, sans-serif;
 }
 .spmjs .content-wrapper .meta {
   color: #BCBCBD;
@@ -169,7 +170,7 @@ body.spmjs {
   margin-top: 40px;
   padding-bottom: 4px;
   border-bottom: 1px solid #ccc;
-  font-family:"Open Sans", sans-serif;
+  font-family:"Open Sans", "Lucida Grande", 'Hiragino Sans GB', Georgia, sans-serif;
 }
 .spmjs hr {
   display: block;
@@ -313,7 +314,7 @@ body.spmjs {
 }
 /* history history-tag */
 .spmjs .history-tag {
-  background: url("history-tags.png") no-repeat scroll 0 50% #fff;
+  background: url("https://t.alipayobjects.com/images/T18l4aXkhIXXXXXXXX.png") no-repeat scroll 0 50% #fff;
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.2) inset;
@@ -374,4 +375,79 @@ body.spmjs {
 }
 .spmcss .sidebar-wrapper .sidebar-source:active {
   background-color: #4cb164;
+}
+
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #29d;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -6,30 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="nico 0.5.1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
+    <link type="image/x-icon" href="/favicon.ico" rel="icon">
     <link rel="stylesheet" href="../static/css/normalize.css" />
     <link rel="stylesheet" href="../static/css/site.css" />
     <link rel="stylesheet" href="../static/css/solarized.css" />
 <script>
+if (!location.port) {
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-50522089-2', 'spm documentation');
+  ga('create', 'UA-50522089-2', 'auto');
   ga('send', 'pageview');
+}
 </script>
-<script src="../sea-modules/seajs/2.2.1/dist/sea.js?nowrap"></script>
+
+<script src="http://static.alipayobjects.com/seajs/seajs/2.2.0/sea.js"></script>
 
 <script>
-  (function() {
   seajs.config({
-    base: "../"
+    base: "../",
+    alias: {"events":"events/1.0.1/./events.js","expect.js":"expect.js/0.3.1/index.js","moment":"moment/2.6.0/moment.js","seajs":"seajs/2.2.1/dist/sea.js"}
   });
-
-  seajs.config({
-    alias: {"events":"sea-modules/events/1.0.1/./events.js","expect.js":"sea-modules/expect.js/0.3.1/index.js","moment":"sea-modules/moment/2.6.0/moment.js","seajs":"sea-modules/seajs/2.2.1/dist/sea.js"}
-  });
-})();
 </script>
     <!--[if lt IE 9]>
     <script src="../static/js/html5shiv.js"></script>
@@ -41,7 +39,7 @@
       <h1>
           <a href="../">Univ</a>
       </h1>
-        <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.5</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.6</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -49,7 +47,7 @@
           <li><a href="index.html">Demo</a></li>
           <li><a href="../history.html">History</a></li>
           <li><a class="test-link" href="../tests/runner.html" target="_blank">Test</a></li>
-          <li><a class="issue-link" href="https://github.com/webforms/univ/issues" target="_blank">Issues</a></li>
+          <li><a class="issue-link" href="http://github.com/webforms/univ/issues" target="_blank">Issues</a></li>
         </ul>
         
 
@@ -66,7 +64,7 @@
   var valid = new Univ(rule);
   valid.validate(data);
 
-});</script><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'univ/0.1.5/index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
+});</script><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'univ/0.1.6/index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
 
   <span class="keyword">var</span> rule = {};
   <span class="keyword">var</span> data = {};
@@ -90,4 +88,22 @@
       </footer>
     </div>
   </body>
+  <script src="../static/js/nprogress.js?nowrap"></script>
+  <script>
+  (function() {
+    NProgress.start();
+    window.onload = NProgress.done;
+    var ready = function(fn) {
+      var doc = document;
+      if(doc.addEventListener) {
+        doc.addEventListener('DOMContentLoaded', fn, false);
+      } else {
+        doc.attachEvent('onreadystatechange', fn);
+      }
+    };
+    ready(function() {
+      NProgress.inc(0.6);
+    }, false);
+  })();
+  </script>
 </html>
