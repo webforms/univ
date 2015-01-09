@@ -2,6 +2,10 @@
 var moment = require("moment");
 var events = require("events").EventEmitter;
 
+function isPromise(object) {
+  return object && typeof object.then === 'function';
+}
+
 var BUILD_IN_RULE = {
   isEmail: function(email){
     return verifyIsEmail(email, {});
@@ -602,11 +606,7 @@ function verifyFunction(ruleFunction, value, datas, certifiedCallback){
     }
   });
 
-  var result = ruleFunction.call(build_in_rule, value, certifiedCallback);
-  if("undefined" !== typeof result){
-    return result;
-  }
-
+  return ruleFunction.call(build_in_rule, value, certifiedCallback);
 }
 
 var MIME_TYPE = {
@@ -829,24 +829,39 @@ function verify(ruleName, rule, values, datas, instance_context){
   //! NOTE: Do't each loop values by verifyFunction,
   //        each loop values in user custom function if need.
   var result = verifyFunction(rule.custom, values, datas, function(certified){
-
-    if (!certified) {
-      validity.customError = true;
-      validity.valid = false;
-      validity.validationMessage = ValidityState.customError;
-    }
-
-    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-
-    if(--instance_context._pending === 0){
-      instance_context._evt.emit("complete", instance_context._certified && certified);
-      instance_context._certified = true;
-    }
   });
 
   instance_context._certified = certified;
 
-  if(typeof result !== "undefined"){
+  if (isPromise(result)) {
+
+    function callback(certified) {
+
+        if (!certified) {
+          validity.customError = true;
+          validity.valid = false;
+          validity.validationMessage = ValidityState.customError;
+        }
+
+        instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+
+        if(--instance_context._pending === 0){
+          instance_context._evt.emit("complete", instance_context._certified && certified);
+          instance_context._certified = true;
+        }
+    }
+
+    instance_context._pending++;
+
+    result.then(
+      function(){
+        callback(true);
+      }, function(){
+        callback(false);
+      }
+    );
+
+  } else {
 
     if (!result) {
       validity.customError = true;
@@ -866,8 +881,6 @@ function verify(ruleName, rule, values, datas, instance_context){
 
     instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
     return certified;
-  }else{
-    instance_context._pending++;
   }
 
 }

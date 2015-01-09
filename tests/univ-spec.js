@@ -5131,18 +5131,22 @@ var testCases = [
   },
   {
     "rule": { a: { custom: function(values, callback){
-      setTimeout(function(){
-        callback(true);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reslove();
+        }, 100);
+      });
     } } },
     "data": { a: "whatever." },
     "test": testValid
   },
   {
     "rule": { a: { custom: function(values, callback){
-      setTimeout(function(){
-        callback(false);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reject();
+        }, 100);
+      });
     } } },
     "data": { a: "whatever." },
     "test": testInvalid
@@ -5150,14 +5154,18 @@ var testCases = [
   // 2 async function validation.
   {
     "rule": { a: { custom: function(values, callback){
-      setTimeout(function(){
-        callback(true);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reslove();
+        }, 100);
+      });
     } },
     b: {custom: function(values, callback){
-      setTimeout(function(){
-        callback(true);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reslove();
+        }, 100);
+      });
     } } },
     "data": { a: "whatever.", b: "something..." },
     "test": testValid
@@ -5193,14 +5201,18 @@ var testCases = [
   //},
   {
     "rule": { a: { custom: function(values, callback){
-      setTimeout(function(){
-        callback(false);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reject();
+        }, 100);
+      });
     } },
     b: {custom: function(values, callback){
-      setTimeout(function(){
-        callback(false);
-      }, 100);
+      return new Promise(function(reslove, reject){
+        setTimeout(function(){
+          reject();
+        }, 100);
+      });
     } } },
     "data": { a: "whatever.", b: "something..." },
     "test": testInvalid
