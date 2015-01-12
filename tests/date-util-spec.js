@@ -1,68 +1,49 @@
 var expect = require('expect.js');
 var dateUtil = require('../date-util');
 
-describe("date util", function(){
+function each(list, handler) {
+  for(var i=0,l=list.length; i<l; i++){
+    handler(list[i], i)
+  }
+}
 
-  it('getDateOfWeek', function() {
+describe("dateUtil", function(){
 
-    var week_2015 = dateUtil.getDateOfWeek(2015, 1, 0)
-    expect(week_2015.getFullYear()).to.equal(2014)
-    expect(week_2015.getMonth()).to.equal(11)
-    expect(week_2015.getDate()).to.equal(29)
+  var testcases_getDateOfWeek = [
+   [ [2015, 1, 0], [2014, 11, 29] ],
+   [ [2013, 1, 0], [2012, 11, 31] ],
+   [ [1999, 1, 0], [1999, 0, 4] ]
+  ]
 
-    var week_2013 = dateUtil.getDateOfWeek(2013, 1, 0)
-    expect(week_2013.getFullYear()).to.equal(2012)
-    expect(week_2013.getMonth()).to.equal(11)
-    expect(week_2013.getDate()).to.equal(31)
+  each(testcases_getDateOfWeek, function(testcase){
+    it('getDateOfWeek(' + testcase[0].join(',') + ') == ' +
+      testcase[1][0] + '-' + (testcase[1][1]+1) + '-' + testcase[1][2], function(){
 
-    var week_1999 = dateUtil.getDateOfWeek(1999, 1, 0)
-    expect(week_1999.getFullYear()).to.equal(1999)
-    expect(week_1999.getMonth()).to.equal(0)
-    expect(week_1999.getDate()).to.equal(4)
-
-  });
-
-  it("parseDate('2009-W01-1')", function(){
-    var date_2015 = dateUtil.parseDate("2009-W01-1")
-    expect(date_2015.getFullYear()).to.equal(2008)
-    expect(date_2015.getMonth()).to.equal(11)
-    expect(date_2015.getDate()).to.equal(29)
+      var date = dateUtil.getDateOfWeek.apply(dateUtil, testcase[0])
+      expect(date.getFullYear()).to.equal(testcase[1][0])
+      expect(date.getMonth()).to.equal(testcase[1][1])
+      expect(date.getDate()).to.equal(testcase[1][2])
+    })
   })
 
-  it("parseDate('2009-W53-7')", function(){
-    var date_2015 = dateUtil.parseDate("2009-W53-7")
-    expect(date_2015.getFullYear()).to.equal(2010)
-    expect(date_2015.getMonth()).to.equal(0)
-    expect(date_2015.getDate()).to.equal(3)
-  })
+  var testcases_parseDate = [
+   [ "2009-W01-1", [2008, 11, 29] ],
+   [ "2009-W53-7", [2010, 0, 3] ],
+   [ "2015-01-01", [2015, 0, 1] ],
+   [ "2015-W01", [2014, 11, 29] ],
+   [ "2015-W011", [2014, 11, 29] ],
+   [ "2015-W01-1", [2014, 11, 29] ]
+  ]
 
-  it("parseDate('2015-01-01')", function(){
-    var date_2015 = dateUtil.parseDate("2015-01-01")
-    expect(date_2015.getFullYear()).to.equal(2015)
-    expect(date_2015.getMonth()).to.equal(0)
-    expect(date_2015.getDate()).to.equal(1)
-  })
+  each(testcases_parseDate, function(testcase){
+    it('parseDate(' + testcase[0] + ') == ' +
+      testcase[1][0] + '-' + (testcase[1][1]+1) + '-' + testcase[1][2], function(){
 
-  it("parseDate('2015-W01')", function(){
-    var date_2015 = dateUtil.parseDate("2015-W01")
-    expect(date_2015.getFullYear()).to.equal(2014)
-    expect(date_2015.getMonth()).to.equal(11)
-    expect(date_2015.getDate()).to.equal(29)
+      var date = dateUtil.parseDate(testcase[0])
+      expect(date.getFullYear()).to.equal(testcase[1][0])
+      expect(date.getMonth()).to.equal(testcase[1][1])
+      expect(date.getDate()).to.equal(testcase[1][2])
+    })
   })
-
-  it("parseDate('2015-W011')", function(){
-    var date_2015 = dateUtil.parseDate("2015-W011")
-    expect(date_2015.getFullYear()).to.equal(2014)
-    expect(date_2015.getMonth()).to.equal(11)
-    expect(date_2015.getDate()).to.equal(29)
-  })
-
-  it("parseDate('2015-W01-1')", function(){
-    var date_2015 = dateUtil.parseDate("2015-W01-1")
-    expect(date_2015.getFullYear()).to.equal(2014)
-    expect(date_2015.getMonth()).to.equal(11)
-    expect(date_2015.getDate()).to.equal(29)
-  })
-
 
 });
