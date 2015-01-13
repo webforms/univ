@@ -16,6 +16,17 @@ function toInt(string) {
   return parseInt(string, 10)
 }
 
+function isLeapYear(year) {
+  return year % 4 === 0 && year % 100 !== 0 && year % 400 === 0;
+}
+
+var MONTH_DATES = [31, 28, 31, 30, 31, 30, 30, 31, 30, 31, 30, 31]
+// 计算指定年份所在月的天数
+function getDaysOfMonth(year, month){
+  return MONTH_DATES[month] + (month === 1 && isLeapYear(year) ? 1 : 0)
+}
+
+// 计算指定年份第 week 周的周一 0 时的时间。
 function getDateOfWeek(year, week, weekday) {
   var dow = new Date(year, 0, 1).getDay()
   var dates = 1 + (week - 1) * 7
@@ -29,9 +40,9 @@ function getDateOfWeek(year, week, weekday) {
 
 function parseDate(string) {
   var match
-  var year = 2014
+  var year = 1900
   var month = 0
-  var date = 0
+  var date = 1
   var hours = 0
   var minutes = 0
   var seconds = 0
@@ -64,15 +75,21 @@ function parseDate(string) {
 
   }
 
-  return new Date(
-      year,
-      month,
-      date,
-      hours,
-      minutes,
-      seconds,
-      milliseconds
-    )
+  if (0 > month || month > 11 ||
+      1 > date || date > getDaysOfMonth(year, month) ||
+      0 > hours || hours > 59 ||
+      0 > minutes || minutes > 59 ||
+      0 > seconds || seconds > 59 ||
+      0 > milliseconds || milliseconds > 999
+      ) {
+
+    return NaN
+  }
+
+  var dt = new Date(1900, month, date, hours, minutes, seconds, milliseconds)
+  dt.setFullYear(year)
+
+  return dt
 }
 
 function compareDate(stringA, stringB) {
