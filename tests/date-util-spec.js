@@ -61,6 +61,15 @@ describe("dateUtil", function(){
     [ "2009-001-01", NaN ],
     [ "2009-01-001", NaN ],
 
+    // time
+    [ "00:00:00", [1900, 0, 1, 0, 0, 0, 0] ],
+    [ "00:00:59", [1900, 0, 1, 0, 0, 59, 0] ],
+    [ "00:00:60", NaN ],
+    [ "00:59:00", [1900, 0, 1, 0, 59, 0, 0] ],
+    [ "00:60:00", NaN ],
+    [ "23:00:00", [1900, 0, 1, 23, 0, 0, 0] ],
+    [ "24:00:00", NaN ],
+
     // week
     [ "2009-W01-1", [2008, 11, 29, 0, 0, 0, 0] ],
     [ "2009-W53-7", [2010, 0, 3, 0, 0, 0, 0] ],
@@ -69,27 +78,27 @@ describe("dateUtil", function(){
     [ "2015-W011", [2014, 11, 29, 0, 0, 0, 0] ],
     [ "2015-W01-1", [2014, 11, 29, 0, 0, 0, 0] ],
 
-    // time
-    [ "00:00:00", [1900, 0, 1, 0, 0, 0, 0] ],
-    [ "00:00:59", [1900, 0, 1, 0, 0, 59, 0] ]
   ]
 
   each(testcases_parseDate, function(testcase){
     var desc = 'parseDate(' + testcase[0] + ') == ' +
-      (isAbsNaN(testcase[1]) ? testcase[1] :
-        testcase[1][0] + '-' + (testcase[1][1]+1) + '-' + testcase[1][2])
+      (isAbsNaN(testcase[1]) ? "NaN" :
+        testcase[1][0] + '-' + (testcase[1][1]+1) + '-' + testcase[1][2] +
+        "T" + testcase[1][3] + ":" + testcase[1][4] + ":" + testcase[1][5])
 
     it(desc, function(){
 
       var date = dateUtil.parseDate(testcase[0])
 
       if (isAbsNaN(testcase[1])) {
-        expect(isArray(testcase[1])).to.equal(false)
-        expect(isAbsNaN(testcase[1])).to.equal(true)
+        expect(isAbsNaN(date)).to.equal(true)
       } else {
         expect(date.getFullYear()).to.equal(testcase[1][0])
         expect(date.getMonth()).to.equal(testcase[1][1])
         expect(date.getDate()).to.equal(testcase[1][2])
+        expect(date.getHours()).to.equal(testcase[1][3])
+        expect(date.getMinutes()).to.equal(testcase[1][4])
+        expect(date.getSeconds()).to.equal(testcase[1][5])
       }
     })
   })

@@ -3,7 +3,7 @@
 var RE_DATE = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)$/
 var RE_TIME = /^(\d\d):(\d\d)(?::(\d\d))$/;
 var RE_WEEK = /^([+-]?\d{4,6})-W(\d\d)(?:-?(\d))?$/;
-var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)[T ](\d\d):(\d\d):(\d\d)(?:[+-]\d\d:\d\d)?Z?$/;
+var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)[T ](\d\d):(\d\d)(?::(\d\d))?(?:[+-]\d\d:\d\d)?Z?$/;
 
 var RE_DATES = /^(\d{4,6})\-(\d{1,2})\-(\d{1,2})(?:[T ](\d{1,2}):(\d{1,2}):(\d{1,2})(?:[+-]\d{1,2}:\d{1,2})?Z?)?$/;
 
@@ -68,7 +68,15 @@ function parseDate(string) {
     date = d.getDate()
 
   } else if (match = RE_DATETIME.exec(string)) {
-    // TODO
+
+    year = toInt(match[1])
+    month = toInt(match[2]) - 1
+    date = toInt(match[3])
+    hours = toInt(match[4])
+    minutes = toInt(match[5])
+    seconds = toInt(match[6]) || 0
+    milliseconds = toInt(match[7]) || 0
+
   } else {
 
     return NaN
@@ -77,7 +85,7 @@ function parseDate(string) {
 
   if (0 > month || month > 11 ||
       1 > date || date > getDaysOfMonth(year, month) ||
-      0 > hours || hours > 59 ||
+      0 > hours || hours > 23 ||
       0 > minutes || minutes > 59 ||
       0 > seconds || seconds > 59 ||
       0 > milliseconds || milliseconds > 999
