@@ -16,6 +16,10 @@ function toInt(string) {
   return parseInt(string, 10)
 }
 
+function fixWeekday(weekday){
+  return weekday === 0 ? 7 : weekday
+}
+
 function isLeapYear(year) {
   return year % 4 === 0 && year % 100 !== 0 && year % 400 === 0;
 }
@@ -36,6 +40,16 @@ function getDateOfWeek(year, week, weekday) {
     dates += 8 - dow
   }
   return new Date(year, 0, dates + (weekday || 1) - 1)
+}
+
+// 计算指定年份拥有的周数
+// 第 1 周的周四，第 53 周的周四
+function getWeeksOfYear(year) {
+  var firstWeek = getDateOfWeek(year, 1, 4)
+  var lastWeek = getDateOfWeek(year, 53, 4)
+  return 52 +
+    (firstWeek.getFullYear() !== year ? 1 : 0) +
+    (lastWeek.getFullYear() === year ? 1 : 0)
 }
 
 function parseDate(string) {
@@ -62,7 +76,14 @@ function parseDate(string) {
 
   } else if (match = RE_WEEK.exec(string)) {
 
-    var d = getDateOfWeek(toInt(match[1]), toInt(match[2]), toInt(match[3]))
+    var y = toInt(match[1])
+    var w = toInt(match[2])
+    var day = toInt(match[3])
+    var maxWeeks = getWeeksOfYear(y)
+    if (w > maxWeeks) {
+      return NaN
+    }
+    var d = getDateOfWeek(y, w, day)
     year = d.getFullYear()
     month = d.getMonth()
     date = d.getDate()
@@ -126,9 +147,10 @@ function verifyIsDateTime(string){
         match[3], // date.
         match[4], // hours.
         match[5], // minutes.
-        match[6]  // second.
+        match[6]  // seconds.
       ))
 }
 
 exports.getDateOfWeek = getDateOfWeek
 exports.parseDate = parseDate
+exports.getWeeksOfYear = getWeeksOfYear

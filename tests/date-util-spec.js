@@ -73,6 +73,7 @@ describe("dateUtil", function(){
     // week
     [ "2009-W01-1", [2008, 11, 29, 0, 0, 0, 0] ],
     [ "2009-W53-7", [2010, 0, 3, 0, 0, 0, 0] ],
+    [ "2009-W54-1", NaN ],
     [ "2015-01-01", [2015, 0, 1, 0, 0, 0, 0] ],
     [ "2015-W01", [2014, 11, 29, 0, 0, 0, 0] ],
     [ "2015-W011", [2014, 11, 29, 0, 0, 0, 0] ],
@@ -93,13 +94,63 @@ describe("dateUtil", function(){
       if (isAbsNaN(testcase[1])) {
         expect(isAbsNaN(date)).to.equal(true)
       } else {
-        expect(date.getFullYear()).to.equal(testcase[1][0])
-        expect(date.getMonth()).to.equal(testcase[1][1])
-        expect(date.getDate()).to.equal(testcase[1][2])
-        expect(date.getHours()).to.equal(testcase[1][3])
-        expect(date.getMinutes()).to.equal(testcase[1][4])
-        expect(date.getSeconds()).to.equal(testcase[1][5])
+        expect("year:"+date.getFullYear()).to.equal("year:"+testcase[1][0])
+        expect("month:"+date.getMonth()).to.equal("month:"+testcase[1][1])
+        expect("date:"+date.getDate()).to.equal("date:"+testcase[1][2])
+        expect("hours:"+date.getHours()).to.equal("hours:"+testcase[1][3])
+        expect("minutes:"+date.getMinutes()).to.equal("minutes:"+testcase[1][4])
+        expect("seconds:"+date.getSeconds()).to.equal("seconds:"+testcase[1][5])
       }
+    })
+  })
+
+  var testcases_getWeeksOfYear = [
+    [2015, 53],
+    [2014, 52],
+    [2013, 52],
+    [2012, 52],
+    [2011, 52],
+    [2010, 52],
+    [2009, 53],
+    [2008, 52],
+    [2007, 52],
+    [2006, 52],
+    [2005, 52],
+    [2004, 53],
+    [2003, 52],
+    [2002, 52],
+    [2001, 52],
+    [2000, 52],
+    [1999, 52],
+    [1998, 53],
+    [1997, 52],
+    [1996, 52],
+    [1995, 52],
+    [1994, 52],
+    [1993, 52],
+    [1992, 53],
+    [1991, 52],
+    [1990, 52],
+    [1989, 52],
+    [1988, 52],
+    [1987, 53],
+    [1986, 52],
+    [1985, 52],
+    [1984, 52],
+    [1983, 52],
+    [1982, 52],
+    [1981, 53],
+    [1980, 52]
+  ]
+
+  each(testcases_getWeeksOfYear, function(testcase){
+    var desc = 'getWeeksOfYear(' + testcase[0] + ') == ' + testcase[1]
+
+    it(desc, function(){
+
+      var weeks = dateUtil.getWeeksOfYear(testcase[0])
+      expect(weeks).to.equal(testcase[1])
+
     })
   })
 
