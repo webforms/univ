@@ -13,7 +13,7 @@ Universal Validator.
 
 ## Install
 
-via spm@3.x:
+via spm:
 
 ```
 $ spm install univ
@@ -36,24 +36,25 @@ var rules = {
     required: true,
 
     // @param {String} value.
-    // @param {Function} certifiedCallback, optional.
-    custom: function(value, certifiedCallback){
-      $.ajax({
-        url: "/check-username-available",
-        data: "username="+value,
-        success: function(data){
-          if(data.state === "ok" && data.available = "yes"){
-            callback(true);
-          }else{
-            certifiedCallback(false);
-          }
-        },
-        error: function(){
-          certifiedCallback(false);
-        }
-      });
+    custom: function(value){
+      return new Promise(function(resolve, reject){
 
-      //!return undefined;
+        $.ajax({
+          url: "/check-username-available",
+          data: "username="+value,
+          success: function(data){
+            if(data.state === "ok" && data.available = "yes"){
+              resolve(true);
+            }else{
+              reject(false);
+            }
+          },
+          error: function(){
+            reject(false);
+          }
+        });
+
+      })
 
     }
   },
@@ -68,7 +69,7 @@ var rules = {
     required: true,
     minlength: 6,
     maxlength: 30,
-    custom: function(value, callback){
+    custom: function(value){
       return value === this.data("password");
     }
   }
