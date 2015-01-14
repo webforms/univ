@@ -5,7 +5,7 @@ var RE_TIME = /^(\d\d):(\d\d)(?::(\d\d))?$/;
 var RE_WEEK = /^([+-]?\d{4,6})-W(\d\d)(?:-?(\d))?$/;
 var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)[T ](\d\d):(\d\d)(?::(\d\d))?(?:[+-]\d\d:\d\d)?Z?$/;
 
-var RE_DATES = /^(\d{4,6})\-(\d{1,2})\-(\d{1,2})(?:[T ](\d{1,2}):(\d{1,2}):(\d{1,2})(?:[+-]\d{1,2}:\d{1,2})?Z?)?$/;
+var RE_DATES = /^(\d{4,6})\-(\d\d)\-(\d\d)(?:[T ](\d\d):(\d\d):(\d\d)(?:[+-]\d\d:\d\d)?Z?)?$/;
 
 
 // iso 8601 regex
@@ -78,6 +78,8 @@ function parseDate(string) {
 
     var y = toInt(match[1])
     var w = toInt(match[2])
+    // Unset `match[3]`, day is NaN. NaN < 0 && NaN <0
+    // Do'nt set default day by `|| 1`, it will effect weekdayrange [1,7] limit.
     var day = toInt(match[3])
     var maxWeeks = getWeeksOfYear(y)
     if (w > maxWeeks || 1 > day || day > 7) {
@@ -115,6 +117,7 @@ function parseDate(string) {
     return NaN
   }
 
+  // Use 1900(or another year) and setFullYear for fix new Date(year, ...) not support [0,99] year.
   var dt = new Date(1900, month, date, hours, minutes, seconds, milliseconds)
   dt.setFullYear(year)
 
