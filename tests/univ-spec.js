@@ -3504,12 +3504,17 @@ var testCases = [
   },
   {
     "rule": { a: { type: "week" } },
-    "data": { a: "2014-W53" },
+    "data": { a: "2014-W52" },
     "test": testValid
   },
   {
     "rule": { a: { type: "week" } },
     "data": { a: "2014-W1" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: "2014-W53" },
     "test": testInvalid
   },
   {
@@ -3560,17 +3565,22 @@ var testCases = [
   },
   {
     "rule": { a: { type: "week" } },
-    "data": { a: ["2014-W53"] },
+    "data": { a: ["2014-W52"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "week" } },
-    "data": { a: ["2014-W01", "2014-W53"] },
+    "data": { a: ["2014-W01", "2014-W52"] },
     "test": testValid
   },
   {
     "rule": { a: { type: "week" } },
     "data": { a: ["2014-W1"] },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { type: "week" } },
+    "data": { a: ["2014-W53"] },
     "test": testInvalid
   },
   {
