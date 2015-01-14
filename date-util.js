@@ -80,7 +80,7 @@ function parseDate(string) {
     var w = toInt(match[2])
     var day = toInt(match[3])
     var maxWeeks = getWeeksOfYear(y)
-    if (w > maxWeeks) {
+    if (w > maxWeeks || 1 > day || day > 7) {
       return NaN
     }
     var d = getDateOfWeek(y, w, day)
