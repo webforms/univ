@@ -16,16 +16,12 @@
   "bugs": {
     "url": "https://github.com/webforms/univ/issues"
   },
-  "dependencies": {
-    "moment": "2.6.0"
-  },
   "devDependencies": {
     "expect.js": "0.3.1"
   },
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "moment": "2.6.0",
       "events": "1.0.1"
     },
     "devDependencies": {

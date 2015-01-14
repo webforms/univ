@@ -1,5 +1,5 @@
 
-var moment = require("moment");
+var dateUtil = require("./date-util");
 var events = require("events").EventEmitter;
 
 function isPromise(object) {
@@ -312,9 +312,8 @@ function verifyMaxLength(maxlength, value, validity){
   return certified;
 }
 
-var RE_MONTH = /^\d{4,}\-\d{2}$/;
 function verifyIsMonth(value, validity){
-  var certified = RE_MONTH.test(value) && moment(value).isValid();
+  var certified = dateUtil.isMonth(value);
   validity.typeMismatch = !certified;
   return certified;
 }
@@ -326,7 +325,7 @@ function verifyMinMonth(value, min, instance_context, validity){
       new TypeError('[type=month][min='+min+'] is invalid month.'));
     return true;
   }
-  var certified = moment(value) >= moment(min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   validity.rangeUnderflow = !certified;
   return certified;
 }
@@ -338,15 +337,13 @@ function verifyMaxMonth(value, max, instance_context, validity){
       new TypeError('[type=month][max='+max+'] is invalid month.'));
     return true;
   }
-  var certified = moment(value) <= moment(max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   validity.rangeOverflow = !certified;
   return certified;
 }
 
-// TODO: #4, remove moment.
-var RE_TIME = /^\d{2}:\d{2}:\d{2}$/;
 function verifyIsTime(value, validity){
-  var certified = RE_TIME.test(value) && moment("2014-01-01 " + value).isValid();
+  var certified = dateUtil.isTime(value);
   validity.typeMismatch = !certified;
   return certified;
 }
@@ -358,8 +355,7 @@ function verifyMinTime(value, min, instance_context, validity){
       new TypeError('[type=time][min='+min+'] is invalid time.'));
     return true;
   }
-  var date = '2014-01-01T';
-  var certified = moment(date+value) >= moment(date+min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   validity.rangeUnderflow = !certified;
   return certified;
 }
@@ -371,15 +367,13 @@ function verifyMaxTime(value, max, instance_context, validity){
       new TypeError('[type=time][max='+max+'] is invalid time.'));
     return true;
   }
-  var date = '2014-01-01T';
-  var certified = moment(date+value) <= moment(date+max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   validity.rangeOverflow = !certified;
   return certified;
 }
 
-var RE_DATE = /^\d{4,}\-\d{2}\-\d{2}$/;
 function verifyIsDate(value, validity){
-  var certified = RE_DATE.test(value) && moment(value).isValid();
+  var certified = dateUtil.isDate(value);
   if (validity){
     validity.typeMismatch = !certified;
   }
@@ -394,7 +388,7 @@ function verifyMinDate(value, min, instance_context, validity){
       new TypeError('[type=date][min='+min+'] is invalid date.'));
     return true;
   }
-  var certified = moment(value) >= moment(min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   validity.rangeUnderflow = !certified;
   return certified;
 }
@@ -407,16 +401,15 @@ function verifyMaxDate(value, max, instance_context, validity){
       new TypeError('[type=date][max='+max+'] is invalid date.'));
     return true;
   }
-  var certified = moment(value) <= moment(max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   validity.rangeOverflow = !certified;
   return certified;
 }
 
 
 // http://www.w3.org/TR/html-markup/input.datetime.html
-var RE_DATETIME = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTime(value, validity){
-  var certified = RE_DATETIME.test(value) && moment(value).isValid();
+  var certified = dateUtil.isDateTime(value);
   if (validity) {
     validity.typeMismatch = !certified;
   }
@@ -432,7 +425,7 @@ function verifyMinDateTime(value, min, instance_context, validity){
       new TypeError('[type=datetime][min='+min+'] is invalid datetime.'));
     return true;
   }
-  var certified = moment(value) >= moment(min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   validity.rangeUnderflow = !certified;
   return certified;
 }
@@ -446,7 +439,7 @@ function verifyMaxDateTime(value, max, instance_context, validity){
       new TypeError('[type=datetime][max='+max+'] is invalid datetime.'));
     return true;
   }
-  var certified = moment(value) <= moment(max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   validity.rangeOverflow = !certified;
   return certified;
 }
@@ -455,7 +448,7 @@ function verifyMaxDateTime(value, max, instance_context, validity){
 // [input=type=datetime-local](http://www.w3.org/TR/html-markup/input.datetime-local.html)
 var RE_DATETIME_LOCAL = /^\d{4,}\-\d\d\-\d\dT\d\d:\d\d:\d\d(?:[+-]\d\d:\d\d)?Z?$/;
 function verifyIsDateTimeLocal(value, validity){
-  var certified = RE_DATETIME_LOCAL.test(value) && moment(value).isValid();
+  var certified = dateUtil.isDateTime(value);
   if (validity) {
     validity.typeMismatch = !certified;
   }
@@ -471,7 +464,7 @@ function verifyMinDateTimeLocal(value, min, instance_context, validity){
       new TypeError('[type=datetime-local][min='+min+'] is invalid datetime.'));
     return true;
   }
-  var certified = moment(value) >= moment(min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   validity.rangeUnderflow = !certified;
   return certified;
 }
@@ -485,7 +478,7 @@ function verifyMaxDateTimeLocal(value, max, instance_context, validity){
       new TypeError('[type=datetime-local][max='+max+'] is invalid datetime.'));
     return true;
   }
-  var certified = moment(value) <= moment(max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   validity.rangeOverflow = !certified;
   return certified;
 }
@@ -493,7 +486,7 @@ function verifyMaxDateTimeLocal(value, max, instance_context, validity){
 
 var RE_WEEK = /^\d{4,}-W\d{2}$/;
 function verifyIsWeek(value, validity){
-  var certified = RE_WEEK.test(value) && moment(value).isValid();
+  var certified = dateUtil.isWeek(value);
   if (validity) {
     validity.typeMismatch = !certified;
   }
@@ -509,7 +502,7 @@ function verifyMinWeek(value, min, instance_context, validity){
       new TypeError('[type=week][min='+min+'] is invalid week.'));
     return true;
   }
-  var certified = moment(value) >= moment(min);
+  var certified = dateUtil.distanceDate(value, min) >= 0;
   // XXX: Non-Effect.
   validity.rangeUnderflow = !certified;
   return certified;
@@ -524,7 +517,7 @@ function verifyMaxWeek(value, max, instance_context, validity){
       new TypeError('[type=week][max='+max+'] is invalid week.'));
     return true;
   }
-  var certified = moment(value) <= moment(max);
+  var certified = dateUtil.distanceDate(value, max) <= 0;
   // XXX: Non-Effect.
   validity.rangeOverflow = !certified;
   return certified;
