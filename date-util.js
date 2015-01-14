@@ -164,3 +164,4 @@ exports.getDateOfWeek = getDateOfWeek
 exports.parseDate = parseDate
 exports.getWeeksOfYear = getWeeksOfYear
 exports.compareDate = compareDate
+exports.distanceDate = distanceDate
