@@ -111,6 +111,22 @@ describe("dateUtil", function(){
     [ "2009-001-01", NaN ],
     [ "2009-01-001", NaN ],
 
+    // MONTH.
+    [ "2009-01", [2009, 0, 1, 0, 0, 0, 0] ],
+    [ "2009-12", [2009, 11, 1, 0, 0, 0, 0] ],
+    [ "0100-12", [100, 11, 1, 0, 0, 0, 0] ],
+    [ "0099-12", [99, 11, 1, 0, 0, 0, 0] ],
+    [ "0001-12", [1, 11, 1, 0, 0, 0, 0] ],
+    [ "0001-01", [1, 0, 1, 0, 0, 0, 0] ],
+    [ "0000-01", [0, 0, 1, 0, 0, 0, 0] ],
+    [ "-0000-01", [0, 0, 1, 0, 0, 0, 0] ],
+    [ "-0001-01", [-1, 0, 1, 0, 0, 0, 0] ],
+
+    [ "2009-00", NaN ],
+    [ "2009-13", NaN ],
+    [ "2009-100", NaN ],
+    [ "2009-001", NaN ],
+
     // TIME
     [ "00:00:00", [1900, 0, 1, 0, 0, 0, 0] ],
     [ "00:00:59", [1900, 0, 1, 0, 0, 59, 0] ],
@@ -308,6 +324,21 @@ describe("dateUtil", function(){
     it('isDate(' + testcase[0] + ') == ' + testcase[1], function(){
 
       expect(dateUtil.isDate(testcase[0])).to.equal(testcase[1])
+
+    })
+  })
+
+  var testcases_isMonth = [
+    [ "1900-01", true],
+    [ "1900-12", true],
+    [ "190a-01-01", false],
+    [ "1900-00", false],
+    [ "1900-13", false]
+  ]
+  each(testcases_isMonth, function(testcase){
+    it('isMonth(' + testcase[0] + ') == ' + testcase[1], function(){
+
+      expect(dateUtil.isMonth(testcase[0])).to.equal(testcase[1])
 
     })
   })

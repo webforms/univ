@@ -1,16 +1,10 @@
 
 //                     year       month    date
 var RE_DATE = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)$/
-var RE_TIME = /^(\d\d):(\d\d)(?::(\d\d))?$/;
-var RE_WEEK = /^([+-]?\d{4,6})-W(\d\d)(?:-?(\d))?$/;
+var RE_MONTH = /^([+-]?\d{4,6})\-(\d\d)$/
+var RE_TIME = /^(\d\d):(\d\d)(?::(\d\d))?$/
+var RE_WEEK = /^([+-]?\d{4,6})-W(\d\d)(?:-?(\d))?$/
 var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)[T ](\d\d):(\d\d)(?::(\d\d))?(?:[+-]\d\d:\d\d)?Z?$/;
-
-var RE_DATES = /^(\d{4,6})\-(\d\d)\-(\d\d)(?:[T ](\d\d):(\d\d):(\d\d)(?:[+-]\d\d:\d\d)?Z?)?$/;
-
-
-// iso 8601 regex
-// 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
-isoRegex = /^\s*(?:[+-]\d{6}|\d{4})-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/
 
 function toInt(string) {
   return parseInt(string, 10)
@@ -67,6 +61,11 @@ function parseDate(string) {
     year = toInt(match[1])
     month = toInt(match[2]) - 1
     date = toInt(match[3])
+
+  } else if (match = RE_MONTH.exec(string)) {
+
+    year = toInt(match[1])
+    month = toInt(match[2]) - 1
 
   } else if (match = RE_TIME.exec(string)) {
 
@@ -146,6 +145,10 @@ function isDateTime(string){
   return RE_DATETIME.test(string) && !isNaN(parseDate(string))
 }
 
+function isMonth(string){
+  return RE_MONTH.test(string) && !isNaN(parseDate(string))
+}
+
 function isTime(string){
   return RE_TIME.test(string) && !isNaN(parseDate(string))
 }
@@ -162,6 +165,7 @@ module.exports = {
   distanceDate: distanceDate,
   isDate: isDate,
   isDateTime: isDateTime,
+  isMonth: isMonth,
   isTime: isTime,
   isWeek: isWeek
 }
