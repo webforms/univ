@@ -4,7 +4,7 @@ var RE_DATE = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)$/
 var RE_MONTH = /^([+-]?\d{4,6})\-(\d\d)$/
 var RE_TIME = /^(\d\d):(\d\d)(?::(\d\d))?$/
 var RE_WEEK = /^([+-]?\d{4,6})-W(\d\d)(?:-?(\d))?$/
-var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)[T ](\d\d):(\d\d)(?::(\d\d))?(?:[+-]\d\d:\d\d)?Z?$/;
+var RE_DATETIME = /^([+-]?\d{4,6})\-(\d\d)\-(\d\d)T(\d\d):(\d\d)(?::(\d\d))?(?:[+-]\d\d:\d\d)?Z?$/;
 
 function toInt(string) {
   return parseInt(string, 10)
