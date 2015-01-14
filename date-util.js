@@ -82,7 +82,7 @@ function parseDate(string) {
     // Do'nt set default day by `|| 1`, it will effect weekdayrange [1,7] limit.
     var day = toInt(match[3])
     var maxWeeks = getWeeksOfYear(y)
-    if (w > maxWeeks || 1 > day || day > 7) {
+    if (1 > w || w > maxWeeks || 1 > day || day > 7) {
       return NaN
     }
     var d = getDateOfWeek(y, w, day)
@@ -137,31 +137,31 @@ function compareDate(stringA, stringB) {
   return distance > 0 ? 1 : -1
 }
 
-function verifyIsDate(string) {
+function isDate(string) {
   var match = string.match(RE_DATE)
-  return match && !isNaN(
-      new Date(
-        match[1], // year.
-        parseInt(match[2], 10) - 1, // month.
-        match[3] // date
-      ))
+  return RE_DATE.test(string) && !isNaN(parseDate(string))
 }
 
-function verifyIsDateTime(string){
-  var match = string.match(RE_DATETIME)
-  return match && !isNaN(
-      new Date(
-        match[1], // year.
-        parseInt(match[2], 10) - 1, // month.
-        match[3], // date.
-        match[4], // hours.
-        match[5], // minutes.
-        match[6]  // seconds.
-      ))
+function isDateTime(string){
+  return RE_DATETIME.test(string) && !isNaN(parseDate(string))
 }
 
-exports.getDateOfWeek = getDateOfWeek
-exports.parseDate = parseDate
-exports.getWeeksOfYear = getWeeksOfYear
-exports.compareDate = compareDate
-exports.distanceDate = distanceDate
+function isTime(string){
+  return RE_TIME.test(string) && !isNaN(parseDate(string))
+}
+
+function isWeek(string){
+  return RE_WEEK.test(string) && !isNaN(parseDate(string))
+}
+
+module.exports = {
+  getDateOfWeek: getDateOfWeek,
+  parseDate: parseDate,
+  getWeeksOfYear: getWeeksOfYear,
+  compareDate: compareDate,
+  distanceDate: distanceDate,
+  isDate: isDate,
+  isDateTime: isDateTime,
+  isTime: isTime,
+  isWeek: isWeek
+}

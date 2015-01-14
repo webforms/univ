@@ -284,12 +284,108 @@ describe("dateUtil", function(){
     [ "1900-01-01", "00:00:00", 0 ],
     [ "1900-01-01", "00:00", 0 ],
     [ "2014-12-29", "2015-W011", 0 ],
-    [ "2014-12-29", "2015-W01", 0 ],
+    [ "2014-12-29", "2015-W01", 0 ]
   ]
   each(testcases_compareDate, function(testcase){
     it('compareDate(' + testcase[0] + ',' + testcase[1] + ') == ' + testcase[2], function(){
 
       expect(dateUtil.compareDate(testcase[0], testcase[1])).to.equal(testcase[2])
+
+    })
+  })
+
+  var testcases_isDate = [
+    [ "1900-01-01", true],
+    [ "1900-12-01", true],
+    [ "1900-12-31", true],
+    [ "190a-01-01", false],
+    [ "1900-00-01", false],
+    [ "1900-13-01", false],
+    [ "1900-01-00", false],
+    [ "1900-01-32", false]
+  ]
+  each(testcases_isDate, function(testcase){
+    it('isDate(' + testcase[0] + ') == ' + testcase[1], function(){
+
+      expect(dateUtil.isDate(testcase[0])).to.equal(testcase[1])
+
+    })
+  })
+
+  var testcases_isDateTime = [
+    [ "1900-01-01T00:00:00", true],
+    [ "1900-12-01T00:00:00", true],
+    [ "1900-12-31T00:00:00", true],
+    [ "1900-01-01T23:00:00", true],
+    [ "1900-01-01T00:59:00", true],
+    [ "1900-01-01T00:00:59", true],
+    [ "1900-01-01 00:00:00", true],
+    [ "1900-01-01", false],
+    [ "1900-00-01T00:00:00", false],
+    [ "1900-13-01T00:00:00", false],
+    [ "1900-01-00T00:00:00", false],
+    [ "1900-01-32T00:00:00", false],
+    [ "1900-01-01T24:00:00", false],
+    [ "1900-01-01T00:60:00", false],
+    [ "1900-01-01T00:00:60", false],
+    [ "1900-01-01T00:00", true],
+    [ "1900-12-01T00:00", true],
+    [ "1900-12-31T00:00", true],
+    [ "1900-01-01T23:00", true],
+    [ "1900-01-01T00:59", true],
+    [ "1900-01-01 00:00", true],
+    [ "1900-00-01T00:00", false],
+    [ "1900-13-01T00:00", false],
+    [ "1900-01-00T00:00", false],
+    [ "1900-01-32T00:00", false],
+    [ "1900-01-01T24:00", false],
+    [ "1900-01-01T00:60", false]
+  ]
+  each(testcases_isDateTime, function(testcase){
+    it('isDate(' + testcase[0] + ') == ' + testcase[1], function(){
+
+      expect(dateUtil.isDateTime(testcase[0])).to.equal(testcase[1])
+
+    })
+  })
+
+  var testcases_isTime = [
+    [ "00:00:00", true],
+    [ "00:00:00", true],
+    [ "00:00:00", true],
+    [ "23:00:00", true],
+    [ "00:59:00", true],
+    [ "00:00:59", true],
+    [ "1900-01-01", false],
+    [ "24:00:00", false],
+    [ "00:60:00", false],
+    [ "00:00:60", false],
+    [ "00:00", true],
+    [ "23:00", true],
+    [ "00:59", true],
+    [ "24:00", false],
+    [ "00:60", false]
+  ]
+  each(testcases_isTime, function(testcase){
+    it('isDate(' + testcase[0] + ') == ' + testcase[1], function(){
+
+      expect(dateUtil.isTime(testcase[0])).to.equal(testcase[1])
+
+    })
+  })
+
+  var testcases_isWeek = [
+    [ "2015-W01", true],
+    [ "2015-W011", true],
+    [ "2015-W017", true],
+    [ "2015-W00", false],
+    [ "2015-W010", false],
+    [ "2015-W018", false]
+  ]
+  each(testcases_isWeek, function(testcase){
+    it('isDate(' + testcase[0] + ') == ' + testcase[1], function(){
+
+      expect(dateUtil.isWeek(testcase[0])).to.equal(testcase[1])
 
     })
   })
