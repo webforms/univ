@@ -124,11 +124,17 @@ function parseDate(string) {
   return dt
 }
 
-function compareDate(stringA, stringB) {
+function distanceDate(stringA, stringB) {
   var dateA = parseDate(stringA)
   var dateB = parseDate(stringB)
   if (isNaN(dateA) || isNaN(dateB)) {throw new Error('Invalid Date'); }
   return dateA.getTime() - dateB.getTime()
+}
+
+function compareDate(stringA, stringB) {
+  var distance = distanceDate(stringA, stringB)
+  if (distance === 0) {return 0}
+  return distance > 0 ? 1 : -1
 }
 
 function verifyIsDate(string) {
@@ -157,3 +163,4 @@ function verifyIsDateTime(string){
 exports.getDateOfWeek = getDateOfWeek
 exports.parseDate = parseDate
 exports.getWeeksOfYear = getWeeksOfYear
+exports.compareDate = compareDate
