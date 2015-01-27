@@ -1,4 +1,5 @@
 var expect = require('expect.js');
+var Promise = require('promise')
 var Validator = require('../index');
 
 // Luhn 算法
@@ -5140,10 +5141,10 @@ var testCases = [
     "test": testInvalid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reslove();
+          reslove(values);
         }, 100);
       });
     } } },
@@ -5151,10 +5152,10 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reject();
+          reject(values);
         }, 100);
       });
     } } },
@@ -5163,17 +5164,17 @@ var testCases = [
   },
   // 2 async function validation.
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reslove();
+          reslove(values);
         }, 100);
       });
     } },
-    b: {custom: function(values, callback){
+    b: {custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reslove();
+          reslove(values);
         }, 100);
       });
     } } },
@@ -5182,12 +5183,12 @@ var testCases = [
   },
   // XXX: special, test invalid, rule a can-not valid.
   //{
-    //"rule": { a: { custom: function(values, callback){
+    //"rule": { a: { custom: function(values){
       //setTimeout(function(){
         //callback(false);
       //}, 100);
     //} },
-    //b: {custom: function(values, callback){
+    //b: {custom: function(values){
       //setTimeout(function(){
         //callback(true);
       //}, 100);
@@ -5196,12 +5197,12 @@ var testCases = [
     //"test": testInvalid
   //},
   //{
-    //"rule": { a: { custom: function(values, callback){
+    //"rule": { a: { custom: function(values){
       //setTimeout(function(){
         //callback(true);
       //}, 100);
     //} },
-    //b: {custom: function(values, callback){
+    //b: {custom: function(values){
       //setTimeout(function(){
         //callback(false);
       //}, 100);
@@ -5210,17 +5211,17 @@ var testCases = [
     //"test": testInvalid
   //},
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reject();
+          reject(values);
         }, 100);
       });
     } },
-    b: {custom: function(values, callback){
+    b: {custom: function(values){
       return new Promise(function(reslove, reject){
         setTimeout(function(){
-          reject();
+          reject(values);
         }, 100);
       });
     } } },
@@ -5229,21 +5230,21 @@ var testCases = [
   },
   // custom function, and multiple rule mixin.
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isEmail(values) || this.isMobile(values);
     } } },
     "data": { a: "a@b.c" },
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isEmail(values) || this.isMobile(values);
     } } },
     "data": { a: "13900000000" },
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       var certified = true;
       for(var i=0,l=values.length; i<l; i++){
         certified = certified &&
@@ -5255,7 +5256,7 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       var certified = true;
       for(var i=0,l=values.length; i<l; i++){
         certified = certified &&
@@ -5267,7 +5268,7 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       var certified = true;
       for(var i=0,l=values.length; i<l; i++){
         certified = certified &&
@@ -5279,28 +5280,28 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isEmail(values) || this.isMobile(values);
     } } },
     "data": { a: "139000000000" },
     "test": testInvalid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: "6228480323012001315" },
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: ["6228480323012001315"] },
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: ["6228480323012001315", // 农行
@@ -5311,21 +5312,21 @@ var testCases = [
     "test": testValid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: "139000000000" },
     "test": testInvalid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: "6228480323012001314" },
     "test": testInvalid
   },
   {
-    "rule": { a: { custom: function(values, callback){
+    "rule": { a: { custom: function(values){
       return this.isBankCard(values);
     } } },
     "data": { a: ["6228480323012001314"] },

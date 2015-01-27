@@ -129,7 +129,7 @@ constructor, new a validator by rulers.
 Set or get a custom rule.
 
 ```js
-validator.rule("isBankCard", function(values, callback){
+validator.rule("isBankCard", function(values){
   return true;
 });
 ```

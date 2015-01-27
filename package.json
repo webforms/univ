@@ -2,7 +2,13 @@
   "name": "univ",
   "version": "0.2.0",
   "description": "Universal Validator.",
-  "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
+  "keywords": [
+    "Validator",
+    "Form",
+    "Forms",
+    "WebForm",
+    "WebForms"
+  ],
   "homepage": "https://github.com/webforms/univ",
   "author": "闲耘<hotoo.cn@gmail.com>",
   "maintainers": [
@@ -25,7 +31,8 @@
       "events": "1.0.1"
     },
     "devDependencies": {
-      "expect.js": "0.3.1"
+      "expect.js": "0.3.1",
+      "promise": "6.0.0"
     },
     "engines": {
       "seajs": "2.2.1"
