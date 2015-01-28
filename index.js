@@ -107,7 +107,7 @@ function toNumber(object){
 
 // @param {Object} rules
 // @param {Function} handler
-// @param {Function} placehandler, optional
+// @param {Function} placehandler, optional. When has not item, call placehorder handler.
 function eachRules(rules, handler, placehandler){
   var hasRule = false;
   for(var ruleName in rules){
@@ -116,8 +116,8 @@ function eachRules(rules, handler, placehandler){
       handler.call(rules, ruleName, rules[ruleName]);
     }
   }
-  if (!hasRule) {
-    isFunction(placehandler) && placehandler()
+  if (!hasRule && isFunction(placehandler)) {
+    placehandler()
   }
 }
 
