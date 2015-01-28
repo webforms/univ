@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var Promise = require('promise')
+var Promise = this.Promise || require('promise')
 var Validator = require('../index');
 
 // Luhn 算法

@@ -1,12 +1,7 @@
 
-var global = this;
-var Promise = global.Promise || require("promise")
-var dateUtil = require("./date-util");
+var Promise = this.Promise || require("promise")
 var Events = require("events").EventEmitter;
-
-function isPromise(object) {
-  return object && typeof object.then === 'function';
-}
+var dateUtil = require("./date-util");
 
 var BUILD_IN_RULE = {
   isEmail: function(email){
@@ -90,6 +85,10 @@ function isFunction(object){
 }
 function isObject(object){
   return null!==object && typeOf(object, "Object");
+}
+
+function isPromise(object) {
+  return object && typeof object.then === 'function';
 }
 
 function trim(string){
