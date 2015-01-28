@@ -1,4 +1,6 @@
 
+var global = this;
+var Promise = global.Promise || require("promise")
 var dateUtil = require("./date-util");
 var events = require("events").EventEmitter;
 
@@ -106,11 +108,17 @@ function toNumber(object){
 
 // @param {Object} rules
 // @param {Function} handler
-function eachRules(rules, handler){
+// @param {Function} placehandler, optional
+function eachRules(rules, handler, placehandler){
+  var hasRule = false;
   for(var ruleName in rules){
     if(rules.hasOwnProperty(ruleName)){
+      hasRule = true;
       handler.call(rules, ruleName, rules[ruleName]);
     }
+  }
+  if (!hasRule) {
+    isFunction(placehandler) && placehandler()
   }
 }
 
@@ -590,7 +598,7 @@ function verifyPatternList(pattern, values, instance_context, validity){
   return certified;
 }
 
-function verifyFunction(ruleFunction, value, datas, certifiedCallback){
+function verifyFunction(ruleFunction, value, datas){
   if(!isFunction(ruleFunction)){return true;}
 
   var build_in_rule = merge(BUILD_IN_RULE, {
@@ -599,7 +607,7 @@ function verifyFunction(ruleFunction, value, datas, certifiedCallback){
     }
   });
 
-  return ruleFunction.call(build_in_rule, value, certifiedCallback);
+  return ruleFunction.call(build_in_rule, value);
 }
 
 var MIME_TYPE = {
@@ -677,204 +685,199 @@ var ValidityState = {
 
 function verify(ruleName, rule, values, datas, instance_context){
 
-  var certified = true;
-  var validity = {
-    customError: false,
-    patternMismatch: false,
-    rangeOverflow: false,
-    rangeUnderflow: false,
-    stepMismatch: false,
-    tooLong: false,
-    tooShort: false,
-    typeMismatch: false,
-    valueMissing: false,
-    badInput: false,
-    valid: true,
-    validationMessage: ValidityState.valid
-  };
+  return new Promise(function(resolve, reject) {
 
-  var resultRequired = verifyRequired(rule.required, values);
-  // fast return if required rule not match.
-  if("undefined" !== typeof resultRequired){
+    var certified = true;
+    var validity = {
+      customError: false,
+      patternMismatch: false,
+      rangeOverflow: false,
+      rangeUnderflow: false,
+      stepMismatch: false,
+      tooLong: false,
+      tooShort: false,
+      typeMismatch: false,
+      valueMissing: false,
+      badInput: false,
+      valid: true,
+      validationMessage: ValidityState.valid
+    };
 
-    if (resultRequired === false) {
-      validity.valueMissing = true;
-      validity.valid = false;
-      validity.validationMessage = ValidityState.valueMissing;
-    }
+    var resultRequired = verifyRequired(rule.required, values);
+    // fast return if required rule not match.
+    if("undefined" !== typeof resultRequired){
 
-    instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
-    return resultRequired;
-  }
-
-  if(isArray(values)){
-
-    certified = certified &&
-      verifyMinLengthList(rule.minlength, values, validity) &&
-      verifyMaxLengthList(rule.maxlength, values, validity) &&
-      verifyPatternList(rule.pattern, values, instance_context, validity);
-
-  }else{
-
-    certified = certified &&
-      verifyMinLength(rule.minlength, values, validity) &&
-      verifyMaxLength(rule.maxlength, values, validity) &&
-      verifyPattern(rule.pattern, values, instance_context, validity);
-
-  }
-
-  // FIXME: validity.
-  certified = certified &&
-    verifyMinLimit(rule.minlimit, values, validity) &&
-    verifyMaxLimit(rule.maxlimit, values, validity);
-
-
-  // rule: type, min, max.
-  switch(rule.type){
-  case RULE_TYPES.number:
-  case RULE_TYPES.range:
-    certified = certified &&
-      eachValues(verifyIsNumber, values, validity) &&
-      eachValues(verifyMin, values, rule.min, validity) &&
-      eachValues(verifyMax, values, rule.max, validity);
-    break;
-
-  case RULE_TYPES.date:
-    certified = certified &&
-      eachValues(verifyIsDate, values, validity) &&
-      eachValues(verifyMinDate, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxDate, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES.datetime:
-    certified = certified &&
-      eachValues(verifyIsDateTime, values, validity) &&
-      eachValues(verifyMinDateTime, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxDateTime, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES["datetime-local"]:
-    certified = certified &&
-      eachValues(verifyIsDateTimeLocal, values, validity) &&
-      eachValues(verifyMinDateTimeLocal, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxDateTimeLocal, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES.time:
-    certified = certified &&
-      eachValues(verifyIsTime, values, validity) &&
-      eachValues(verifyMinTime, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxTime, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES.week:
-    certified = certified &&
-      eachValues(verifyIsWeek, values, validity) &&
-      eachValues(verifyMinWeek, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxWeek, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES.month:
-    certified = certified &&
-      eachValues(verifyIsMonth, values, validity) &&
-      eachValues(verifyMinMonth, values, rule.min, instance_context, validity) &&
-      eachValues(verifyMaxMonth, values, rule.max, instance_context, validity);
-    break;
-
-  case RULE_TYPES.url:
-    certified = certified && eachValues(verifyIsUrl, values, validity);
-    break;
-
-  case RULE_TYPES.email:
-    certified = certified && eachValues(verifyIsEmail, values, validity);
-    break;
-
-  case RULE_TYPES.tel:
-    certified = certified && (
-        eachValues(verifyIsTel, values, validity) ||
-        eachValues(verifyIsMobile, values, validity)
-      );
-    break;
-
-  case RULE_TYPES.color:
-    certified = certified && eachValues(verifyIsColor, values, validity);
-    break;
-
-  case RULE_TYPES.file:
-    certified = certified &&
-      eachValues(verifyFileType, values, rule.accept, validity) &&
-      eachValues(verifyMinFileSize, values, rule.min, validity) &&
-      eachValues(verifyMaxFileSize, values, rule.max, validity);
-    break;
-
-  //case RULE_TYPES.select-one:
-  //case RULE_TYPES.radio:
-  //case RULE_TYPES.text:
-  //case RULE_TYPES.search:
-  //case RULE_TYPES.textarea:
-  //case RULE_TYPES.checkbox:
-  //case RULE_TYPES["select-multiple"]:
-  //case RULE_TYPES.password:
-  //default:
-    //break;
-  }
-
-  //! NOTE: Do't each loop values by verifyFunction,
-  //        each loop values in user custom function if need.
-  var result = verifyFunction(rule.custom, values, datas, function(certified){
-  });
-
-  instance_context._certified = certified;
-
-  if (isPromise(result)) {
-
-    function callback(certified) {
-
-        if (!certified) {
-          validity.customError = true;
-          validity.valid = false;
-          validity.validationMessage = ValidityState.customError;
-        }
-
-        instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-
-        if(--instance_context._pending === 0){
-          instance_context._evt.emit("complete", instance_context._certified && certified);
-          instance_context._certified = true;
-        }
-    }
-
-    instance_context._pending++;
-
-    result.then(
-      function(){
-        callback(true);
-      }, function(){
-        callback(false);
+      if (resultRequired === false) {
+        validity.valueMissing = true;
+        validity.valid = false;
+        validity.validationMessage = ValidityState.valueMissing;
       }
-    );
 
-  } else {
+      instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
 
-    if (!result) {
-      validity.customError = true;
-      validity.valid = false;
+      resolve(resultRequired);
+      return;
     }
 
-    for(var key in validity){
-      if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
-        validity.validationMessage = ValidityState[key];
+    if(isArray(values)){
+
+      certified = certified &&
+        verifyMinLengthList(rule.minlength, values, validity) &&
+        verifyMaxLengthList(rule.maxlength, values, validity) &&
+        verifyPatternList(rule.pattern, values, instance_context, validity);
+
+    }else{
+
+      certified = certified &&
+        verifyMinLength(rule.minlength, values, validity) &&
+        verifyMaxLength(rule.maxlength, values, validity) &&
+        verifyPattern(rule.pattern, values, instance_context, validity);
+
+    }
+
+    // FIXME: validity.
+    certified = certified &&
+      verifyMinLimit(rule.minlimit, values, validity) &&
+      verifyMaxLimit(rule.maxlimit, values, validity);
+
+
+    // rule: type, min, max.
+    switch(rule.type){
+    case RULE_TYPES.number:
+    case RULE_TYPES.range:
+      certified = certified &&
+        eachValues(verifyIsNumber, values, validity) &&
+        eachValues(verifyMin, values, rule.min, validity) &&
+        eachValues(verifyMax, values, rule.max, validity);
+      break;
+
+    case RULE_TYPES.date:
+      certified = certified &&
+        eachValues(verifyIsDate, values, validity) &&
+        eachValues(verifyMinDate, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxDate, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES.datetime:
+      certified = certified &&
+        eachValues(verifyIsDateTime, values, validity) &&
+        eachValues(verifyMinDateTime, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxDateTime, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES["datetime-local"]:
+      certified = certified &&
+        eachValues(verifyIsDateTimeLocal, values, validity) &&
+        eachValues(verifyMinDateTimeLocal, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxDateTimeLocal, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES.time:
+      certified = certified &&
+        eachValues(verifyIsTime, values, validity) &&
+        eachValues(verifyMinTime, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxTime, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES.week:
+      certified = certified &&
+        eachValues(verifyIsWeek, values, validity) &&
+        eachValues(verifyMinWeek, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxWeek, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES.month:
+      certified = certified &&
+        eachValues(verifyIsMonth, values, validity) &&
+        eachValues(verifyMinMonth, values, rule.min, instance_context, validity) &&
+        eachValues(verifyMaxMonth, values, rule.max, instance_context, validity);
+      break;
+
+    case RULE_TYPES.url:
+      certified = certified && eachValues(verifyIsUrl, values, validity);
+      break;
+
+    case RULE_TYPES.email:
+      certified = certified && eachValues(verifyIsEmail, values, validity);
+      break;
+
+    case RULE_TYPES.tel:
+      certified = certified && (
+          eachValues(verifyIsTel, values, validity) ||
+          eachValues(verifyIsMobile, values, validity)
+        );
+      break;
+
+    case RULE_TYPES.color:
+      certified = certified && eachValues(verifyIsColor, values, validity);
+      break;
+
+    case RULE_TYPES.file:
+      certified = certified &&
+        eachValues(verifyFileType, values, rule.accept, validity) &&
+        eachValues(verifyMinFileSize, values, rule.min, validity) &&
+        eachValues(verifyMaxFileSize, values, rule.max, validity);
+      break;
+
+    //case RULE_TYPES.select-one:
+    //case RULE_TYPES.radio:
+    //case RULE_TYPES.text:
+    //case RULE_TYPES.search:
+    //case RULE_TYPES.textarea:
+    //case RULE_TYPES.checkbox:
+    //case RULE_TYPES["select-multiple"]:
+    //case RULE_TYPES.password:
+    //default:
+      //break;
+    }
+
+    //! NOTE: Do't each loop values by verifyFunction,
+    //        each loop values in user custom function if need.
+    var result = verifyFunction(rule.custom, values, datas);
+
+    if (isPromise(result)) {
+
+      result.then(
+        function(certified){
+
+          if (!certified) {
+            validity.customError = true;
+            validity.valid = false;
+            validity.validationMessage = ValidityState.customError;
+          }
+
+          instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+
+          resolve(certified)
+
+        }, function(reason){
+          reject(reason);
+        }
+      );
+
+    } else {
+
+      if (!result) {
+        validity.customError = true;
         validity.valid = false;
       }
+
+      for(var key in validity){
+        if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
+          validity.validationMessage = ValidityState[key];
+          validity.valid = false;
+        }
+      }
+
+      certified = certified && result;
+
+      validity.valid = certified;
+
+      instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+      resolve(certified)
+      return certified;
     }
-
-    certified = certified && result;
-
-    validity.valid = certified;
-
-    instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-    return certified;
-  }
+  })
 
 }
 
@@ -882,29 +885,45 @@ function verify(ruleName, rule, values, datas, instance_context){
 var Validator = function(rules){
   this._rules = rules;
   this._evt = new events();
-  this._pending = 0;
-  this._certified = true;
 };
 
 Validator.prototype.validate = function(data){
 
-  var certified = true;
+  var pending = 0;
   var ME = this;
 
-  eachRules(this._rules, function(ruleName, rule){
+  return new Promise(function(resolve, reject) {
+    var certified = true;
 
-    var values = data[ruleName];
-    var result = verify(ruleName, rule, values, data, ME);
-    certified = certified && result;
+    eachRules(ME._rules, function(ruleName, rule){
 
-  });
+      var values = data[ruleName];
+      pending ++;
+      var result = verify(ruleName, rule, values, data, ME);
 
-  if(this._pending === 0){
-    ME._evt.emit("complete", certified);
-    ME._certified = true;
-  }
+      result.then(
+        function(certify){
+          certified = certified && certify;
 
-  return this;
+          if((--pending) === 0){
+            ME._evt.emit("complete", certified);
+
+            resolve(certified)
+          }
+
+        },
+        function(){
+          ME._evt.emit("error", ruleName, rule, values, data)
+          pending --;
+        })
+
+    },
+    function(){
+      ME._evt.emit("complete", true)
+      resolve(true)
+    });
+
+  })
 };
 
 Validator.prototype.on = function(eventName, handler){

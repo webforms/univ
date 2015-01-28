@@ -5142,9 +5142,9 @@ var testCases = [
   },
   {
     "rule": { a: { custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reslove(values);
+          resolve(true);
         }, 100);
       });
     } } },
@@ -5153,9 +5153,9 @@ var testCases = [
   },
   {
     "rule": { a: { custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reject(values);
+          resolve(false);
         }, 100);
       });
     } } },
@@ -5165,16 +5165,16 @@ var testCases = [
   // 2 async function validation.
   {
     "rule": { a: { custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reslove(values);
+          resolve(true);
         }, 100);
       });
     } },
     b: {custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reslove(values);
+          resolve(true);
         }, 100);
       });
     } } },
@@ -5212,16 +5212,16 @@ var testCases = [
   //},
   {
     "rule": { a: { custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reject(values);
+          resolve(false);
         }, 100);
       });
     } },
     b: {custom: function(values){
-      return new Promise(function(reslove, reject){
+      return new Promise(function(resolve, reject){
         setTimeout(function(){
-          reject(values);
+          resolve(false);
         }, 100);
       });
     } } },
