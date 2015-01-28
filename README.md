@@ -76,7 +76,7 @@ var rules = {
 };
 
 var validator = new Validator(rules);
-validator.validate({
+var result = yield validator.validate({
   "username": "hotoo@email.address",
   "password": "PassWord",
   "checkbox": ["check-0", "check-1"]
@@ -94,13 +94,11 @@ constructor, new a validator by rulers.
   // rule name.
   "name": {
     type: {TypeEnum(
-      text,password,
+      text,password, search,textarea,
       radio,checkbox,
       select-one,select-multiple,
-      search,textarea,
-      number,range,
+      number,range, email,url,tel,color,
       date,week,month,time,datetime,datetime-local,
-      email,url,tel,color,
       file,
       submit,button,image,
       hidden
