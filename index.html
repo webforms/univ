@@ -20,13 +20,12 @@ if (!location.port) {
   ga('send', 'pageview');
 }
 </script>
-
-<script src="http://static.alipayobjects.com/seajs/seajs/2.2.0/sea.js"></script>
+<script src="./static/js/sea.js?nowrap"></script>
 
 <script>
   seajs.config({
     base: "./",
-    alias: {"events":"events/1.0.1/./events.js","expect.js":"expect.js/0.3.1/index.js","moment":"moment/2.6.0/moment.js","seajs":"seajs/2.2.1/dist/sea.js"}
+    alias: {"events":"events/1.0.1/events.js","promise":"promise/6.0.0/index.js","expect.js":"expect.js/0.3.1/index.js"}
   });
 </script>
     <!--[if lt IE 9]>
@@ -39,7 +38,7 @@ if (!location.port) {
       <h1>
           <a href="./">Univ</a>
       </h1>
-      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.6</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.0</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -51,6 +50,25 @@ if (!location.port) {
         </ul>
         
 
+        <div class="qrcode-wrapper">
+          <i class="icon">
+            <div class="icon-qrcode">
+              <svg width="1024" height="1024" viewBox="0 0 1024 1024">
+                <g class="transform-group">
+                  <g transform="translate(0, 18) scale(1, -1) scale(0.024, 0.024)">
+                    <path d="M116.8 792.062v0 0zM334.523 138.877v-72.569h-72.569v72.569h72.569zM334.523 574.339v-72.569h-72.569v72.569h72.569zM769.984 574.339v-72.569h-72.569v72.569h72.569zM189.369-5.705h217.723v217.167h-217.723v-217.167zM189.369 429.185h217.723v217.723h-217.723v-217.723zM624.831 429.185h217.723v217.723h-217.723v-217.723zM479.677 284.031v-362.877h-362.877v362.877h362.877zM769.984-6.277v-72.569h-72.569v72.569h72.569zM915.138-6.277v-72.569h-72.569v72.569h72.569zM915.138 284.031v-217.723h-217.723v72.569h-72.569v-217.723h-72.569v362.877h217.723v-72.569h72.569v72.569h72.569zM479.677 719.493v-362.877h-362.877v362.877h362.877zM915.138 719.493v-362.877h-362.877v362.877h362.877z" fill="#555"></path>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div class="qrcode" id="qrcode"></div>
+          </i>
+        </div>
+        <div class="footer-wrapper"><a target="_blank" href="http://spmjs.io">spmjs.io</a> /
+<a target="_blank" href="https://github.com/spmjs/spm">spm</a> /
+<a target="_blank" href="http://seajs.org">sea.js</a> /
+<a target="_blank" href="http://lab.lepture.com/nico/">nico</a>
+        </div>
       </aside>
       <div class="content-wrapper">
         
@@ -63,7 +81,7 @@ if (!location.port) {
 <a href="https://coveralls.io/r/webforms/univ"><img src="https://coveralls.io/repos/webforms/univ/badge.png?branch=master" alt="Coverage Status"></a></p>
 <p>Universal Validator.</p>
 <hr>
-<h2 id="install">Install<a href="#install" class="anchor">¶</a></h2><p>via spm@3.x:</p>
+<h2 id="install">Install<a href="#install" class="anchor">¶</a></h2><p>via spm:</p>
 <pre>$ spm install univ</pre><p>via npm:</p>
 <pre>$ npm install univ</pre><h2 id="usage">Usage<a href="#usage" class="anchor">¶</a></h2><div class="highlight"><pre><code class="javascript"><span class="keyword">var</span> Validator = require(<span class="string">'univ'</span>);
 
@@ -73,24 +91,25 @@ if (!location.port) {
     required: <span class="literal">true</span>,
 
     <span class="comment">// @param {String} value.</span>
-    <span class="comment">// @param {Function} certifiedCallback, optional.</span>
-    custom: <span class="function"><span class="keyword">function</span><span class="params">(value, certifiedCallback)</span>{</span>
-      $.ajax({
-        url: <span class="string">"/check-username-available"</span>,
-        data: <span class="string">"username="</span>+value,
-        success: <span class="function"><span class="keyword">function</span><span class="params">(data)</span>{</span>
-          <span class="keyword">if</span>(data.state === <span class="string">"ok"</span> &amp;&amp; data.available = <span class="string">"yes"</span>){
-            callback(<span class="literal">true</span>);
-          }<span class="keyword">else</span>{
-            certifiedCallback(<span class="literal">false</span>);
-          }
-        },
-        error: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-          certifiedCallback(<span class="literal">false</span>);
-        }
-      });
+    custom: <span class="function"><span class="keyword">function</span><span class="params">(value)</span>{</span>
+      <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span><span class="params">(resolve, reject)</span>{</span>
 
-      <span class="comment">//!return undefined;</span>
+        $.ajax({
+          url: <span class="string">"/check-username-available"</span>,
+          data: <span class="string">"username="</span>+value,
+          success: <span class="function"><span class="keyword">function</span><span class="params">(data)</span>{</span>
+            <span class="keyword">if</span>(data.state === <span class="string">"ok"</span> &amp;&amp; data.available = <span class="string">"yes"</span>){
+              resolve(<span class="literal">true</span>);
+            }<span class="keyword">else</span>{
+              reject(<span class="literal">false</span>);
+            }
+          },
+          error: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+            reject(<span class="literal">false</span>);
+          }
+        });
+
+      })
 
     }
   },
@@ -105,14 +124,14 @@ if (!location.port) {
     required: <span class="literal">true</span>,
     minlength: <span class="number">6</span>,
     maxlength: <span class="number">30</span>,
-    custom: <span class="function"><span class="keyword">function</span><span class="params">(value, callback)</span>{</span>
+    custom: <span class="function"><span class="keyword">function</span><span class="params">(value)</span>{</span>
       <span class="keyword">return</span> value === <span class="keyword">this</span>.data(<span class="string">"password"</span>);
     }
   }
 };
 
 <span class="keyword">var</span> validator = <span class="keyword">new</span> Validator(rules);
-validator.validate({
+<span class="keyword">var</span> result = <span class="keyword">yield</span> validator.validate({
   <span class="string">"username"</span>: <span class="string">"hotoo@email.address"</span>,
   <span class="string">"password"</span>: <span class="string">"PassWord"</span>,
   <span class="string">"checkbox"</span>: [<span class="string">"check-0"</span>, <span class="string">"check-1"</span>]
@@ -121,13 +140,11 @@ validator.validate({
   <span class="comment">// rule name.</span>
   <span class="string">"name"</span>: {
     type: {TypeEnum(
-      text,password,
+      text,password, search,textarea,
       radio,checkbox,
       select-one,select-multiple,
-      search,textarea,
-      number,range,
+      number,range, email,url,tel,color,
       date,week,month,time,datetime,datetime-local,
-      email,url,tel,color,
       file,
       submit,button,image,
       hidden
@@ -148,7 +165,7 @@ validator.validate({
   },
   <span class="comment">// ...</span>
 }</code></pre></div><h3 id="univ-rule-name-rule">Univ.rule(name, rule)<a href="#univ-rule-name-rule" class="anchor">¶</a></h3><p>Set or get a custom rule.</p>
-<div class="highlight"><pre><code class="javascript">validator.rule(<span class="string">"isBankCard"</span>, <span class="function"><span class="keyword">function</span><span class="params">(values, callback)</span>{</span>
+<div class="highlight"><pre><code class="javascript">validator.rule(<span class="string">"isBankCard"</span>, <span class="function"><span class="keyword">function</span><span class="params">(values)</span>{</span>
   <span class="keyword">return</span> <span class="literal">true</span>;
 });</code></pre></div><h3 id="univ-validate-data">univ.validate(data)<a href="#univ-validate-data" class="anchor">¶</a></h3><p>data:</p>
 <div class="highlight"><pre><code class="javascript">univ.validate(
@@ -177,15 +194,6 @@ validator.on(<span class="string">"error"</span>, <span class="function"><span c
       </div>
       
     </div>
-    <div class="footer-wrapper">
-      <footer>
-        <p class="footer-powered"><a href="http://spmjs.io">spmjs.io</a> •
-<a href="https://github.com/spmjs/spm">spm</a> •
-<a href="http://seajs.org">Sea.js</a> •
-<a href="http://lab.lepture.com/nico/">nico</a>
-        </p>
-      </footer>
-    </div>
   </body>
   <script src="./static/js/nprogress.js?nowrap"></script>
   <script>
@@ -202,7 +210,57 @@ validator.on(<span class="string">"error"</span>, <span class="function"><span c
     };
     ready(function() {
       NProgress.inc(0.6);
+      seajs.use("./static/js/arale-qrcode.js?nowrap", function(QRCode) {
+        var url = location.href;
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+          url = url.replace(location.hostname, '10.15.100.24');
+        }
+        var el = new QRCode({
+          text: url,
+          render: 'canvas',
+          width: 120,
+          height: 120
+        });
+        document.getElementById('qrcode').appendChild(el);
+      });
     }, false);
   })();
+
+  seajs.config({
+    paths: {
+      jquery: 'http://static.alipayobjects.com/jquery/'
+    }
+  });
+  seajs.use(['jquery/1.7.2/jquery'], function($) {
+    $('.highlight').on('click', '.code-toggle', function() {
+      var pre = $(this).parents('.highlight')
+      if (pre.hasClass('collapse')) {
+        pre.removeClass('collapse')
+        $(this).text('−')
+      } else {
+        pre.addClass('collapse')
+        $(this).text('+')
+      }
+      return false
+    });
+
+    $('h4 em, h3 em, h3 code, h4 code').parent().addClass('doc-api');
+
+    // 给 iframe 加链接
+    $('.nico-iframe').each(function(i, item) {
+      var src = $(item).find('iframe').attr('src')
+      var html = '<a class="new-window" target="_blank" href="' + src + '">Open</a>'
+      $(item).append(html)
+    });
+
+    // 给 code 加收起和展开
+    $('.highlight').each(function(i, item) {
+      var $item = $(item)
+      if ($item.height() > 400) {
+        $item.append('<a class="code-toggle" href="#">+</a>')
+        $item.addClass('collapse')
+      }
+    });
+  });
   </script>
 </html>

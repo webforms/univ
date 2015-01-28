@@ -2,14 +2,14 @@
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(http://fontscontent.useso.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+  src: local('Open Sans'), local('OpenSans'), url(http://fontstatic.useso.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://fontscontent.useso.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://fontstatic.useso.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
 }
 html {
   text-rendering: optimizeLegibility;
@@ -29,10 +29,6 @@ body.spmjs {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 .spmjs .body-wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  width: 85%;
-  padding-top: 20px;
   zoom: 1;
 }
 .spmjs .body-wrapper:after {
@@ -48,17 +44,10 @@ body.spmjs {
   position: fixed;
   color: #787878;
   font-size: 14px;
-  width: 19%;
-  padding-top: 8px;
+  width: 20%;
+  margin: 0 3%;
+  padding-top: 40px;
   z-index: 1;
-}
-.spmjs .content-wrapper {
-  float: right;
-  width: 69%;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
 }
 .spmjs .sidebar-wrapper h1 {
   margin: 0;
@@ -151,10 +140,13 @@ body.spmjs {
   font-weight: bold;
 }
 .spmjs .content-wrapper {
-  border: 1px solid #eee;
+  float: right;
+  width: 69%;
+  padding: 20px 3% 50px;
+  font-size: 16px;
+  border-left: 1px solid #eee;
   background-color: #fff;
   position: relative;
-  padding: 10px 35px 30px;
   line-height: 1.5;
 }
 .spmjs .content-wrapper .entry-title {
@@ -216,21 +208,35 @@ body.spmjs {
   color: #777;
 }
 .spmjs .footer-wrapper {
-  clear: both;
-  font-size: 12px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 83%;
-  padding: 10px 0;
-  text-align: right;
+  font-size: 10px;
+  position: fixed;
+  bottom: 15px;
+  color: #ccc;
+  font-family: Consolas;
 }
 .spmjs .footer-wrapper a {
   text-decoration: none;
+  font-size: 11px;
+  color: #aaa;
 }
-.spmjs .footer-wrapper iframe {
-  position: relative;
-  top: 3px;
+
+/* table */
+.spmjs .entry-content > table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  text-align: left;
 }
+
+.spmjs .entry-content > table th {
+  background: #fafafa;
+}
+
+.spmjs .entry-content > table th,
+.spmjs .entry-content > table td {
+  padding: 6px 10px;
+  border: 1px solid #eaeaea;
+}
+
 /* other */
 .spmjs .content-wrapper .doc-api {
   color: #784942;
@@ -252,9 +258,10 @@ body.spmjs {
 }
 .spmjs .content-wrapper .nico-iframe .new-window {
   position: absolute;
-  top: 30px;
-  right: -40px;
+  top: 20px;
+  right: -28px;
   font-size: 12px;
+  font-weight: bold;
   transform: rotate(90deg);
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
@@ -272,15 +279,18 @@ body.spmjs {
 }
 .spmjs .content-wrapper .highlight .code-toggle {
   position: absolute;
-  top: -10px;
+  top: -9px;
   right: 2px;
-  font-size: 12px;
-  padding: 3px 5px;
+  font-size: 14px;
+  padding: 1px 5px;
+  text-align: center;
+  width: 18px;
   background: rgba(0, 0, 0, 0.16);
   border-radius: 4px 4px 0 0;
   text-decoration: none;
   color: #fff;
   line-height: 1;
+  font-weight: bold;
 }
 .spmjs .entry-content h1 a.anchor, .spmjs .entry-content h2 a.anchor, .spmjs .entry-content h3 a.anchor, .spmjs .entry-content h4 a.anchor, .spmjs .entry-content h5 a.anchor, .spmjs .entry-content h6 a.anchor {
   margin-left: 10px;
@@ -297,19 +307,20 @@ body.spmjs {
   font-size: 14px;
   line-height: 22px;
   padding-left: 20px;
+  margin-bottom: 0;
 }
 /* responsive */
 @media (max-width: 980px) {
   .spmjs .body-wrapper, .spmjs .sidebar-wrapper, .spmjs .content-wrapper {
-      float: none;
-      position: static;
-      width: auto;
+    float: none;
+    position: static;
+    width: auto;
   }
   .spmjs .sidebar-navigation {
-      border: none;
+    border: none;
   }
   .spmjs .sidebar-wrapper {
-      padding: 0 40px;
+    margin-bottom: 20px;
   }
 }
 /* history history-tag */
@@ -385,12 +396,10 @@ body.spmjs {
 
 #nprogress .bar {
   background: #29d;
-
   position: fixed;
   z-index: 1031;
   top: 0;
   left: 0;
-
   width: 100%;
   height: 2px;
 }
@@ -450,4 +459,32 @@ body.spmjs {
 @keyframes nprogress-spinner {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.qrcode-wrapper {
+  position:relative;
+  margin-top: 8px;
+}
+
+.qrcode-wrapper .icon {
+  font-size:30px;
+}
+
+.qrcode-wrapper .icon-qrcode {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.qrcode-wrapper .qrcode {
+  display: none;
+  position:absolute;
+  left:0;
+  top:0;
+}
+.qrcode-wrapper .icon:hover .qrcode {
+  display: block;
+}
+.qrcode-wrapper .qrcode canvas {
+  cursor: none;
 }
