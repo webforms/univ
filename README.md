@@ -2,7 +2,7 @@
 
 ---
 
-[![NPM version](https://badge.fury.io/js/univ.png)](http://badge.fury.io/js/univ)
+[![NPM version](https://badge.fury.io/js/univ.png)](https://www.npmjs.com/package/univ)
 [![spm package](http://spmjs.io/badge/univ)](http://spmjs.io/package/univ)
 [![Build Status](https://secure.travis-ci.org/webforms/univ.png?branch=master)](https://travis-ci.org/webforms/univ)
 [![Coverage Status](https://coveralls.io/repos/webforms/univ/badge.png?branch=master)](https://coveralls.io/r/webforms/univ)
@@ -46,7 +46,7 @@ var rules = {
             if(data.state === "ok" && data.available = "yes"){
               resolve(true);
             }else{
-              reject(false);
+              resolve(false);
             }
           },
           error: function(){
