@@ -2,7 +2,7 @@
 var global = this;
 var Promise = global.Promise || require("promise")
 var dateUtil = require("./date-util");
-var events = require("events").EventEmitter;
+var Events = require("events").EventEmitter;
 
 function isPromise(object) {
   return object && typeof object.then === 'function';
@@ -884,7 +884,7 @@ function verify(ruleName, rule, values, datas, instance_context){
 
 var Validator = function(rules){
   this._rules = rules;
-  this._evt = new events();
+  this._evt = new Events();
 };
 
 Validator.prototype.validate = function(data){
