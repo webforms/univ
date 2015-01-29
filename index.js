@@ -684,8 +684,6 @@ var ValidityState = {
 
 function verify(ruleName, rule, values, datas, instance_context){
 
-  return new Promise(function(resolve, reject) {
-
     var certified = true;
     var validity = {
       customError: false,
@@ -714,8 +712,7 @@ function verify(ruleName, rule, values, datas, instance_context){
 
       instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
 
-      resolve(resultRequired);
-      return;
+      return resultRequired;
     }
 
     if(isArray(values)){
@@ -836,23 +833,26 @@ function verify(ruleName, rule, values, datas, instance_context){
 
     if (isPromise(result)) {
 
-      result.then(
-        function(certified){
+      return new Promise(function(resolve, reject) {
 
-          if (!certified) {
-            validity.customError = true;
-            validity.valid = false;
-            validity.validationMessage = ValidityState.customError;
+        result.then(
+          function(certified){
+
+            if (!certified) {
+              validity.customError = true;
+              validity.valid = false;
+              validity.validationMessage = ValidityState.customError;
+            }
+
+            instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+
+            resolve(certified)
+
+          }, function(reason){
+            reject(reason);
           }
-
-          instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-
-          resolve(certified)
-
-        }, function(reason){
-          reject(reason);
-        }
-      );
+        );
+      })
 
     } else {
 
@@ -873,10 +873,8 @@ function verify(ruleName, rule, values, datas, instance_context){
       validity.valid = certified;
 
       instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-      resolve(certified)
       return certified;
     }
-  })
 
 }
 
@@ -900,21 +898,29 @@ Validator.prototype.validate = function(data){
       pending ++;
       var result = verify(ruleName, rule, values, data, ME);
 
-      result.then(
-        function(certify){
-          certified = certified && certify;
+      function callback(certify){
+            certified = certified && certify;
 
-          if((--pending) === 0){
-            ME._evt.emit("complete", certified);
+            if((--pending) === 0){
+              ME._evt.emit("complete", certified);
 
-            resolve(certified)
+              resolve(certified)
+            }
+
           }
 
-        },
-        function(){
-          ME._evt.emit("error", ruleName, rule, values, data)
-          pending --;
-        })
+      if (isPromise(result)) {
+
+        result.then(
+          callback,
+          function(){
+            ME._evt.emit("error", ruleName, rule, values, data)
+            pending --;
+          })
+
+        } else {
+          callback(result)
+        }
 
     },
     function(){
