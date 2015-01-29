@@ -24,6 +24,12 @@
   "bugs": {
     "url": "https://github.com/webforms/univ/issues"
   },
+  "scripts": {
+    "test": "mocha -R spec tests/univ-spec.js tests/date-util-spec.js"
+  },
+  "dependencies": {
+    "promise": "^6.1.0"
+  },
   "devDependencies": {
     "expect.js": "0.3.1",
     "promise": "^6.1.0"
@@ -43,8 +49,5 @@
     },
     "tests": "tests/*.js"
   },
-  "licenses": "MIT",
-  "dependencies": {
-    "promise": "^6.1.0"
-  }
+  "licenses": "MIT"
 }
