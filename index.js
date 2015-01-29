@@ -91,6 +91,17 @@ function isPromise(object) {
   return object && typeof object.then === 'function';
 }
 
+// #12, 同时支持 Promise 和非 Promise。
+// 对于 Promise，等待其兑现。
+// 对于非 Promise，立即执行，提高性能。
+function UniPromise (promise, resolve, reject) {
+  if (isPromise(promise)) {
+    return promise.then(resolve, reject)
+  } else {
+    return resolve(promise)
+  }
+}
+
 function trim(string){
   return String(string).replace(/^\s+/, "").replace(/\s+$/, "");
 }
@@ -827,54 +838,35 @@ function verify(ruleName, rule, values, datas, instance_context){
       //break;
     }
 
-    //! NOTE: Do't each loop values by verifyFunction,
-    //        each loop values in user custom function if need.
-    var result = verifyFunction(rule.custom, values, datas);
+    return UniPromise(
+        //! NOTE: Do't each loop values by verifyFunction,
+        //        each loop values in user custom function if need.
+        verifyFunction(rule.custom, values, datas),
+        function(result){
 
-    if (isPromise(result)) {
-
-      return new Promise(function(resolve, reject) {
-
-        result.then(
-          function(certified){
-
-            if (!certified) {
-              validity.customError = true;
-              validity.valid = false;
-              validity.validationMessage = ValidityState.customError;
-            }
-
-            instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-
-            resolve(certified)
-
-          }, function(reason){
-            reject(reason);
+          if (!result) {
+            validity.customError = true;
+            validity.valid = false;
           }
-        );
-      })
 
-    } else {
+          for(var key in validity){
+            if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
+              validity.validationMessage = ValidityState[key];
+              validity.valid = false;
+            }
+          }
 
-      if (!result) {
-        validity.customError = true;
-        validity.valid = false;
-      }
+          certified = certified && result;
 
-      for(var key in validity){
-        if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
-          validity.validationMessage = ValidityState[key];
-          validity.valid = false;
+          validity.valid = certified;
+
+          instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+          return certified;
+
+        }, function(reason){
+          return (reason);
         }
-      }
-
-      certified = certified && result;
-
-      validity.valid = certified;
-
-      instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-      return certified;
-    }
+      )
 
 }
 
@@ -886,49 +878,40 @@ var Validator = function(rules){
 
 Validator.prototype.validate = function(data){
 
-  var pending = 0;
   var ME = this;
 
   return new Promise(function(resolve, reject) {
     var certified = true;
+    var pending = 0;
 
     eachRules(ME._rules, function(ruleName, rule){
 
       var values = data[ruleName];
       pending ++;
-      var result = verify(ruleName, rule, values, data, ME);
 
-      function callback(certify){
-            certified = certified && certify;
+      UniPromise(
+        verify(ruleName, rule, values, data, ME),
+        function resolved(certify){
+          certified = certified && certify;
 
-            if((--pending) === 0){
-              ME._evt.emit("complete", certified);
+          if((--pending) === 0){
+            ME._evt.emit("complete", certified);
 
-              resolve(certified)
-            }
-
+            resolve(certified)
           }
+        },
+        function(){
+          ME._evt.emit("error", ruleName, rule, values, data)
+          pending --;
+        })
+      },
+      function(){
+        ME._evt.emit("complete", true)
+        resolve(true)
+      }
+    );
 
-      if (isPromise(result)) {
-
-        result.then(
-          callback,
-          function(){
-            ME._evt.emit("error", ruleName, rule, values, data)
-            pending --;
-          })
-
-        } else {
-          callback(result)
-        }
-
-    },
-    function(){
-      ME._evt.emit("complete", true)
-      resolve(true)
-    });
-
-  })
+  });
 };
 
 Validator.prototype.on = function(eventName, handler){
