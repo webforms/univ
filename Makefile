@@ -31,7 +31,7 @@ clean:
 runner = _site/tests/runner.html
 
 test-npm:
-	@mocha -R spec tests/univ-spec.js
+	@npm test
 
 test-spm:
 	@spm test
