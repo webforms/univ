@@ -91,6 +91,17 @@ function isPromise(object) {
   return object && typeof object.then === 'function';
 }
 
+// #12, 同时支持 Promise 和非 Promise。
+// 对于 Promise，等待其兑现。
+// 对于非 Promise，立即执行，提高性能。
+function UniPromise (promise, resolve, reject) {
+  if (isPromise(promise)) {
+    return promise.then(resolve, reject)
+  } else {
+    return resolve(promise)
+  }
+}
+
 function trim(string){
   return String(string).replace(/^\s+/, "").replace(/\s+$/, "");
 }
@@ -684,8 +695,6 @@ var ValidityState = {
 
 function verify(ruleName, rule, values, datas, instance_context){
 
-  return new Promise(function(resolve, reject) {
-
     var certified = true;
     var validity = {
       customError: false,
@@ -714,8 +723,7 @@ function verify(ruleName, rule, values, datas, instance_context){
 
       instance_context._evt.emit(resultRequired ? "valid":"invalid", ruleName, values, validity);
 
-      resolve(resultRequired);
-      return;
+      return resultRequired;
     }
 
     if(isArray(values)){
@@ -830,53 +838,35 @@ function verify(ruleName, rule, values, datas, instance_context){
       //break;
     }
 
-    //! NOTE: Do't each loop values by verifyFunction,
-    //        each loop values in user custom function if need.
-    var result = verifyFunction(rule.custom, values, datas);
+    return UniPromise(
+        //! NOTE: Do't each loop values by verifyFunction,
+        //        each loop values in user custom function if need.
+        verifyFunction(rule.custom, values, datas),
+        function(result){
 
-    if (isPromise(result)) {
-
-      result.then(
-        function(certified){
-
-          if (!certified) {
+          if (!result) {
             validity.customError = true;
             validity.valid = false;
-            validity.validationMessage = ValidityState.customError;
           }
 
-          instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+          for(var key in validity){
+            if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
+              validity.validationMessage = ValidityState[key];
+              validity.valid = false;
+            }
+          }
 
-          resolve(certified)
+          certified = certified && result;
+
+          validity.valid = certified;
+
+          instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
+          return certified;
 
         }, function(reason){
-          reject(reason);
+          return (reason);
         }
-      );
-
-    } else {
-
-      if (!result) {
-        validity.customError = true;
-        validity.valid = false;
-      }
-
-      for(var key in validity){
-        if (validity.hasOwnProperty(key) && key !== "valid" && isBoolean(validity[key]) && validity[key]) {
-          validity.validationMessage = ValidityState[key];
-          validity.valid = false;
-        }
-      }
-
-      certified = certified && result;
-
-      validity.valid = certified;
-
-      instance_context._evt.emit(certified ? "valid":"invalid", ruleName, values, validity);
-      resolve(certified)
-      return certified;
-    }
-  })
+      )
 
 }
 
@@ -888,20 +878,20 @@ var Validator = function(rules){
 
 Validator.prototype.validate = function(data){
 
-  var pending = 0;
   var ME = this;
 
   return new Promise(function(resolve, reject) {
     var certified = true;
+    var pending = 0;
 
     eachRules(ME._rules, function(ruleName, rule){
 
       var values = data[ruleName];
       pending ++;
-      var result = verify(ruleName, rule, values, data, ME);
 
-      result.then(
-        function(certify){
+      UniPromise(
+        verify(ruleName, rule, values, data, ME),
+        function resolved(certify){
           certified = certified && certify;
 
           if((--pending) === 0){
@@ -909,20 +899,19 @@ Validator.prototype.validate = function(data){
 
             resolve(certified)
           }
-
         },
         function(){
           ME._evt.emit("error", ruleName, rule, values, data)
           pending --;
         })
+      },
+      function(){
+        ME._evt.emit("complete", true)
+        resolve(true)
+      }
+    );
 
-    },
-    function(){
-      ME._evt.emit("complete", true)
-      resolve(true)
-    });
-
-  })
+  });
 };
 
 Validator.prototype.on = function(eventName, handler){
