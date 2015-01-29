@@ -56,39 +56,30 @@ var RULE_TYPES = {
 
 // @param {Object} object.
 // @param {String} type, like `Array`, `RegExp`, etc.
-function typeOf(object, type){
-  return Object.prototype.toString.call(object) === "[object " + type + "]";
+function typeOf(type){
+  return function(object){
+    return Object.prototype.toString.call(object) === "[object " + type + "]";
+  }
 }
 
-function isString(object){
-  return typeOf(object, "String");
-}
+var isString = typeOf("String")
+var isBoolean = typeOf("Boolean")
+var isArray = typeOf("Array")
+var isRegExp = typeOf("RegExp")
+var isFunction = typeOf("Function")
 
-function isBoolean(object){
-  return typeOf(object, "Boolean");
-}
-
-function isArray(object){
-  return typeOf(object, "Array");
-}
+var _isNumber = typeOf("Number")
+var _isObject = typeOf("Object")
 
 function isNumber(object){
-  return !isNaN(object) && typeOf(object, "Number");
-}
-
-function isRegExp(object){
-  return typeOf(object, "RegExp");
-}
-
-function isFunction(object){
-  return typeOf(object, "Function");
+  return !isNaN(object) && _isNumber(object);
 }
 function isObject(object){
-  return null!==object && typeOf(object, "Object");
+  return null !== object && _isObject(object);
 }
 
 function isPromise(object) {
-  return object && typeof object.then === 'function';
+  return object && isFunction(object.then);
 }
 
 // #12, 同时支持 Promise 和非 Promise。
