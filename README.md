@@ -34,28 +34,13 @@ var rules = {
   "username": {
     type: "email",
     required: true,
-
-    // @param {String} value.
     custom: function(value){
+      // Async validate.
       return new Promise(function(resolve, reject){
-
-        $.ajax({
-          url: "/check-username-available",
-          data: "username="+value,
-          success: function(data){
-            if(data.state === "ok" && data.available = "yes"){
-              resolve(true);
-            }else{
-              resolve(false);
-            }
-          },
-          error: function(){
-            reject(false);
-          }
-        });
-
+          $.post("/check-username-available", {username:value}, function(result) {
+            resolve(result.available === "YES")
+          }, "json")
       })
-
     }
   },
   "password": {
@@ -70,6 +55,7 @@ var rules = {
     minlength: 6,
     maxlength: 30,
     custom: function(value){
+      // Sync validate.
       return value === this.data("password");
     }
   }
