@@ -1,8 +1,16 @@
 {
   "name": "univ",
-  "version": "0.1.7",
+  "version": "0.2.2",
   "description": "Universal Validator.",
-  "keywords": ["Validator", "Form", "Forms", "WebForm", "WebForms"],
+  "keywords": [
+    "Validator",
+    "Form",
+    "Forms",
+    "WebForm",
+    "WebForms",
+    "表单",
+    "校验"
+  ],
   "homepage": "https://github.com/webforms/univ",
   "author": "闲耘<hotoo.cn@gmail.com>",
   "maintainers": [
@@ -16,20 +24,25 @@
   "bugs": {
     "url": "https://github.com/webforms/univ/issues"
   },
+  "scripts": {
+    "test": "mocha -R spec tests/univ-spec.js tests/date-util-spec.js"
+  },
   "dependencies": {
-    "moment": "2.6.0"
+    "promise": "^6.1.0"
   },
   "devDependencies": {
-    "expect.js": "0.3.1"
+    "expect.js": "0.3.1",
+    "promise": "^6.1.0"
   },
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "moment": "2.6.0",
-      "events": "1.0.1"
+      "events": "1.0.1",
+      "promise": "6.0.0"
     },
     "devDependencies": {
-      "expect.js": "0.3.1"
+      "expect.js": "0.3.1",
+      "promise": "6.0.0"
     },
     "engines": {
       "seajs": "2.2.1"

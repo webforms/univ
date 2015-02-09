@@ -23,7 +23,7 @@ if (!location.port) {
 <script>
   seajs.config({
     base: "../",
-    alias: {"moment":"moment/2.6.0/moment.js","events":"events/1.0.1/events.js","expect.js":"expect.js/0.3.1/index.js"}
+    alias: {"events":"events/1.0.1/events.js","promise":"promise/6.0.0/index.js","expect.js":"expect.js/0.3.1/index.js"}
   });
 </script>
     <script src="../static/js/mocha.js?nowrap"></script>
@@ -51,6 +51,7 @@ if (!location.port) {
             }
             var sources = [''
               ,'index'
+              ,'date-util'
             ];
             var matcher = url.match('http:\/\/(.*?)\/(.*)');
             var file;
@@ -72,7 +73,7 @@ if (!location.port) {
         });
 
         mocha.ui('bdd');
-        var tests = ["tests/univ-spec.js"];
+        var tests = ["tests/date-util-spec.js","tests/univ-spec.js"];
 
         var specs = [];
         for (var i = 0; i < tests.length; i++) {
