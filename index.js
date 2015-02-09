@@ -542,7 +542,7 @@ function verifyIsUrl(value, validity){
 }
 
 
-var RE_EMAIL = /^\w+(?:[\._+\-]\w+)*@\w+(?:\.\w+)+$/;
+var RE_EMAIL = /^\w+(?:[\._+\-]\w+)*@[\w_-]+(?:\.[\w_-]+)+$/;
 function verifyIsEmail(value, validity){
   var certified = RE_EMAIL.test(value);
   validity.typeMismatch = !certified;
