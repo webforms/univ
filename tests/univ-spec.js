@@ -4239,6 +4239,11 @@ var testCases = [
   },
   {
     "rule": { a: { type: "email" } },
+    "data": { a: "a@b-inc.c" },
+    "test": testValid
+  },
+  {
+    "rule": { a: { type: "email" } },
     "data": { a: "abc@def.ghi" },
     "test": testValid
   },
