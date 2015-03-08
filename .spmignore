@@ -6,3 +6,4 @@ node_modules
 tests
 examples
 test
+spm_modules/
