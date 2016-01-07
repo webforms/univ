@@ -133,6 +133,47 @@ univ.validate(
 );
 ```
 
+## Rule
+
+### {Boolean} required
+
+Set field is required or not.
+
+### {String} type
+
+Set field type, type value is a enum list(same html5 type):
+
+* text
+* password
+* search
+* textarea
+* radio
+* checkbox
+* select-one
+* select-multiple
+* number
+* range
+* email
+* url
+* tel
+* color
+* date
+* week
+* month
+* time
+* datetime
+* datetime-local
+* file
+* submit
+* button
+* image
+* hidden
+
+### {Number} min
+
+* For `[type=number]`, input data must be great than the min value.
+* For `[type=date]` and so on, input data
+
 ## Events
 
 ### valid
