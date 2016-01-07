@@ -550,7 +550,7 @@ function verifyIsEmail(value, validity){
 }
 
 
-var RE_MOBILE = /^(?:13[0-9]|14[57]|15[0-35-9]|170|18[0-9])\d{8}$/;
+var RE_MOBILE = /(^(13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/;
 function verifyIsMobile(value, validity){
   var certified = RE_MOBILE.test(value);
   validity.typeMismatch = !certified;
