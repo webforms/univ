@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>univ - Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="nico 0.5.1" />
+    <meta name="generator" content="nico-spm 0.5.5" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link type="image/x-icon" href="/favicon.ico" rel="icon">
     <link rel="stylesheet" href="../static/css/normalize.css" />
     <link rel="stylesheet" href="../static/css/site.css" />
+    <link rel="stylesheet" href="../static/css/site.css" />
     <link rel="stylesheet" href="../static/css/solarized.css" />
+    <link rel="stylesheet" href="../static/css/codemirror.css" />
 <script>
 if (!location.port) {
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -24,8 +26,7 @@ if (!location.port) {
 
 <script>
   seajs.config({
-    base: "../",
-    alias: {"events":"events/1.0.1/events.js","promise":"promise/6.0.0/index.js","expect.js":"expect.js/0.3.1/index.js"}
+    base: "../"
   });
 </script>
     <!--[if lt IE 9]>
@@ -33,12 +34,14 @@ if (!location.port) {
     <![endif]-->
   </head>
   <body class="spmjs">
-    <div class="body-wrapper">
+  <script src="../dist/bundle.js?nowrap"></script>
+
+  <div class="body-wrapper">
       <aside class="sidebar-wrapper">
       <h1>
           <a href="../">Univ</a>
       </h1>
-      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.2</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.3</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -56,7 +59,7 @@ if (!location.port) {
               <svg width="1024" height="1024" viewBox="0 0 1024 1024">
                 <g class="transform-group">
                   <g transform="translate(0, 18) scale(1, -1) scale(0.024, 0.024)">
-                    <path d="M116.8 792.062v0 0zM334.523 138.877v-72.569h-72.569v72.569h72.569zM334.523 574.339v-72.569h-72.569v72.569h72.569zM769.984 574.339v-72.569h-72.569v72.569h72.569zM189.369-5.705h217.723v217.167h-217.723v-217.167zM189.369 429.185h217.723v217.723h-217.723v-217.723zM624.831 429.185h217.723v217.723h-217.723v-217.723zM479.677 284.031v-362.877h-362.877v362.877h362.877zM769.984-6.277v-72.569h-72.569v72.569h72.569zM915.138-6.277v-72.569h-72.569v72.569h72.569zM915.138 284.031v-217.723h-217.723v72.569h-72.569v-217.723h-72.569v362.877h217.723v-72.569h72.569v72.569h72.569zM479.677 719.493v-362.877h-362.877v362.877h362.877zM915.138 719.493v-362.877h-362.877v362.877h362.877z" fill="#555"></path>
+                    <path d="M116.8 792.062v0 0zM334.523 138.877v-72.569h-72.569v72.569h72.569zM334.523 574.339v-72.569h-72.569v72.569h72.569zM769.984 574.339v-72.569h-72.569v72.569h72.569zM189.369-5.705h217.723v217.167h-217.723v-217.167zM189.369 429.185h217.723v217.723h-217.723v-217.723zM624.831 429.185h217.723v217.723h-217.723v-217.723zM479.677 284.031v-362.877h-362.877v362.877h362.877zM769.984-6.277v-72.569h-72.569v72.569h72.569zM915.138-6.277v-72.569h-72.569v72.569h72.569zM915.138 284.031v-217.723h-217.723v72.569h-72.569v-217.723h-72.569v362.877h217.723v-72.569h72.569v72.569h72.569zM479.677 719.493v-362.877h-362.877v362.877h362.877zM915.138 719.493v-362.877h-362.877v362.877h362.877z" fill="#666"></path>
                   </g>
                 </g>
               </svg>
@@ -67,7 +70,7 @@ if (!location.port) {
         <div class="footer-wrapper"><a target="_blank" href="http://spmjs.io">spmjs.io</a> /
 <a target="_blank" href="https://github.com/spmjs/spm">spm</a> /
 <a target="_blank" href="http://seajs.org">sea.js</a> /
-<a target="_blank" href="http://lab.lepture.com/nico/">nico</a>
+<a target="_blank" href="http://lab.lepture.com/nico/">nico-spm</a>
         </div>
       </aside>
       <div class="content-wrapper">
@@ -75,19 +78,62 @@ if (!location.port) {
 <article class="hentry">
   <h1 class="entry-title">Demo</h1>
   <div class="entry-content">
-    <h2 id="normal-usage">Normal usage<a href="#normal-usage" class="anchor">¶</a></h2><script>seajs.use('index', function(Univ){
+    <!--filepath:examples/index.md --> <script class="nico-insert-code">(function(){seajs.use('index', function(Univ){
 
-  var rule = {};
+  var rule = {
+    username: {
+      required: true
+    }
+  };
   var data = {};
-  var valid = new Univ(rule);
-  valid.validate(data);
 
-});</script><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
+  var univ = new Univ(rule).on("valid", function(){
+      console.log("valid")
+    }).on("invalid", function(){
+      console.log("invalid")
+    }).on("complete", function(certified){
+      console.log("complete", certified)
+    })
 
-  <span class="keyword">var</span> rule = {};
+  univ.validate(data);
+
+});})()</script><textarea mode="javascript" class="spm-doc-textarea">(function(){seajs.use('index', function(Univ){
+
+  var rule = {
+    username: {
+      required: true
+    }
+  };
+  var data = {};
+
+  var univ = new Univ(rule).on("valid", function(){
+      console.log("valid")
+    }).on("invalid", function(){
+      console.log("invalid")
+    }).on("complete", function(certified){
+      console.log("complete", certified)
+    })
+
+  univ.validate(data);
+
+});})()</textarea><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
+
+  <span class="keyword">var</span> rule = {
+    username: {
+      required: <span class="literal">true</span>
+    }
+  };
   <span class="keyword">var</span> data = {};
-  <span class="keyword">var</span> valid = <span class="keyword">new</span> Univ(rule);
-  valid.validate(data);
+
+  <span class="keyword">var</span> univ = <span class="keyword">new</span> Univ(rule).on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+      console.log(<span class="string">"valid"</span>)
+    }).on(<span class="string">"invalid"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+      console.log(<span class="string">"invalid"</span>)
+    }).on(<span class="string">"complete"</span>, <span class="function"><span class="keyword">function</span><span class="params">(certified)</span>{</span>
+      console.log(<span class="string">"complete"</span>, certified)
+    })
+
+  univ.validate(data);
 
 });</code></pre></div>
   </div>
@@ -115,7 +161,7 @@ if (!location.port) {
       seajs.use("../static/js/arale-qrcode.js?nowrap", function(QRCode) {
         var url = location.href;
         if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-          url = url.replace(location.hostname, '192.168.2.106');
+          url = url.replace(location.hostname, '10.0.0.3');
         }
         var el = new QRCode({
           text: url,
@@ -127,42 +173,5 @@ if (!location.port) {
       });
     }, false);
   })();
-
-  seajs.config({
-    paths: {
-      jquery: 'http://static.alipayobjects.com/jquery/'
-    }
-  });
-  seajs.use(['jquery/1.7.2/jquery'], function($) {
-    $('.highlight').on('click', '.code-toggle', function() {
-      var pre = $(this).parents('.highlight')
-      if (pre.hasClass('collapse')) {
-        pre.removeClass('collapse')
-        $(this).text('−')
-      } else {
-        pre.addClass('collapse')
-        $(this).text('+')
-      }
-      return false
-    });
-
-    $('h4 em, h3 em, h3 code, h4 code').parent().addClass('doc-api');
-
-    // 给 iframe 加链接
-    $('.nico-iframe').each(function(i, item) {
-      var src = $(item).find('iframe').attr('src')
-      var html = '<a class="new-window" target="_blank" href="' + src + '">Open</a>'
-      $(item).append(html)
-    });
-
-    // 给 code 加收起和展开
-    $('.highlight').each(function(i, item) {
-      var $item = $(item)
-      if ($item.height() > 400) {
-        $item.append('<a class="code-toggle" href="#">+</a>')
-        $item.addClass('collapse')
-      }
-    });
-  });
   </script>
 </html>

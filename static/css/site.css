@@ -17,7 +17,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 body.spmjs {
-  background-color: #F9F9F8;
+  background-color: #fff;
   text-rendering: optimizelegibility;
   font-family:"Open Sans", "Lucida Grande", 'Hiragino Sans GB', Georgia, sans-serif;
 }
@@ -45,9 +45,11 @@ body.spmjs {
   color: #787878;
   font-size: 14px;
   width: 20%;
-  margin: 0 3%;
-  padding-top: 40px;
+  padding: 40px 3% 20px;
+  min-height: 100%;
   z-index: 1;
+  background: #F9F9F8;
+  border-right: 1px solid #eee;
 }
 .spmjs .sidebar-wrapper h1 {
   margin: 0;
@@ -57,11 +59,11 @@ body.spmjs {
   font-size: 14px;
 }
 .spmjs .sidebar-wrapper .sidebar-description {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(0, 0, 0, 0.025);
   border-radius: 3px;
   font-size: 12px;
   line-height: 1.5;
-  padding: 4px;
+  padding: 4px 6px;
   color: #888;
   margin-bottom: 18px;
 }
@@ -88,7 +90,7 @@ body.spmjs {
   text-transform: uppercase;
   transition: opacity 0.25s ease 0s, background-color 0.25s ease 0s, color 0.25s ease 0s, background 0.25s ease 0s, box-shadow 0.25s ease 0s;
   vertical-align: middle;
-  width: 90%;
+  width: 100%;
   text-align: center;
   font-size: 16px;
 }
@@ -102,8 +104,8 @@ body.spmjs {
 .spmjs .sidebar-navigation {
   list-style-type: none;
   font-size: 14px;
-  border-top: 1px dashed #bbb;
-  border-bottom: 1px dashed #bbb;
+  border-top: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
   margin: 20px 0 0 0;
   padding: 10px 0;
   zoom: 1;
@@ -141,10 +143,9 @@ body.spmjs {
 }
 .spmjs .content-wrapper {
   float: right;
-  width: 69%;
+  width: 68%;
   padding: 20px 3% 50px;
   font-size: 16px;
-  border-left: 1px solid #eee;
   background-color: #fff;
   position: relative;
   line-height: 1.5;
@@ -270,27 +271,8 @@ body.spmjs {
 }
 .spmjs .content-wrapper .highlight {
   background-color: transparent;
-  padding-top: 1px;
   position: relative;
-}
-.spmjs .content-wrapper .collapse pre {
-  overflow: hidden;
-  height: 60px;
-}
-.spmjs .content-wrapper .highlight .code-toggle {
-  position: absolute;
-  top: -9px;
-  right: 2px;
-  font-size: 14px;
-  padding: 1px 5px;
-  text-align: center;
-  width: 18px;
-  background: rgba(0, 0, 0, 0.16);
-  border-radius: 4px 4px 0 0;
-  text-decoration: none;
-  color: #fff;
-  line-height: 1;
-  font-weight: bold;
+  margin: 12px 0;
 }
 .spmjs .entry-content h1 a.anchor, .spmjs .entry-content h2 a.anchor, .spmjs .entry-content h3 a.anchor, .spmjs .entry-content h4 a.anchor, .spmjs .entry-content h5 a.anchor, .spmjs .entry-content h6 a.anchor {
   margin-left: 10px;
@@ -302,26 +284,14 @@ body.spmjs {
   visibility: visible;
 }
 .spmjs .sidenav {
-  padding-top: 10px;
+  padding: 10px 0 10px 20px;
   margin-top: 0;
   font-size: 14px;
   line-height: 22px;
-  padding-left: 20px;
   margin-bottom: 0;
 }
-/* responsive */
-@media (max-width: 980px) {
-  .spmjs .body-wrapper, .spmjs .sidebar-wrapper, .spmjs .content-wrapper {
-    float: none;
-    position: static;
-    width: auto;
-  }
-  .spmjs .sidebar-navigation {
-    border: none;
-  }
-  .spmjs .sidebar-wrapper {
-    margin-bottom: 20px;
-  }
+.spmjs .spm-doc-textarea {
+  display: none;
 }
 /* history history-tag */
 .spmjs .history-tag {
@@ -372,22 +342,6 @@ body.spmjs {
   background-color: #E7E7E7;
   background-position: -900px 50%;
 }
-/* css module */
-.spmcss #sidebar-wrapper a {
-  color: #659324;
-}
-.spmcss .sidebar-wrapper .sidebar-source {
-  background-color: #5BBD72;
-  color: #fff;
-}
-.spmcss .sidebar-wrapper .sidebar-source:hover {
-  color: #fff;
-  background-color: #58CB73;
-}
-.spmcss .sidebar-wrapper .sidebar-source:active {
-  background-color: #4cb164;
-}
-
 
 /* Make clicks pass-through */
 #nprogress {
@@ -462,8 +416,9 @@ body.spmjs {
 }
 
 .qrcode-wrapper {
-  position:relative;
-  margin-top: 8px;
+  position: relative;
+  margin-top: 10px;
+  display: inline-block;
 }
 
 .qrcode-wrapper .icon {
@@ -487,4 +442,84 @@ body.spmjs {
 }
 .qrcode-wrapper .qrcode canvas {
   cursor: none;
+}
+
+/* code live editor */
+.editor-toggle {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 11px;
+  font-family: Consolas;
+  padding: 0 3px;
+  color: #000;
+  border-radius: 2px;
+  cursor: pointer;
+  z-index: 100;
+  opacity: 0.25;
+  transition: opacity 0.2s;
+}
+
+.editor-toggle:hover {
+  opacity: 0.7;
+  background: #66AFE9;
+  color: #fff;
+}
+
+.CodeMirror.saved .CodeMirror-lines {
+  -webkit-animation: saved 0.9s ease-out 1;
+  animation: saved 0.9s ease-out 1;
+}
+
+@-webkit-keyframes saved {
+  0% {
+    background: #fff;
+  }
+  20% {
+    background: #D6FFC2;
+  }
+  100% {
+    background: #fff;
+  }
+}
+
+@keyframes saved {
+  0% {
+    background: #fff;
+  }
+  20% {
+    background: #D6FFC2;
+  }
+  100% {
+    background: #fff;
+  }
+}
+
+/* responsive */
+@media (max-width: 980px) {
+  .spmjs .body-wrapper,
+  .spmjs .sidebar-wrapper,
+  .spmjs .content-wrapper {
+    float: none;
+    position: static;
+    width: auto;
+  }
+  .spmjs .qrcode-wrapper {
+    position: absolute;
+    right: 40px;
+    top: 14px;
+  }
+  .spmjs .qrcode-wrapper .qrcode {
+    left: -98px;
+  }
+  .spmjs .footer-wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 3%;
+  }
+  body.spmjs {
+    position: relative;
+  }
 }

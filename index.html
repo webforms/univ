@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>univ - Universal Validator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="nico 0.5.1" />
+    <meta name="generator" content="nico-spm 0.5.5" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link type="image/x-icon" href="/favicon.ico" rel="icon">
     <link rel="stylesheet" href="./static/css/normalize.css" />
     <link rel="stylesheet" href="./static/css/site.css" />
+    <link rel="stylesheet" href="./static/css/site.css" />
     <link rel="stylesheet" href="./static/css/solarized.css" />
+    <link rel="stylesheet" href="./static/css/codemirror.css" />
 <script>
 if (!location.port) {
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -24,8 +26,7 @@ if (!location.port) {
 
 <script>
   seajs.config({
-    base: "./",
-    alias: {"events":"events/1.0.1/events.js","promise":"promise/6.0.0/index.js","expect.js":"expect.js/0.3.1/index.js"}
+    base: "./"
   });
 </script>
     <!--[if lt IE 9]>
@@ -33,12 +34,14 @@ if (!location.port) {
     <![endif]-->
   </head>
   <body class="spmjs">
-    <div class="body-wrapper">
+  <script src="./dist/bundle.js?nowrap"></script>
+
+  <div class="body-wrapper">
       <aside class="sidebar-wrapper">
       <h1>
           <a href="./">Univ</a>
       </h1>
-      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.2</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.3</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -56,7 +59,7 @@ if (!location.port) {
               <svg width="1024" height="1024" viewBox="0 0 1024 1024">
                 <g class="transform-group">
                   <g transform="translate(0, 18) scale(1, -1) scale(0.024, 0.024)">
-                    <path d="M116.8 792.062v0 0zM334.523 138.877v-72.569h-72.569v72.569h72.569zM334.523 574.339v-72.569h-72.569v72.569h72.569zM769.984 574.339v-72.569h-72.569v72.569h72.569zM189.369-5.705h217.723v217.167h-217.723v-217.167zM189.369 429.185h217.723v217.723h-217.723v-217.723zM624.831 429.185h217.723v217.723h-217.723v-217.723zM479.677 284.031v-362.877h-362.877v362.877h362.877zM769.984-6.277v-72.569h-72.569v72.569h72.569zM915.138-6.277v-72.569h-72.569v72.569h72.569zM915.138 284.031v-217.723h-217.723v72.569h-72.569v-217.723h-72.569v362.877h217.723v-72.569h72.569v72.569h72.569zM479.677 719.493v-362.877h-362.877v362.877h362.877zM915.138 719.493v-362.877h-362.877v362.877h362.877z" fill="#555"></path>
+                    <path d="M116.8 792.062v0 0zM334.523 138.877v-72.569h-72.569v72.569h72.569zM334.523 574.339v-72.569h-72.569v72.569h72.569zM769.984 574.339v-72.569h-72.569v72.569h72.569zM189.369-5.705h217.723v217.167h-217.723v-217.167zM189.369 429.185h217.723v217.723h-217.723v-217.723zM624.831 429.185h217.723v217.723h-217.723v-217.723zM479.677 284.031v-362.877h-362.877v362.877h362.877zM769.984-6.277v-72.569h-72.569v72.569h72.569zM915.138-6.277v-72.569h-72.569v72.569h72.569zM915.138 284.031v-217.723h-217.723v72.569h-72.569v-217.723h-72.569v362.877h217.723v-72.569h72.569v72.569h72.569zM479.677 719.493v-362.877h-362.877v362.877h362.877zM915.138 719.493v-362.877h-362.877v362.877h362.877z" fill="#666"></path>
                   </g>
                 </g>
               </svg>
@@ -67,7 +70,7 @@ if (!location.port) {
         <div class="footer-wrapper"><a target="_blank" href="http://spmjs.io">spmjs.io</a> /
 <a target="_blank" href="https://github.com/spmjs/spm">spm</a> /
 <a target="_blank" href="http://seajs.org">sea.js</a> /
-<a target="_blank" href="http://lab.lepture.com/nico/">nico</a>
+<a target="_blank" href="http://lab.lepture.com/nico/">nico-spm</a>
         </div>
       </aside>
       <div class="content-wrapper">
@@ -75,7 +78,7 @@ if (!location.port) {
 <article class="hentry">
   <h1 class="entry-title">Universal Validator</h1>
   <div class="entry-content">
-    <p><a href="https://www.npmjs.com/package/univ"><img src="https://badge.fury.io/js/univ.png" alt="NPM version"></a>
+    <!--filepath:README.md --> <p><a href="https://www.npmjs.com/package/univ"><img src="https://badge.fury.io/js/univ.png" alt="NPM version"></a>
 <a href="http://spmjs.io/package/univ"><img src="http://spmjs.io/badge/univ" alt="spm package"></a>
 <a href="https://travis-ci.org/webforms/univ"><img src="https://secure.travis-ci.org/webforms/univ.png?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/webforms/univ"><img src="https://coveralls.io/repos/webforms/univ/badge.png?branch=master" alt="Coverage Status"></a></p>
@@ -160,7 +163,40 @@ if (!location.port) {
     <span class="string">"other-name"</span>: [<span class="string">"item-1"</span>, <span class="string">"item-2"</span>],
     <span class="comment">// ...</span>
   }
-);</code></pre></div><h2 id="events">Events<a href="#events" class="anchor">¶</a></h2><h3 id="valid">valid<a href="#valid" class="anchor">¶</a></h3><p>单个数据项通过校验，数据合法有效。</p>
+);</code></pre></div><h2 id="rule">Rule<a href="#rule" class="anchor">¶</a></h2><h3 id="boolean-required">{Boolean} required<a href="#boolean-required" class="anchor">¶</a></h3><p>Set field is required or not.</p>
+<h3 id="string-type">{String} type<a href="#string-type" class="anchor">¶</a></h3><p>Set field type, type value is a enum list(same html5 type):</p>
+<ul>
+<li>text</li>
+<li>password</li>
+<li>search</li>
+<li>textarea</li>
+<li>radio</li>
+<li>checkbox</li>
+<li>select-one</li>
+<li>select-multiple</li>
+<li>number</li>
+<li>range</li>
+<li>email</li>
+<li>url</li>
+<li>tel</li>
+<li>color</li>
+<li>date</li>
+<li>week</li>
+<li>month</li>
+<li>time</li>
+<li>datetime</li>
+<li>datetime-local</li>
+<li>file</li>
+<li>submit</li>
+<li>button</li>
+<li>image</li>
+<li>hidden</li>
+</ul>
+<h3 id="number-min">{Number} min<a href="#number-min" class="anchor">¶</a></h3><ul>
+<li>For <code>[type=number]</code>, input data must be great than the min value.</li>
+<li>For <code>[type=date]</code> and so on, input data</li>
+</ul>
+<h2 id="events">Events<a href="#events" class="anchor">¶</a></h2><h3 id="valid">valid<a href="#valid" class="anchor">¶</a></h3><p>单个数据项通过校验，数据合法有效。</p>
 <div class="highlight"><pre><code class="javascript">validator.on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">(name, value, validity)</span>{</span>
   console.log(<span class="string">"Field [name="</span> + name + <span class="string">"] Passed."</span>);
 });</code></pre></div><h3 id="invalid">invalid<a href="#invalid" class="anchor">¶</a></h3><p>单个数据项未通过校验，数据无效、不合法。</p>
@@ -199,7 +235,7 @@ validator.on(<span class="string">"error"</span>, <span class="function"><span c
       seajs.use("./static/js/arale-qrcode.js?nowrap", function(QRCode) {
         var url = location.href;
         if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-          url = url.replace(location.hostname, '192.168.2.106');
+          url = url.replace(location.hostname, '10.0.0.3');
         }
         var el = new QRCode({
           text: url,
@@ -211,42 +247,5 @@ validator.on(<span class="string">"error"</span>, <span class="function"><span c
       });
     }, false);
   })();
-
-  seajs.config({
-    paths: {
-      jquery: 'http://static.alipayobjects.com/jquery/'
-    }
-  });
-  seajs.use(['jquery/1.7.2/jquery'], function($) {
-    $('.highlight').on('click', '.code-toggle', function() {
-      var pre = $(this).parents('.highlight')
-      if (pre.hasClass('collapse')) {
-        pre.removeClass('collapse')
-        $(this).text('−')
-      } else {
-        pre.addClass('collapse')
-        $(this).text('+')
-      }
-      return false
-    });
-
-    $('h4 em, h3 em, h3 code, h4 code').parent().addClass('doc-api');
-
-    // 给 iframe 加链接
-    $('.nico-iframe').each(function(i, item) {
-      var src = $(item).find('iframe').attr('src')
-      var html = '<a class="new-window" target="_blank" href="' + src + '">Open</a>'
-      $(item).append(html)
-    });
-
-    // 给 code 加收起和展开
-    $('.highlight').each(function(i, item) {
-      var $item = $(item)
-      if ($item.height() > 400) {
-        $item.append('<a class="code-toggle" href="#">+</a>')
-        $item.addClass('collapse')
-      }
-    });
-  });
   </script>
 </html>
