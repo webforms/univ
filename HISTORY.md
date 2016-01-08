@@ -2,6 +2,27 @@
 
 ---
 
+## 0.2.3 (2016-01-08)
+
+* Update mobile number rule for China. fixed #17, #18.
+
+## 0.2.2 (2015-02-09)
+
+* Fixed: #13, `type=email` not support `-` character in domain name. base on v0.2.1
+
+## 0.2.1 (2015-01-29)
+
+* #12 解决 Promise 带来的性能问题。
+
+## 0.2.0 (2015-01-28)
+
+* Update Promise support.
+* Delete moment deps.
+
+## 0.1.7 (2015-02-09)
+
+* Fixed: #13, `type=email` not support `-` character in domain name.
+
 ## 0.1.6 (2014-12-24)
 
 * Add `validity` feature, #8.
