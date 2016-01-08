@@ -5315,6 +5315,41 @@ var testCases = [
     "test": testInvalid
   },
 
+  // mobile
+  {
+    "rule": { a: { custom: function(values){
+      return values.every(function(value) {
+        return this.isMobile(value);
+      }.bind(this));
+    } } },
+    "data": { a: [
+      "13000000000", "13100000000", "13200000000", "13300000000", "13400000000",
+      "13500000000", "13600000000", "13700000000", "13800000000", "13900000000",
+      "14500000000", "14700000000",
+      "15000000000", "15100000000", "15200000000", "15300000000",
+      "15500000000", "15600000000", "15700000000", "15800000000", "15900000000",
+      "17000000000",
+      "17600000000", "17700000000", "17800000000",
+      "18000000000", "18100000000", "18200000000", "18300000000", "18400000000",
+      "18500000000", "18600000000", "18700000000", "18800000000", "18900000000",
+    ] },
+    "test": testValid
+  },
+  {
+    "rule": { a: { custom: function(values){
+      return this.isMobile(values);
+    } } },
+    "data": { a: "10000000000" },
+    "test": testInvalid
+  },
+  {
+    "rule": { a: { custom: function(values){
+      return this.isMobile(values);
+    } } },
+    "data": { a: "14000000000" },
+    "test": testInvalid
+  },
+
 ];
 
 function getFunctionName(func){

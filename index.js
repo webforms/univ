@@ -544,7 +544,7 @@ function verifyIsEmail(value, validity){
 }
 
 
-var RE_MOBILE = /^(?:13[0-9]|14[57]|15[0-35-9]|170|18[0-9])\d{8}$/;
+var RE_MOBILE = /^(?:13[0-9]|14[57]|15[0-35-9]|17[0678]|18[0-9])\d{8}$/;
 function verifyIsMobile(value, validity){
   var certified = RE_MOBILE.test(value);
   validity.typeMismatch = !certified;
