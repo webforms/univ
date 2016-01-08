@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/iojs',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'completion',
+1 verbose cli   '--' ]
+2 info using npm@2.14.2
+3 info using node@v4.0.0
+4 verbose stack TypeError: Cannot read property 'length' of undefined
+4 verbose stack     at EventEmitter.completion (/usr/local/lib/node_modules/npm/lib/completion.js:86:22)
+4 verbose stack     at Object.commandCache.(anonymous function) (/usr/local/lib/node_modules/npm/lib/npm.js:220:11)
+4 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/bin/npm-cli.js:73:28)
+4 verbose stack     at doNTCallback0 (node.js:407:9)
+4 verbose stack     at process._tickCallback (node.js:336:13)
+5 verbose cwd /Users/hotoo/workbench/webforms/univ
+6 error Darwin 15.2.0
+7 error argv "/usr/local/bin/iojs" "/usr/local/bin/npm" "completion" "--"
+8 error node v4.0.0
+9 error npm  v2.14.2
+10 error Cannot read property 'length' of undefined
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

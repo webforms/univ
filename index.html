@@ -41,7 +41,7 @@ if (!location.port) {
       <h1>
           <a href="./">Univ</a>
       </h1>
-      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.3</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.8</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -78,13 +78,13 @@ if (!location.port) {
 <article class="hentry">
   <h1 class="entry-title">Universal Validator</h1>
   <div class="entry-content">
-    <!--filepath:README.md --> <p><a href="https://www.npmjs.com/package/univ"><img src="https://badge.fury.io/js/univ.png" alt="NPM version"></a>
+    <!--filepath:README.md --> <p><a href="http://badge.fury.io/js/univ"><img src="https://badge.fury.io/js/univ.png" alt="NPM version"></a>
 <a href="http://spmjs.io/package/univ"><img src="http://spmjs.io/badge/univ" alt="spm package"></a>
 <a href="https://travis-ci.org/webforms/univ"><img src="https://secure.travis-ci.org/webforms/univ.png?branch=master" alt="Build Status"></a>
 <a href="https://coveralls.io/r/webforms/univ"><img src="https://coveralls.io/repos/webforms/univ/badge.png?branch=master" alt="Coverage Status"></a></p>
 <p>Universal Validator.</p>
 <hr>
-<h2 id="install">Install<a href="#install" class="anchor">¶</a></h2><p>via spm:</p>
+<h2 id="install">Install<a href="#install" class="anchor">¶</a></h2><p>via spm@3.x:</p>
 <pre>$ spm install univ</pre><p>via npm:</p>
 <pre>$ npm install univ</pre><h2 id="usage">Usage<a href="#usage" class="anchor">¶</a></h2><div class="highlight"><pre><code class="javascript"><span class="keyword">var</span> Validator = require(<span class="string">'univ'</span>);
 
@@ -92,13 +92,27 @@ if (!location.port) {
   <span class="string">"username"</span>: {
     type: <span class="string">"email"</span>,
     required: <span class="literal">true</span>,
-    custom: <span class="function"><span class="keyword">function</span><span class="params">(value)</span>{</span>
-      <span class="comment">// Async validate.</span>
-      <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span><span class="params">(resolve, reject)</span>{</span>
-          $.post(<span class="string">"/check-username-available"</span>, {username:value}, <span class="function"><span class="keyword">function</span><span class="params">(result)</span> {</span>
-            resolve(result.available === <span class="string">"YES"</span>)
-          }, <span class="string">"json"</span>)
-      })
+
+    <span class="comment">// @param {String} value.</span>
+    <span class="comment">// @param {Function} certifiedCallback, optional.</span>
+    custom: <span class="function"><span class="keyword">function</span><span class="params">(value, certifiedCallback)</span>{</span>
+      $.ajax({
+        url: <span class="string">"/check-username-available"</span>,
+        data: <span class="string">"username="</span>+value,
+        success: <span class="function"><span class="keyword">function</span><span class="params">(data)</span>{</span>
+          <span class="keyword">if</span>(data.state === <span class="string">"ok"</span> &amp;&amp; data.available = <span class="string">"yes"</span>){
+            callback(<span class="literal">true</span>);
+          }<span class="keyword">else</span>{
+            certifiedCallback(<span class="literal">false</span>);
+          }
+        },
+        error: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+          certifiedCallback(<span class="literal">false</span>);
+        }
+      });
+
+      <span class="comment">//!return undefined;</span>
+
     }
   },
   <span class="string">"password"</span>: {
@@ -112,15 +126,14 @@ if (!location.port) {
     required: <span class="literal">true</span>,
     minlength: <span class="number">6</span>,
     maxlength: <span class="number">30</span>,
-    custom: <span class="function"><span class="keyword">function</span><span class="params">(value)</span>{</span>
-      <span class="comment">// Sync validate.</span>
+    custom: <span class="function"><span class="keyword">function</span><span class="params">(value, callback)</span>{</span>
       <span class="keyword">return</span> value === <span class="keyword">this</span>.data(<span class="string">"password"</span>);
     }
   }
 };
 
 <span class="keyword">var</span> validator = <span class="keyword">new</span> Validator(rules);
-<span class="keyword">var</span> result = <span class="keyword">yield</span> validator.validate({
+validator.validate({
   <span class="string">"username"</span>: <span class="string">"hotoo@email.address"</span>,
   <span class="string">"password"</span>: <span class="string">"PassWord"</span>,
   <span class="string">"checkbox"</span>: [<span class="string">"check-0"</span>, <span class="string">"check-1"</span>]
@@ -129,11 +142,13 @@ if (!location.port) {
   <span class="comment">// rule name.</span>
   <span class="string">"name"</span>: {
     type: {TypeEnum(
-      text,password, search,textarea,
+      text,password,
       radio,checkbox,
       select-one,select-multiple,
-      number,range, email,url,tel,color,
+      search,textarea,
+      number,range,
       date,week,month,time,datetime,datetime-local,
+      email,url,tel,color,
       file,
       submit,button,image,
       hidden
@@ -154,7 +169,7 @@ if (!location.port) {
   },
   <span class="comment">// ...</span>
 }</code></pre></div><h3 id="univ-rule-name-rule">Univ.rule(name, rule)<a href="#univ-rule-name-rule" class="anchor">¶</a></h3><p>Set or get a custom rule.</p>
-<div class="highlight"><pre><code class="javascript">validator.rule(<span class="string">"isBankCard"</span>, <span class="function"><span class="keyword">function</span><span class="params">(values)</span>{</span>
+<div class="highlight"><pre><code class="javascript">validator.rule(<span class="string">"isBankCard"</span>, <span class="function"><span class="keyword">function</span><span class="params">(values, callback)</span>{</span>
   <span class="keyword">return</span> <span class="literal">true</span>;
 });</code></pre></div><h3 id="univ-validate-data">univ.validate(data)<a href="#univ-validate-data" class="anchor">¶</a></h3><p>data:</p>
 <div class="highlight"><pre><code class="javascript">univ.validate(
@@ -163,40 +178,7 @@ if (!location.port) {
     <span class="string">"other-name"</span>: [<span class="string">"item-1"</span>, <span class="string">"item-2"</span>],
     <span class="comment">// ...</span>
   }
-);</code></pre></div><h2 id="rule">Rule<a href="#rule" class="anchor">¶</a></h2><h3 id="boolean-required">{Boolean} required<a href="#boolean-required" class="anchor">¶</a></h3><p>Set field is required or not.</p>
-<h3 id="string-type">{String} type<a href="#string-type" class="anchor">¶</a></h3><p>Set field type, type value is a enum list(same html5 type):</p>
-<ul>
-<li>text</li>
-<li>password</li>
-<li>search</li>
-<li>textarea</li>
-<li>radio</li>
-<li>checkbox</li>
-<li>select-one</li>
-<li>select-multiple</li>
-<li>number</li>
-<li>range</li>
-<li>email</li>
-<li>url</li>
-<li>tel</li>
-<li>color</li>
-<li>date</li>
-<li>week</li>
-<li>month</li>
-<li>time</li>
-<li>datetime</li>
-<li>datetime-local</li>
-<li>file</li>
-<li>submit</li>
-<li>button</li>
-<li>image</li>
-<li>hidden</li>
-</ul>
-<h3 id="number-min">{Number} min<a href="#number-min" class="anchor">¶</a></h3><ul>
-<li>For <code>[type=number]</code>, input data must be great than the min value.</li>
-<li>For <code>[type=date]</code> and so on, input data</li>
-</ul>
-<h2 id="events">Events<a href="#events" class="anchor">¶</a></h2><h3 id="valid">valid<a href="#valid" class="anchor">¶</a></h3><p>单个数据项通过校验，数据合法有效。</p>
+);</code></pre></div><h2 id="events">Events<a href="#events" class="anchor">¶</a></h2><h3 id="valid">valid<a href="#valid" class="anchor">¶</a></h3><p>单个数据项通过校验，数据合法有效。</p>
 <div class="highlight"><pre><code class="javascript">validator.on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">(name, value, validity)</span>{</span>
   console.log(<span class="string">"Field [name="</span> + name + <span class="string">"] Passed."</span>);
 });</code></pre></div><h3 id="invalid">invalid<a href="#invalid" class="anchor">¶</a></h3><p>单个数据项未通过校验，数据无效、不合法。</p>

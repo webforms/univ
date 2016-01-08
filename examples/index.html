@@ -41,7 +41,7 @@ if (!location.port) {
       <h1>
           <a href="../">Univ</a>
       </h1>
-      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.2.3</a></p>
+      <p class="sidebar-version">Version: <a href="http://spmjs.io/package/univ" title="">0.1.8</a></p>
         <p class="sidebar-description" data-keyword="Validator">Universal Validator.</p>
         <a class="sidebar-source" href="http://github.com/webforms/univ" target="_blank">View the Project</a>
         <ul class="sidebar-navigation" role="navigation">
@@ -78,62 +78,26 @@ if (!location.port) {
 <article class="hentry">
   <h1 class="entry-title">Demo</h1>
   <div class="entry-content">
-    <!--filepath:examples/index.md --> <script class="nico-insert-code">(function(){seajs.use('index', function(Univ){
+    <!--filepath:examples/index.md --> <h2 id="normal-usage">Normal usage<a href="#normal-usage" class="anchor">¶</a></h2><script class="nico-insert-code">(function(){seajs.use('index', function(Univ){
 
-  var rule = {
-    username: {
-      required: true
-    }
-  };
+  var rule = {};
   var data = {};
-
-  var univ = new Univ(rule).on("valid", function(){
-      console.log("valid")
-    }).on("invalid", function(){
-      console.log("invalid")
-    }).on("complete", function(certified){
-      console.log("complete", certified)
-    })
-
-  univ.validate(data);
+  var valid = new Univ(rule);
+  valid.validate(data);
 
 });})()</script><textarea mode="javascript" class="spm-doc-textarea">(function(){seajs.use('index', function(Univ){
 
-  var rule = {
-    username: {
-      required: true
-    }
-  };
+  var rule = {};
   var data = {};
-
-  var univ = new Univ(rule).on("valid", function(){
-      console.log("valid")
-    }).on("invalid", function(){
-      console.log("invalid")
-    }).on("complete", function(certified){
-      console.log("complete", certified)
-    })
-
-  univ.validate(data);
+  var valid = new Univ(rule);
+  valid.validate(data);
 
 });})()</textarea><div class="highlight"><pre><code class="javascript">seajs.use(<span class="string">'index'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Univ)</span>{</span>
 
-  <span class="keyword">var</span> rule = {
-    username: {
-      required: <span class="literal">true</span>
-    }
-  };
+  <span class="keyword">var</span> rule = {};
   <span class="keyword">var</span> data = {};
-
-  <span class="keyword">var</span> univ = <span class="keyword">new</span> Univ(rule).on(<span class="string">"valid"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-      console.log(<span class="string">"valid"</span>)
-    }).on(<span class="string">"invalid"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
-      console.log(<span class="string">"invalid"</span>)
-    }).on(<span class="string">"complete"</span>, <span class="function"><span class="keyword">function</span><span class="params">(certified)</span>{</span>
-      console.log(<span class="string">"complete"</span>, certified)
-    })
-
-  univ.validate(data);
+  <span class="keyword">var</span> valid = <span class="keyword">new</span> Univ(rule);
+  valid.validate(data);
 
 });</code></pre></div>
   </div>
